@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<title>RCJ Rescue Line - Digital Scoring Sheet</title>
+		<!--<link rel="stylesheet" href="style.css" />-->
+		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+		<style>
+		body {
+			margin: 0;
+			width: 100%;
+			height: 100%;
+			font-family: sans-serif;
+		}
+		.wrapper-ratio {
+			position: relative;
+			width: 100vw;
+			height: 150vw;
+			/*background: blue;*/
+		}
+		@media (min-aspect-ratio: 2/3) { /* to wide */
+			.wrapper-ratio {
+				position: relative;
+				width: 66.66vh;
+				height: 100vh;
+				margin: 0 auto;
+				/*background: red;*/
+			}
+		}
+		.element {
+			position: absolute;
+			padding: 0px;
+			/*background: yellow;*/
+		}
+		.centered-text-box {
+			text-align: center;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			-moz-transform: translateX(-50%) translateY(-50%);
+			-webkit-transform: translateX(-50%) translateY(-50%);
+			transform: translateX(-50%) translateY(-50%);
+			font-size: 8vmin;
+		}
+		img {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+		.element-wrapper, .img-border {
+			position: absolute;
+			width: 98%;
+			height: 98%;
+			top: 1%;
+			left: 1%;
+		}
+		.element-wrapper {
+			background: black;
+		}
+		.img-border {
+			background: white;
+		}
+		
+		.noselect {
+		  -webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			 -khtml-user-select: none; /* Konqueror HTML */
+			   -moz-user-select: none; /* Firefox */
+				-ms-user-select: none; /* Internet Explorer/Edge */
+					user-select: none; /* Non-prefixed version, currently
+										  supported by Chrome and Opera */
+		}
+		</style>
+		<script type="text/javascript" defer>
+			window.onload = function() {
+				document.getElementById("img-gap").addEventListener('click', function(e) {
+					document.getElementById("txt-gap").innerHTML = +document.getElementById("txt-gap").innerHTML + 1;
+				});
+				document.getElementById("img-gap").addEventListener('contextmenu', function(e) {
+					document.getElementById("txt-gap").innerHTML = +document.getElementById("txt-gap").innerHTML - 1;
+					e.preventDefault();
+				});
+				
+				/* media-query for aspect-ratio isn't working as wanted in Chrome (problem with disappearing url-bar) */
+				let possibleWidth = window.innerWidth;
+				let possibleHeight = window.innerHeight; //document.body.clientHeight can be used alternatively (-> possible to hide url-bar)
+				if (possibleHeight * 2 / 3 < possibleWidth) {
+					document.getElementById("wrapper").style.height = possibleHeight + "px";
+					document.getElementById("wrapper").style.width = possibleHeight * 2 / 3 + "px";
+				} else {
+					document.getElementById("wrapper").style.height = possibleWidth * 3 / 2 + "px";
+					document.getElementById("wrapper").style.marginBottom = possibleHeight - possibleWidth * 3 / 2 + "px";
+					document.getElementById("wrapper").style.width = possibleWidth + "px";
+				}
+			};
+		</script>
+	</head>
+	<body id="body" class="noselect">
+		<div id="wrapper" class="wrapper-ratio">
+			<!-- section and try -->
+			<div class="element" style="width: 16.5%; height: 5.5%; top: 0.5%; left: 0.5%;">
+				<div class="centered-text-box" style="font-size: 3vmin;">
+					Section
+				</div>
+			</div>
+			<div class="element" style="width: 16.5%; height: 5.5%; top: 0.5%; left: 17%;">
+				<div class="centered-text-box" style="font-size: 3vmin;">
+					Try
+				</div>
+			</div>
+			<div class="element" style="width: 16.5%; height: 11%; top: 6%; left: 0.5%;">
+				<div class="centered-text-box" style="font-size: 9vmin;">
+					0
+				</div>
+			</div>
+			<div class="element" style="width: 16.5%; height: 11%; top: 6%; left: 17%;">
+				<div class="centered-text-box" style="font-size: 9vmin;">
+					1
+				</div>
+			</div>
+			
+			<!-- time, start/pause and undo -->
+			<div class="element" style="width: 16.5%; height: 5.5%; top: 0.5%; left: 74.75%;">
+				<div class="centered-text-box" style="font-size: 5vmin;">
+					0:00
+				</div>
+			</div>
+			<div class="element" style="width: 8.25%; height: 5.5%; top: 0.5%; left: 91.25%;">
+				<img id="img-start-pause" src="img/start.svg" alt="Start/Pause Time" />
+			</div>
+			<div class="element" style="width: 16.5%; height: 11%; top: 6%; left: 83%;">
+				<div class="centered-text-box" style="font-size: 11vmin;">
+					&#8617; <!-- leftwards arrow with hook -->
+				</div>
+			</div>
+			
+			<!-- finished section, LoP, skip -->
+			<div class="element" style="width: 33%; height: 22%; top: 17%; left: 0.5%;">
+				<div class="element-wrapper"><div class="element-wrapper" style="background: white !important">
+					<div class="centered-text-box" style="font-size: 12vmin;">
+						&#10003; <!-- tick mark -->
+					</div>
+				</div></div>
+			</div>
+			<div class="element" style="width: 33%; height: 22%; top: 17%; left: 33.5%;">
+				<div class="element-wrapper"><div class="element-wrapper" style="background: white !important">
+					<div class="centered-text-box">
+						LoP
+					</div>
+				</div></div>
+			</div>
+			<div class="element" style="width: 33%; height: 22%; top: 17%; left: 66.5%; opacity:0.6;">
+				<div class="element-wrapper"><div class="element-wrapper" style="background: #eee !important">
+					<div class="centered-text-box">
+						Skip
+					</div>
+				</div></div>
+			</div>
+			
+			<!-- gap, obstacle, speed bump -->
+			<div class="element" style="width: 33%; height: 22%; top: 44.5%; left: 0.5%;">
+				<div class="element-wrapper">
+					<img id="img-gap" class="img-border" src="img/gap.svg" alt="Gap" />
+				</div>
+			</div>
+			<div class="element" style="width: 33%; height: 5.5%; top: 66.5%; left: 0.5%">
+				<div id="txt-gap" style="text-align: center; font-size: 4.5vmin;">
+					0
+				</div>
+			</div>
+			
+			<div class="element" style="width: 33%; height: 22%; top: 44.5%; left: 33.5%;">
+				<div class="element-wrapper">
+					<img id="img-obstacle" class="img-border" src="img/obstacle.svg" alt="Obstacle" />
+				</div>
+			</div>
+			<div class="element" style="width: 33%; height: 5.5%; top: 66.5%; left: 33.5%;">
+				<div style="text-align: center; font-size: 4.5vmin;">
+					... 2 | 2 | 0 | 3 | 4
+				</div>
+			</div>
+			
+			<div class="element" style="width: 33%; height: 22%; top: 44.5%; left: 66.5%;">
+				<div class="element-wrapper">
+					<img id="img-speedbump" class="img-border" src="img/speedbump.svg" alt="Speed Bump" />
+				</div>
+			</div>
+			<div class="element" style="width: 33%; height: 5.5%; top: 66.5%; left: 66.5%;">
+				<div style="text-align: center; font-size: 4.5vmin;">
+					... 2 | 2 | 0 | 3 | 4
+				</div>
+			</div>
+			
+			<!-- ramp, intersection -->
+			<div class="element" style="width: 33%; height: 22%; top: 72%; left: 0.5%;">
+				<div class="element-wrapper">
+					<img id="img-ramp" class="img-border" src="img/ramp.svg" alt="Ramp" />
+				</div>
+			</div>
+			<div class="element" style="width: 33%; height: 5.5%; top: 94%; left: 0.5%;">
+				<div style="text-align: center; font-size: 4.5vmin;">
+					0 | 2 | 0
+				</div>
+			</div>
+			
+			<div class="element" style="width: 33%; height: 22%; top: 72%; left: 33.5%;">
+				<div class="element-wrapper">
+					<img id="img-intersection" class="img-border" src="img/intersection.svg" alt="Intersection" />
+				</div>
+			</div>
+			<div class="element" style="width: 33%; height: 5.5%; top: 94%; left: 33.5%;">
+				<div style="text-align: center; font-size: 4.5vmin;">
+					3 | 0 | 1
+				</div>
+			</div>
+			
+			<!-- reached last checkpoint, navigation (prev/next) -->
+			<div class="element" style="width: 33%; height: 11%; top: 72%; left: 66.5%;">
+				<div class="element-wrapper"><div class="element-wrapper" style="background: white !important; top: 2%; height: 96%;">
+					<div class="centered-text-box" style="font-size: 4.2vmin;">
+						Last Checkpoint
+					</div>
+				</div></div>
+			</div>
+			<div class="element" style="width: 16.5%; height: 11%; top: 83%; left: 66.5%;">
+				<img id="img-prev" src="img/arrowLeft.svg" alt="Previous" style="opacity:0.6;" />
+			</div>
+			<div class="element" style="width: 16.5%; height: 11%; top: 83%; left: 83%;">
+				<img id="img-next" src="img/arrowRight.svg" alt="Next" style="opacity:0.6;" />
+			</div>
+		</div>
+	</body>
+</html>
