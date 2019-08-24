@@ -20,6 +20,10 @@ window.onload = function() {
 	
 	showInitialScreen();
 	
+	document.getElementById("s4-prev").addEventListener("click", function(e) {
+		changeScreen(4, 1);
+	});
+	
 	document.getElementById("img-time-start-pause").addEventListener("click", function(e) {
 		if (timeStartedTimestamp === null) { // time currently paused
 			timeStartedTimestamp = getTime();

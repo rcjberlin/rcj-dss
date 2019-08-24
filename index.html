@@ -13,8 +13,77 @@
 	<body id="body" class="noselect">
 		<!-- Screen 1 - Login, Competition, Field, Round -->
 		<div id="screen-1" style="display: none;">
-			Hello, World!
-			<button onclick="btnclicked()">Go to Main-UI!</button>
+			<div style="background: #eee; margin: 2%; padding: 2%;">
+				<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
+				<form>
+					<h2>Referee</h2>
+					<div>
+						<div style="width: 33%; float: left;">
+							<label for="referee-name" style="float:right;">Name</label>
+						</div>
+						<div style="width: 66%; margin-left: 1%; float: left;">
+							<input type="text" id="referee-name" style="width: 80%"/>
+						</div>
+					</div>
+					
+					<div>
+						<div style="width: 33%; float: left;">
+							<label for="referee-password" style="float:right;">Password</label>
+						</div>
+						<div style="width: 66%; margin-left: 1%; float: left;">
+							<input type="password" id="referee-password" style="width: 80%"/>
+						</div>
+					</div>
+					
+					<p style="clear: both; margin: 0;"></p>
+					
+					<h2>Competition</h2>
+					<div>
+						<div style="width: 33%; float: left;">
+							<label for="referee-name" style="float:right;">Competition</label>
+						</div>
+						<div style="width: 66%; margin-left: 1%; float: left;">
+							<select style="width: 80%">
+								<option value="line">Rescue Line</option>
+								<option value="entry">Rescue Line Entry</option>
+							</select>
+						</div>
+					</div>
+					
+					<div>
+						<div style="width: 33%; float: left;">
+							<label for="referee-name" style="float:right;">Arena</label>
+						</div>
+						<div style="width: 66%; margin-left: 1%; float: left;">
+							<select style="width: 80%">
+								<option value="a">Arena A</option>
+								<option value="b">Arena B</option>
+								<option value="c">Arena C</option>
+								<option value="d">Arena D</option>
+							</select>
+						</div>
+					</div>
+					
+					<div>
+						<div style="width: 33%; float: left;">
+							<label for="referee-name" style="float:right;">Round</label>
+						</div>
+						<div style="width: 66%; margin-left: 1%; float: left;">
+							<select style="width: 80%">
+								<option value="1">Round 1</option>
+								<option value="2">Round 2</option>
+								<option value="3">Round 3</option>
+							</select>
+						</div>
+					</div>
+					
+					<p style="clear: both; margin: 0;"></p>
+				</form>
+				
+				<div style="margin-top: 50px; text-align: center;">
+					<button onclick="btnclicked()">Go to Main-UI!</button>
+				</div>
+			</div>
 		</div>
 		
 		<!-- Screen 2 - Teamname, Evacuation Point -->
@@ -155,10 +224,10 @@
 				</div></div>
 			</div>
 			<div class="element" style="width: 16.5%; height: 11%; top: 83%; left: 66.5%;">
-				<img id="img-prev" src="img/arrowLeft.svg" alt="Previous" style="opacity:0.6;" />
+				<img id="s4-prev" src="img/arrowLeft.svg" alt="Previous"/>
 			</div>
 			<div class="element" style="width: 16.5%; height: 11%; top: 83%; left: 83%;">
-				<img id="img-next" src="img/arrowRight.svg" alt="Next" style="opacity:0.6;" />
+				<img id="s4-next" src="img/arrowRight.svg" alt="Next" style="opacity:0.6;" />
 			</div>
 		</div>
 		
