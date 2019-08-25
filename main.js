@@ -123,6 +123,8 @@ let changeScreen = function (screenNumberFrom, screenNumberTo) {
 	hideScreen(screenNumberFrom);
 	showScreen(screenNumberTo);
 	localStorage.setItem(LS_CURRENT_SCREEN, screenNumberTo);
+	
+	window.location.hash = "#" + screenNumberTo; // "disables" go-back-button
 };
 
 let addScoringElement = function (type) {
