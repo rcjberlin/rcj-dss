@@ -10,6 +10,8 @@ let timeOffset = 0.0;
 let timeStartedTimestamp = null;
 let intervalIdTime = null;
 
+let url = new URL(window.location.href);
+
 let getTime = function () {
 	return (new Date).getTime() / 1000;
 }
@@ -20,8 +22,16 @@ window.onload = function() {
 	
 	showInitialScreen();
 	
+	document.getElementById("s1-next").addEventListener("click", function(e) {
+		changeScreen(1, 2);
+	});
+	
 	document.getElementById("s4-prev").addEventListener("click", function(e) {
-		changeScreen(4, 1);
+		changeScreen(4, 3);
+	});
+	
+	document.getElementById("s4-next").addEventListener("click", function(e) {
+		changeScreen(4, 5);
 	});
 	
 	document.getElementById("img-time-start-pause").addEventListener("click", function(e) {
@@ -91,6 +101,13 @@ let showInitialScreen = function () {
 		currentScreen = 1;
 		localStorage.setItem(LS_CURRENT_SCREEN, currentScreen);
 	}
+	
+	let forceScreen = url.searchParams.get("fs");
+	if(forceScreen) {
+		currentScreen = forceScreen;
+		localStorage.setItem(LS_CURRENT_SCREEN, currentScreen);
+	}
+	
 	showScreen(currentScreen);
 };
 
@@ -106,10 +123,6 @@ let changeScreen = function (screenNumberFrom, screenNumberTo) {
 	hideScreen(screenNumberFrom);
 	showScreen(screenNumberTo);
 	localStorage.setItem(LS_CURRENT_SCREEN, screenNumberTo);
-};
-
-function btnclicked () {
-	changeScreen(1, 4);
 };
 
 let addScoringElement = function (type) {

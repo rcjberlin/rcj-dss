@@ -80,8 +80,10 @@
 					<p style="clear: both; margin: 0;"></p>
 				</form>
 				
-				<div style="margin-top: 50px; text-align: center;">
-					<button onclick="btnclicked()">Go to Main-UI!</button>
+				<div style="margin-top: 30px; text-align: center;">
+					<img id="s1-next" src="img/arrowRight.svg" alt="Next" class="nav-button" />
+					<br>
+					<button onclick="changeScreen(1, 8)">View Data</button>
 				</div>
 			</div>
 		</div>
@@ -89,11 +91,19 @@
 		<!-- Screen 2 - Teamname, Evacuation Point -->
 		<div id="screen-2" style="display: none;">
 			Screen 2
+			<div style="margin-top: 30px; text-align: center;">
+				<img id="s2-prev" onclick="changeScreen(2,1)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
+				<img id="s2-next" onclick="changeScreen(2,3)" src="img/arrowRight.svg" alt="Next" class="nav-button" />
+			</div>
 		</div>
 		
 		<!-- Screen 3 - Time (Calibration, Checkpoints), Team showed up -->
 		<div id="screen-3" style="display: none;">
 			Screen 3
+			<div style="margin-top: 30px; text-align: center;">
+				<img id="s3-prev" onclick="changeScreen(3,2)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
+				<img id="s3-next" onclick="changeScreen(3,4)" src="img/arrowRight.svg" alt="Next" class="nav-button" />
+			</div>
 		</div>
 		
 		<!-- Screen 4 - Main UI -->
@@ -127,7 +137,7 @@
 				</div>
 			</div>
 			<div class="element" style="width: 8.25%; height: 5.5%; top: 0.5%; left: 91.25%;">
-				<img id="img-time-start-pause" src="img/start.svg" alt="Start/Pause Time" />
+				<img id="img-time-start-pause" class="img-fill" src="img/start.svg" alt="Start/Pause Time" />
 			</div>
 			<div class="element" style="width: 16.5%; height: 11%; top: 6%; left: 83%;">
 				<div class="centered-text-box" style="font-size: 11vmin; opacity:0.6;">
@@ -224,31 +234,46 @@
 				</div></div>
 			</div>
 			<div class="element" style="width: 16.5%; height: 11%; top: 83%; left: 66.5%;">
-				<img id="s4-prev" src="img/arrowLeft.svg" alt="Previous"/>
+				<img id="s4-prev" class="img-fill" src="img/arrowLeft.svg" alt="Previous"/>
 			</div>
 			<div class="element" style="width: 16.5%; height: 11%; top: 83%; left: 83%;">
-				<img id="s4-next" src="img/arrowRight.svg" alt="Next" style="opacity:0.6;" />
+				<img id="s4-next" class="img-fill" src="img/arrowRight.svg" alt="Next" style="opacity:0.6;" />
 			</div>
 		</div>
 		
 		<!-- Screen 5 - Tiles per Section, Number of Victims, Left Evacuation Zone -->
 		<div id="screen-5" style="display: none;">
 			Screen 5
+			<div style="margin-top: 30px; text-align: center;">
+				<img id="s5-prev" onclick="changeScreen(5,4)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
+				<img id="s5-next" onclick="changeScreen(5,6)" src="img/arrowRight.svg" alt="Next" class="nav-button" />
+			</div>
 		</div>
 		
-		<!-- Screen 6 - Review/Corrections, Complaints, Signature -->
+		<!-- Screen 6 - Review/Corrections, Complaints, Signature + Submit-->
 		<div id="screen-6" style="display: none;">
 			Screen 6
+			<div style="margin-top: 30px; text-align: center;">
+				<img id="s6-prev" onclick="changeScreen(6,5)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
+				<br>
+				<button onclick="changeScreen(6, 7)">Submit</button>
+			</div>
 		</div>
 		
-		<!-- Screen 7 - Submit (+ Confirmation) -->
+		<!-- Screen 7 - Confirmation -->
 		<div id="screen-7" style="display: none;">
 			Screen 7
+			<div style="margin-top: 30px; text-align: center;">
+				<button onclick="changeScreen(7, 2)">New Run</button>
+				<button onclick="changeScreen(7, 8)">View Data</button>
+			</div>
 		</div>
 		
 		<!-- Screen 8 - View Data, Send Again, Export Data -->
 		<div id="screen-8" style="display: none;">
 			Screen 8
+			<button onclick="changeScreen(8, 1)">Setup</button>
+			<button onclick="changeScreen(8, 2)">New Run</button>
 		</div>
 	</body>
 </html>
