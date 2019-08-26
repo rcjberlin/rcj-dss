@@ -13,25 +13,25 @@
 	<body id="body" class="noselect">
 		<!-- Screen 1 - Login, Competition, Field, Round -->
 		<div id="screen-1" style="display: none;">
-			<div style="background: #eee; margin: 2vh; padding: 2vh; min-height: 92vh; position: relative; display: flex; flex-direction: column; justify-content: space-between">
+			<div class="screen-container">
 				<form>
 					<h1 style="margin: 0">RCJ Rescue Line - Digital Scoring Sheet</h1>
 					<h2>Referee</h2>
 					<div>
-						<div style="width: 33%; float: left;">
-							<label for="referee-name" style="float:right; text-align: right;">Name</label>
+						<div class="table-layout-column-left">
+							<label for="referee-name" class="table-layout-cell-left">Name</label>
 						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<input type="text" id="referee-name" style="width: 80%"/>
+						<div class="table-layout-column-right">
+							<input type="text" id="referee-name" class="table-layout-cell-right" />
 						</div>
 					</div>
 					
 					<div>
-						<div style="width: 33%; float: left;">
-							<label for="referee-password" style="float:right; text-align: right;">Password</label>
+						<div class="table-layout-column-left">
+							<label for="referee-password" class="table-layout-cell-left">Password</label>
 						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<input type="password" id="referee-password" style="width: 80%"/>
+						<div class="table-layout-column-right">
+							<input type="password" id="referee-password" class="table-layout-cell-right" />
 						</div>
 					</div>
 					
@@ -39,11 +39,11 @@
 					
 					<h2>Competition</h2>
 					<div>
-						<div style="width: 33%; float: left;">
-							<label for="competition" style="float:right; text-align: right;">Competition</label>
+						<div class="table-layout-column-left">
+							<label for="competition" class="table-layout-cell-left">Competition</label>
 						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<select id="competition" style="width: 80%">
+						<div class="table-layout-column-right">
+							<select id="competition" class="table-layout-cell-right">
 								<option value="line">Rescue Line</option>
 								<option value="entry">Rescue Line Entry</option>
 							</select>
@@ -51,11 +51,11 @@
 					</div>
 					
 					<div>
-						<div style="width: 33%; float: left;">
-							<label for="arena" style="float:right; text-align: right;">Arena</label>
+						<div class="table-layout-column-left">
+							<label for="arena" class="table-layout-cell-left">Arena</label>
 						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<select id="arena" style="width: 80%">
+						<div class="table-layout-column-right">
+							<select id="arena" class="table-layout-cell-right">
 								<option value="a">Arena A</option>
 								<option value="b">Arena B</option>
 								<option value="c">Arena C</option>
@@ -65,11 +65,11 @@
 					</div>
 					
 					<div>
-						<div style="width: 33%; float: left;">
-							<label for="round" style="float:right; text-align: right;">Round</label>
+						<div class="table-layout-column-left">
+							<label for="round" class="table-layout-cell-left">Round</label>
 						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<select id="round" style="width: 80%">
+						<div class="table-layout-column-right">
+							<select id="round" class="table-layout-cell-right">
 								<option value="1">Round 1</option>
 								<option value="2">Round 2</option>
 								<option value="3">Round 3</option>
@@ -80,7 +80,7 @@
 					<p style="clear: both; margin: 0;"></p>
 				</form>
 				
-				<div style="text-align: center; margin-top: 2vh;">
+				<div class="nav-footer">
 					<button onclick="changeScreen(1, 8)">View Data</button>
 					<br>
 					<img id="s1-prev" src="img/arrowLeft.svg" alt="Previous" class="nav-button" style="visibility: hidden;" />
@@ -91,40 +91,40 @@
 		
 		<!-- Screen 2 - Teamname, Evacuation Point -->
 		<div id="screen-2" style="display: none;">
-			<div style="background: #eee; margin: 2vh; padding: 2vh; min-height: 92vh; position: relative; display: flex; flex-direction: column; justify-content: space-between">
+			<div class="screen-container">
 				<form>
 					<h1 style="margin:0">RCJ Rescue Line - Digital Scoring Sheet</h1>
 					<h2>Setup</h2>
 					<div>
-						<div style="width: 33%; float: left;">
-							<span style="float:right; text-align: right;">Referee</span>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Referee</span>
 						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<span style="width: 80%;" class="disabled">Name of Referee</span>
-						</div>
-					</div>
-					<div>
-						<div style="width: 33%; float: left;">
-							<span style="float:right; text-align: right;">Competition</span>
-						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<span style="width: 80%;" class="disabled">Rescue Line</span>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">Name of Referee</span>
 						</div>
 					</div>
 					<div>
-						<div style="width: 33%; float: left;">
-							<span style="float:right; text-align: right;">Arena</span>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Competition</span>
 						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<span style="width: 80%;" class="disabled">A</span>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">Rescue Line</span>
 						</div>
 					</div>
 					<div>
-						<div style="width: 33%; float: left;">
-							<span style="float:right; text-align: right;">Round</span>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Arena</span>
 						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<span style="width: 80%;" class="disabled">1</span>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">A</span>
+						</div>
+					</div>
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Round</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">1</span>
 						</div>
 					</div>
 					
@@ -132,31 +132,22 @@
 					
 					<h2>Team</h2>
 					<div>
-						<div style="width: 33%; float: left;">
-							<label for="teamname" style="float:right; text-align: right;">Team</label>
+						<div class="table-layout-column-left">
+							<label for="teamname" class="table-layout-cell-left">Team</label>
 						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<select id="teamname" style="width: 80%">
+						<div class="table-layout-column-right">
+							<select id="teamname" class="table-layout-cell-right">
 								<option value="rl1">Team Rescue Line 1</option>
 								<option value="rl2">Team Rescue Line 2</option>
 							</select>
 						</div>
 					</div>
 					
-					<!--<div>
-						<div style="width: 33%; float: left;">
-							<p></p>
-						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
-							<input type="text" id="teamname-text" style="width: 80%"/>
-						</div>
-					</div>-->
-					
 					<div>
-						<div style="width: 33%; float: left;">
-							<label for="evacuation-point" style="float:right; text-align: right;">Evacuation Point</label>
+						<div class="table-layout-column-left">
+							<label for="evacuation-point" class="table-layout-cell-left">Evacuation Point</label>
 						</div>
-						<div style="width: 66%; margin-left: 1%; float: left;">
+						<div class="table-layout-column-right">
 							<label><input type="radio" name="evacuation-point" value="low"> low</label><br>
 							<label><input type="radio" name="evacuation-point" value="high"> high</label>
 						</div>
@@ -165,7 +156,7 @@
 					<p style="clear: both; margin: 0;"></p>
 				</form>
 				
-				<div style="text-align: center; margin-top: 2vh;">
+				<div class="nav-footer">
 					<img id="s2-prev" onclick="changeScreen(2,1)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
 					<img id="s2-next" onclick="changeScreen(2,3)" src="img/arrowRight.svg" alt="Next" class="nav-button" />
 				</div>
@@ -175,7 +166,7 @@
 		<!-- Screen 3 - Time (Calibration, Checkpoints), Team showed up -->
 		<div id="screen-3" style="display: none;">
 			Screen 3
-			<div style="margin-top: 30px; text-align: center;">
+			<div class="nav-footer">
 				<img id="s3-prev" onclick="changeScreen(3,2)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
 				<img id="s3-next" onclick="changeScreen(3,4)" src="img/arrowRight.svg" alt="Next" class="nav-button" />
 			</div>
@@ -185,29 +176,29 @@
 		<div id="screen-4" class="wrapper-ratio" style="display: none;">
 			<!-- section and try -->
 			<div class="element" style="width: 16.5%; height: 5.5%; top: 0.5%; left: 0.5%;">
-				<div class="centered-text-box" style="font-size: 3vmin;">
+				<div class="centered-text-box s4-text-section-try">
 					Section
 				</div>
 			</div>
 			<div class="element" style="width: 16.5%; height: 5.5%; top: 0.5%; left: 17%;">
-				<div class="centered-text-box" style="font-size: 3vmin;">
+				<div class="centered-text-box s4-text-section-try">
 					Try
 				</div>
 			</div>
 			<div class="element" style="width: 16.5%; height: 11%; top: 6%; left: 0.5%;">
-				<div class="centered-text-box" style="font-size: 9vmin;">
+				<div class="centered-text-box s4-text-section-try-value">
 					1
 				</div>
 			</div>
 			<div class="element" style="width: 16.5%; height: 11%; top: 6%; left: 17%;">
-				<div class="centered-text-box" style="font-size: 9vmin;">
+				<div class="centered-text-box s4-text-section-try-value">
 					1
 				</div>
 			</div>
 			
 			<!-- time, start/pause and undo -->
 			<div class="element" style="width: 16.5%; height: 5.5%; top: 0.5%; left: 74.75%;">
-				<div id="s4-time" class="centered-text-box" style="font-size: 5vmin;">
+				<div id="s4-time" class="centered-text-box s4-text-time">
 					0:00
 				</div>
 			</div>
@@ -215,7 +206,7 @@
 				<img id="img-time-start-pause" class="img-fill" src="img/start.svg" alt="Start/Pause Time" />
 			</div>
 			<div class="element" style="width: 16.5%; height: 11%; top: 6%; left: 83%;">
-				<div class="centered-text-box disabled" style="font-size: 11vmin;">
+				<div class="centered-text-box disabled s4-text-undo">
 					&#8617; <!-- leftwards arrow with hook -->
 				</div>
 			</div>
@@ -223,21 +214,21 @@
 			<!-- finished section, LoP, skip -->
 			<div class="element" style="width: 33%; height: 22%; top: 17%; left: 0.5%;">
 				<div class="element-wrapper"><div class="element-wrapper" style="background: white !important">
-					<div class="centered-text-box" style="font-size: 12vmin;">
+					<div class="centered-text-box s4-text-completed">
 						&#10003; <!-- tick mark -->
 					</div>
 				</div></div>
 			</div>
 			<div class="element" style="width: 33%; height: 22%; top: 17%; left: 33.5%;">
 				<div class="element-wrapper"><div class="element-wrapper" style="background: white !important">
-					<div class="centered-text-box">
+					<div class="centered-text-box s4-text-lop">
 						LoP
 					</div>
 				</div></div>
 			</div>
 			<div class="element disabled" style="width: 33%; height: 22%; top: 17%; left: 66.5%;">
 				<div class="element-wrapper"><div class="element-wrapper" style="background: #eee !important">
-					<div class="centered-text-box">
+					<div class="centered-text-box s4-text-skip">
 						Skip
 					</div>
 				</div></div>
@@ -250,7 +241,7 @@
 				</div>
 			</div>
 			<div class="element" style="width: 33%; height: 5.5%; top: 66.5%; left: 0.5%">
-				<div id="txt-gap" style="text-align: center; font-size: 4.5vmin;">
+				<div id="txt-gap" class="s4-text-scoring-elements">
 					0
 				</div>
 			</div>
@@ -261,7 +252,7 @@
 				</div>
 			</div>
 			<div class="element" style="width: 33%; height: 5.5%; top: 66.5%; left: 33.5%;">
-				<div id="txt-obstacle" style="text-align: center; font-size: 4.5vmin;">
+				<div id="txt-obstacle" class="s4-text-scoring-elements">
 					... 2 | 2 | 0 | 3 | 4
 				</div>
 			</div>
@@ -272,7 +263,7 @@
 				</div>
 			</div>
 			<div class="element" style="width: 33%; height: 5.5%; top: 66.5%; left: 66.5%;">
-				<div id="txt-speedbump" style="text-align: center; font-size: 4.5vmin;">
+				<div id="txt-speedbump" class="s4-text-scoring-elements">
 					... 2 | 2 | 0 | 3 | 4
 				</div>
 			</div>
@@ -284,7 +275,7 @@
 				</div>
 			</div>
 			<div class="element" style="width: 33%; height: 5.5%; top: 94%; left: 0.5%;">
-				<div id="txt-ramp" style="text-align: center; font-size: 4.5vmin;">
+				<div id="txt-ramp" class="s4-text-scoring-elements">
 					0 | 2 | 0
 				</div>
 			</div>
@@ -295,7 +286,7 @@
 				</div>
 			</div>
 			<div class="element" style="width: 33%; height: 5.5%; top: 94%; left: 33.5%;">
-				<div id="txt-intersection" style="text-align: center; font-size: 4.5vmin;">
+				<div id="txt-intersection" class="s4-text-scoring-elements">
 					3 | 0 | 1
 				</div>
 			</div>
@@ -303,7 +294,7 @@
 			<!-- reached last checkpoint, navigation (prev/next) -->
 			<div class="element" style="width: 33%; height: 11%; top: 72%; left: 66.5%;">
 				<div class="element-wrapper"><div class="element-wrapper" style="background: white !important; top: 2%; height: 96%;">
-					<div class="centered-text-box" style="font-size: 4.2vmin;">
+					<div class="centered-text-box s4-text-last-checkpoint">
 						Last Checkpoint
 					</div>
 				</div></div>
@@ -319,7 +310,7 @@
 		<!-- Screen 5 - Tiles per Section, Number of Victims, Left Evacuation Zone -->
 		<div id="screen-5" style="display: none;">
 			Screen 5
-			<div style="margin-top: 30px; text-align: center;">
+			<div class="nav-footer">
 				<img id="s5-prev" onclick="changeScreen(5,4)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
 				<img id="s5-next" onclick="changeScreen(5,6)" src="img/arrowRight.svg" alt="Next" class="nav-button" />
 			</div>
@@ -328,7 +319,7 @@
 		<!-- Screen 6 - Review/Corrections, Complaints, Signature + Submit-->
 		<div id="screen-6" style="display: none;">
 			Screen 6
-			<div style="margin-top: 30px; text-align: center;">
+			<div class="nav-footer">
 				<img id="s6-prev" onclick="changeScreen(6,5)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
 				<br>
 				<button onclick="changeScreen(6, 7)">Submit</button>
@@ -338,7 +329,7 @@
 		<!-- Screen 7 - Confirmation -->
 		<div id="screen-7" style="display: none;">
 			Screen 7
-			<div style="margin-top: 30px; text-align: center;">
+			<div class="nav-footer">
 				<button onclick="changeScreen(7, 2)">New Run</button>
 				<button onclick="changeScreen(7, 8)">View Data</button>
 			</div>
@@ -347,8 +338,10 @@
 		<!-- Screen 8 - View Data, Send Again, Export Data -->
 		<div id="screen-8" style="display: none;">
 			Screen 8
-			<button onclick="changeScreen(8, 1)">Setup</button>
-			<button onclick="changeScreen(8, 2)">New Run</button>
+			<div class="nav-footer">
+				<button onclick="changeScreen(8, 1)">Setup</button>
+				<button onclick="changeScreen(8, 2)">New Run</button>
+			</div>
 		</div>
 	</body>
 </html>
