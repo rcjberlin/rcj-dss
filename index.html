@@ -15,7 +15,7 @@
 		<div id="screen-1" style="display: none;">
 			<div class="screen-container">
 				<form>
-					<h1 style="margin: 0">RCJ Rescue Line - Digital Scoring Sheet</h1>
+					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
 					<h2>Referee</h2>
 					<div>
 						<div class="table-layout-column-left">
@@ -93,7 +93,7 @@
 		<div id="screen-2" style="display: none;">
 			<div class="screen-container">
 				<form>
-					<h1 style="margin:0">RCJ Rescue Line - Digital Scoring Sheet</h1>
+					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
 					<h2>Setup</h2>
 					<div>
 						<div class="table-layout-column-left">
@@ -165,10 +165,16 @@
 		
 		<!-- Screen 3 - Time (Calibration, Checkpoints), Team showed up -->
 		<div id="screen-3" style="display: none;">
-			Screen 3
-			<div class="nav-footer">
-				<img id="s3-prev" onclick="changeScreen(3,2)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
-				<img id="s3-next" onclick="changeScreen(3,4)" src="img/arrowRight.svg" alt="Next" class="nav-button" />
+			<div class="screen-container">
+				<form>
+					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
+					Screen 3
+				</form>
+				
+				<div class="nav-footer">
+					<img id="s3-prev" onclick="changeScreen(3,2)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
+					<img id="s3-next" onclick="changeScreen(3,4)" src="img/arrowRight.svg" alt="Next" class="nav-button" />
+				</div>
 			</div>
 		</div>
 		
@@ -309,38 +315,63 @@
 		
 		<!-- Screen 5 - Tiles per Section, Number of Victims, Left Evacuation Zone -->
 		<div id="screen-5" style="display: none;">
-			Screen 5
-			<div class="nav-footer">
-				<img id="s5-prev" onclick="changeScreen(5,4)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
-				<img id="s5-next" onclick="changeScreen(5,6)" src="img/arrowRight.svg" alt="Next" class="nav-button" />
+			<div class="screen-container">
+				<form>
+					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
+					Screen 5
+				</form>
+				
+				<div class="nav-footer">
+					<img id="s5-prev" onclick="changeScreen(5,4)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
+					<img id="s5-next" onclick="changeScreen(5,6)" src="img/arrowRight.svg" alt="Next" class="nav-button" />
+				</div>
 			</div>
 		</div>
 		
 		<!-- Screen 6 - Review/Corrections, Complaints, Signature + Submit-->
 		<div id="screen-6" style="display: none;">
-			Screen 6
-			<div class="nav-footer">
-				<img id="s6-prev" onclick="changeScreen(6,5)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
-				<br>
-				<button onclick="changeScreen(6, 7)">Submit</button>
+			<div class="screen-container">
+				<form>
+					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
+					Screen 6
+				</form>
+				
+				<div class="nav-footer">
+					<button onclick="changeScreen(6, 7)">Submit</button>
+					<br>
+					<img id="s6-prev" onclick="changeScreen(6,5)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
+					<img id="s6-next" src="img/arrowRight.svg" alt="Next" class="nav-button"  style="visibility: hidden;" />
+				</div>
 			</div>
 		</div>
 		
 		<!-- Screen 7 - Confirmation -->
 		<div id="screen-7" style="display: none;">
-			Screen 7
-			<div class="nav-footer">
-				<button onclick="changeScreen(7, 2)">New Run</button>
-				<button onclick="changeScreen(7, 8)">View Data</button>
+			<div class="screen-container">
+				<form>
+					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
+					Screen 7
+				</form>
+				
+				<div class="nav-footer">
+					<button onclick="changeScreen(7, 2)">New Run</button>
+					<button onclick="changeScreen(7, 8)">View Data</button>
+				</div>
 			</div>
 		</div>
 		
 		<!-- Screen 8 - View Data, Send Again, Export Data -->
 		<div id="screen-8" style="display: none;">
-			Screen 8
-			<div class="nav-footer">
-				<button onclick="changeScreen(8, 1)">Setup</button>
-				<button onclick="changeScreen(8, 2)">New Run</button>
+			<div class="screen-container">
+				<form>
+					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
+					Screen 8
+				</form>
+				
+				<div class="nav-footer">
+					<button onclick="changeScreen(8, 1)">Setup</button>
+					<button onclick="changeScreen(8, 2)">New Run</button>
+				</div>
 			</div>
 		</div>
 	</body>
