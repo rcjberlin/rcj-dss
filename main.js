@@ -17,38 +17,35 @@ let getTime = function () {
 }
 
 window.onload = function() {
-	addEventListenersForScoringElementButtons();
 	adjustSizeOfMainUI();
 	
+	addEventListenersForNavigationButtons();
+	addEventListenersForButtons();
+	addEventListenersForScoringElementButtons();
+	
 	showInitialScreen();
-	
-	document.getElementById("s1-next").addEventListener("click", function(e) {
-		changeScreen(1, 2);
-	});
-	
-	document.getElementById("s4-prev").addEventListener("click", function(e) {
-		changeScreen(4, 3);
-	});
-	
-	document.getElementById("s4-next").addEventListener("click", function(e) {
-		changeScreen(4, 5);
-	});
-	
-	document.getElementById("img-time-start-pause").addEventListener("click", function(e) {
-		if (timeStartedTimestamp === null) { // time currently paused
-			timeStartedTimestamp = getTime();
-			document.getElementById("img-time-start-pause").src = "img/pause.svg";
-			intervalIdTime = setInterval(updateTime, 200);
-		}
-		else { // time currently running
-			timeOffset = timeOffset + getTime() - timeStartedTimestamp;
-			timeStartedTimestamp = null;
-			document.getElementById("img-time-start-pause").src = "img/start.svg";
-			clearInterval(intervalIdTime);
-			intervalIdTime = null;
-			updateTime();
-		}
-	});
+};
+
+let isTimeRunning = function () {
+	return timeStartedTimestamp !== null;
+};
+
+let toggleTimeRunning = function () {
+	if (!isTimeRunning()) { // time currently paused
+		timeStartedTimestamp = getTime();
+		document.getElementById("s3-time-start-pause").src = "img/pause.svg";
+		document.getElementById("s4-time-start-pause").src = "img/pause.svg";
+		intervalIdTime = setInterval(updateTime, 200);
+	}
+	else { // time currently running
+		timeOffset = timeOffset + getTime() - timeStartedTimestamp;
+		timeStartedTimestamp = null;
+		document.getElementById("s3-time-start-pause").src = "img/start.svg";
+		document.getElementById("s4-time-start-pause").src = "img/start.svg";
+		clearInterval(intervalIdTime);
+		intervalIdTime = null;
+		updateTime();
+	}
 };
 
 let updateTime = function () {
@@ -60,8 +57,52 @@ let updateTime = function () {
 	let seconds = Math.floor(time%60);
 	minutes = (minutes < 10 ? minutes : (minutes > 15 ? "X" : minutes.toString(16)));
 	seconds = (seconds < 10 ? "0" : "") + seconds;
+	document.getElementById("s3-time").innerHTML = minutes + ":" + seconds;
 	document.getElementById("s4-time").innerHTML = minutes + ":" + seconds;
-}
+};
+
+let resetTime = function () {
+	if (intervalIdTime !== null) {
+		clearInterval(intervalIdTime);
+	}
+	timeOffset = 0.0;
+	timeStartedTimestamp = null;
+	intervalIdTime = null;
+	updateTime();
+	document.getElementById("s3-time-start-pause").src = "img/start.svg";
+	document.getElementById("s4-time-start-pause").src = "img/start.svg";
+};
+
+let btnResetTime = function () {
+	// TODO: confirm() leads to a page-reload sometimes
+	if (confirm("Are you sure to reset the time? You can't undo this step.")) {
+		resetTime();
+	}
+};
+
+
+let addEventListenersForNavigationButtons = function () {
+	document.getElementById("s1-next").addEventListener("click", function(e) {
+		changeScreen(1, 2);
+	});
+	
+	document.getElementById("s4-prev").addEventListener("click", function(e) {
+		changeScreen(4, 3);
+	});
+	
+	document.getElementById("s4-next").addEventListener("click", function(e) {
+		changeScreen(4, 5);
+	});
+};
+
+let addEventListenersForButtons = function () {
+	document.getElementById("s3-time-start-pause").addEventListener("click", function(e) {
+		toggleTimeRunning();
+	});
+	document.getElementById("s4-time-start-pause").addEventListener("click", function(e) {
+		toggleTimeRunning();
+	});
+};
 
 let addEventListenersForScoringElementButtons = function () {
 	let arr = [ {imgId: "img-gap",          name: GAP},
@@ -124,7 +165,7 @@ let changeScreen = function (screenNumberFrom, screenNumberTo) {
 	showScreen(screenNumberTo);
 	localStorage.setItem(LS_CURRENT_SCREEN, screenNumberTo);
 	
-	window.location.hash = "#" + screenNumberTo; // "disables" go-back-button
+	window.location.hash = "#" + screenNumberTo; // "disables" go-back-button of browser
 };
 
 let addScoringElement = function (type) {

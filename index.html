@@ -168,7 +168,50 @@
 			<div class="screen-container">
 				<form>
 					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
-					Screen 3
+					<h2>Team</h2>
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Team</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">Team Rescue Line 1</span>
+						</div>
+					</div>
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Evacuation Point</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">high</span>
+						</div>
+					</div>
+					
+					<p style="clear: both; margin: 0;"></p>
+					
+					<div style="margin-top: 2vh;">
+						<div class="table-layout-column-left">
+							<p class="table-layout-cell-left"></p>
+						</div>
+						<div class="table-layout-column-right">
+							<label><input type="checkbox" id="team-showed-up" value="yes" checked>Team showed up</label>
+						</div>
+					</div>
+					
+					<p style="clear: both; margin: 0;"></p>
+					
+					<h2>Time</h2>
+					<table border="0" width="80%" style="margin-left: 10%;"><tr>
+						<td width="33.3%" style="text-align: center; vertical-align: middle;">
+							<span id="s3-time" class="s4-text-time">0:00</span>
+						</td>
+						<td width="33.3%" style="text-align: center; vertical-align: middle;">
+							<img id="s3-time-start-pause" src="img/start.svg" alt="Start/Pause Time" style="width: 15vw;" />
+						</td>
+						<td width="33.3%" style="text-align: center; vertical-align: middle;">
+							<button onclick="btnResetTime()">Reset Time</button>
+						</td>
+						<!-- Set-Time-Button? -->
+					</tr></table>
 				</form>
 				
 				<div class="nav-footer">
@@ -209,7 +252,7 @@
 				</div>
 			</div>
 			<div class="element" style="width: 8.25%; height: 5.5%; top: 0.5%; left: 91.25%;">
-				<img id="img-time-start-pause" class="img-fill" src="img/start.svg" alt="Start/Pause Time" />
+				<img id="s4-time-start-pause" class="img-fill" src="img/start.svg" alt="Start/Pause Time" />
 			</div>
 			<div class="element" style="width: 16.5%; height: 11%; top: 6%; left: 83%;">
 				<div class="centered-text-box disabled s4-text-undo">
@@ -318,7 +361,92 @@
 			<div class="screen-container">
 				<form>
 					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
-					Screen 5
+					<h2>Tiles per Section</h2>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="tiles-section-1" class="table-layout-cell-left">Section 1<br><span class="disabled">(1st try)</span></label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="tiles-section-1" class="table-layout-cell-right" />
+						</div>
+					</div>
+					<p style="clear: both; margin: 0;"></p>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="tiles-section-2" class="table-layout-cell-left">Section 2<br><span class="disabled">(skipped)</span></label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="tiles-section-2" class="table-layout-cell-right" />
+						</div>
+					</div>
+					<p style="clear: both; margin: 0;"></p>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="tiles-section-3" class="table-layout-cell-left">Section 3<br><span class="disabled">(3rd try)</span></label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="tiles-section-3" class="table-layout-cell-right" />
+						</div>
+					</div>
+					<p style="clear: both; margin: 0;"></p>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="tiles-section-4" class="table-layout-cell-left">Section 4<br><span class="disabled">(5th try)</span></label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="tiles-section-4" class="table-layout-cell-right" />
+						</div>
+					</div>
+					<p style="clear: both; margin: 0;"></p>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="tiles-section-5" class="table-layout-cell-left">Section 5<br><span class="disabled">(not completed)</span></label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="tiles-section-5" class="table-layout-cell-right" />
+						</div>
+					</div>
+					<p style="clear: both; margin: 0;"></p>
+					
+					<h2>Evacuation Zone</h2>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="victims-dead-before" class="table-layout-cell-left">Dead Victims</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="victims-dead-before" class="table-layout-cell-right" />
+							<span class="disabled">(before living victims)</span>
+						</div>
+					</div>
+					<p style="clear: both; margin: 0;"></p>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="victims-alive" class="table-layout-cell-left">Living Victims</span></label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="victims-alive" class="table-layout-cell-right" />
+						</div>
+					</div>
+					<p style="clear: both; margin: 0;"></p>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="vicitims-dead-after" class="table-layout-cell-left">Dead Victims</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="victims-dead-after" class="table-layout-cell-right" />
+							<span class="disabled">(after living victims)</span>
+						</div>
+					</div>
+					<p style="clear: both; margin: 0;"></p>
+					<div style="margin-top: 2vh;">
+						<div class="table-layout-column-left">
+							<p class="table-layout-cell-left"></p>
+						</div>
+						<div class="table-layout-column-right">
+							<label><input type="checkbox" id="team-showed-up" value="yes">Left Evacuation Zone</label>
+						</div>
+					</div>
+					<p style="clear: both; margin: 0;"></p>
 				</form>
 				
 				<div class="nav-footer">

@@ -52,6 +52,9 @@ input, select {
 .table-layout-cell-right {
 	width: 80%;
 }
+input.table-layout-cell-right[type="number"] {
+	width: 4em;
+}
 
 .wrapper-ratio {
 	position: relative;
