@@ -1,5 +1,5 @@
 # RCJ Rescue Line - Digital Scoring Sheet
-The aim of this project is to replace the paper scoring sheets at RCJ Rescue Line with digital ones on small mobile devices (like smartphones).
+The aim of this project is to replace the paper scoring sheets at RCJ Rescue Line with digital ones on mobile devices.
 
 It's planned to use this software at RCJ Berlin (March/2020) if the project is finished until then.
 
@@ -35,13 +35,14 @@ This project must meet certain demands so that it can be used during competition
   3. Measure time for calibration and setting checkpoints; team showed up
   4. Main UI, enter all information during scoring run: start/pause time; section completed, Lack of Progess, skipped section; award points for gaps, obstacles, speed bumps, ramps and intersections; see current status (time, section, try, number of scoring elements, ...); reached last checkpoint; undo steps
   5. Enter number of tiles per section; enter number of rescued victims; left evacuation zone successfully
-  6. Review everything together with team captain and correct things if needed; text input for complaints; signature of team captain (perhaps combined with checksum to prevent manipulation)
+  6. Review everything together with team captain and correct things if needed; text input for complaints; signature of team captain
   7. Send whole sheet to central evaluation system; get confirmation in case of successful transmission
   8. View all locally saved data (including status whether transmitted successfully or not), possibility to send it again or to export data (&rarr; other medium for transmission can be used)
 * navigation between these parts (mostly only back/next)
 * step 1 will be used when competition starts / referee switches field / next round starts
 * normally you will go through step 2 till 7 sequentially for each team
 * step 8 will only be used if data transmission fails
+* integration of timetable is not planned yet but may be added later
 
 ### Architecture / Technical Planning
 * to store data for a longer period of time LocalStorage is used; what's stored:
