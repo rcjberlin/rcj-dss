@@ -58,6 +58,10 @@ input.table-layout-cell-right[type="number"] {
 label.table-layout-cell-left, p.table-layout-cell-left, span.table-layout-cell-left {
 	margin-bottom: 0.25em;
 }
+textarea {
+	resize: none;
+	height: 3.5em;
+}
 p.clear {
 	clear: both;
 }

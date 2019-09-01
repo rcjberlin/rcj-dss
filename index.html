@@ -412,16 +412,6 @@
 						<p class="clear" />
 					</div>
 					
-					<div>
-						<div class="table-layout-column-left">
-							<label for="tiles-section-5" class="table-layout-cell-left">Section 5<br><span class="disabled">(not completed)</span></label>
-						</div>
-						<div class="table-layout-column-right">
-							<input type="number" id="tiles-section-5" class="table-layout-cell-right" />
-						</div>
-						<p class="clear" />
-					</div>
-					
 					<h2>Evacuation Zone</h2>
 					<div>
 						<div class="table-layout-column-left">
@@ -436,7 +426,7 @@
 					
 					<div>
 						<div class="table-layout-column-left">
-							<label for="victims-alive" class="table-layout-cell-left">Living Victims</span></label>
+							<label for="victims-alive" class="table-layout-cell-left">Living Victims</label>
 						</div>
 						<div class="table-layout-column-right">
 							<input type="number" id="victims-alive" class="table-layout-cell-right" />
@@ -460,7 +450,7 @@
 							<p class="table-layout-cell-left"></p>
 						</div>
 						<div class="table-layout-column-right">
-							<label><input type="checkbox" id="team-showed-up" value="yes">Left Evacuation Zone</label>
+							<label><input type="checkbox" id="left-evacuation-zone" value="yes">Left Evacuation Zone</label>
 						</div>
 						<p class="clear" />
 					</div>
@@ -479,11 +469,460 @@
 			<div class="screen-container">
 				<form>
 					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
-					Screen 6
+					<h2>Review</h2>
+					<h3>Section 1 <button id="btn-section-1-edit">Edit</button></h3>
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Tiles</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">12</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-1-tries" class="table-layout-cell-left">Tries</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-1-tries" class="table-layout-cell-right" value="1" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-1-gaps" class="table-layout-cell-left">Gaps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-1-gaps" class="table-layout-cell-right" value="2" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-1-obstacles" class="table-layout-cell-left">Obstacles</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-1-obstacles" class="table-layout-cell-right" value="0" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-1-speedbumps" class="table-layout-cell-left">Speed Bumps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-1-speedbumps" class="table-layout-cell-right" value="1" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-1-ramps" class="table-layout-cell-left">Ramps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-1-ramps" class="table-layout-cell-right" value="2" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-1-intersections" class="table-layout-cell-left">Intersections</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-1-intersections" class="table-layout-cell-right" value="1" disabled />
+							<span class="disabled">(Original: 0)</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<h3>Section 2 <button id="btn-section-2-edit">Save</button></h3>
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Tiles</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">17</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-2-tries" class="table-layout-cell-left">Tries</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-2-tries" class="table-layout-cell-right" value="4" />
+							<span class="disabled">(Original: 4)</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-2-gaps" class="table-layout-cell-left">Gaps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-2-gaps" class="table-layout-cell-right" value="1" />
+							<span class="disabled">(Original: 1)</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-2-obstacles" class="table-layout-cell-left">Obstacles</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-2-obstacles" class="table-layout-cell-right" value="1" />
+							<span class="disabled">(Original: 1)</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-2-speedbumps" class="table-layout-cell-left">Speed Bumps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-2-speedbumps" class="table-layout-cell-right" value="3" />
+							<span class="disabled">(Original: 3)</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-2-ramps" class="table-layout-cell-left">Ramps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-2-ramps" class="table-layout-cell-right" value="0" />
+							<span class="disabled">(Original: 0)</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-2-intersections" class="table-layout-cell-left">Intersections</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-2-intersections" class="table-layout-cell-right" value="2" />
+							<span class="disabled">(Original: 2)</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<h3>Section 3 <button id="btn-section-3-edit">Edit</button></h3>
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Tiles</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">8</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-3-tries" class="table-layout-cell-left">Tries</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-3-tries" class="table-layout-cell-right" value="3" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-3-gaps" class="table-layout-cell-left">Gaps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-3-gaps" class="table-layout-cell-right" value="1" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-3-obstacles" class="table-layout-cell-left">Obstacles</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-3-obstacles" class="table-layout-cell-right" value="0" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-3-speedbumps" class="table-layout-cell-left">Speed Bumps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-3-speedbumps" class="table-layout-cell-right" value="3" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-3-ramps" class="table-layout-cell-left">Ramps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-3-ramps" class="table-layout-cell-right" value="0" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-3-intersections" class="table-layout-cell-left">Intersections</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-3-intersections" class="table-layout-cell-right" value="2" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<h3>Section 4 <button id="btn-section-4-edit">Edit</button></h3>
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Tiles</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">7</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-4-tries" class="table-layout-cell-left">Tries</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-4-tries" class="table-layout-cell-right" value="5" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-4-gaps" class="table-layout-cell-left">Gaps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-4-gaps" class="table-layout-cell-right" value="1" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-4-obstacles" class="table-layout-cell-left">Obstacles</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-4-obstacles" class="table-layout-cell-right" value="0" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-4-speedbumps" class="table-layout-cell-left">Speed Bumps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-4-speedbumps" class="table-layout-cell-right" value="0" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-4-ramps" class="table-layout-cell-left">Ramps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-4-ramps" class="table-layout-cell-right" value="0" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-4-intersections" class="table-layout-cell-left">Intersections</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-4-intersections" class="table-layout-cell-right" value="1" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<h3>After Last Checkpoint <button id="btn-section-5-edit">Edit</button></h3>					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-5-gaps" class="table-layout-cell-left">Gaps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-5-gaps" class="table-layout-cell-right" value="0" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-5-obstacles" class="table-layout-cell-left">Obstacles</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-5-obstacles" class="table-layout-cell-right" value="0" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-5-speedbumps" class="table-layout-cell-left">Speed Bumps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-5-speedbumps" class="table-layout-cell-right" value="1" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-5-ramps" class="table-layout-cell-left">Ramps</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-5-ramps" class="table-layout-cell-right" value="0" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<label for="review-section-5-intersections" class="table-layout-cell-left">Intersections</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-5-intersections" class="table-layout-cell-right" value="0" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div style="margin-top: 2vh;">
+						<div class="table-layout-column-left">
+							<label for="review-section-5-lops" class="table-layout-cell-left">LoPs</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="number" id="review-section-5-lops" class="table-layout-cell-right" value="2" disabled />
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Dead Victims</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">2</span>
+							<span class="disabled">(before living victims)</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Living Victims</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">1</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Dead Victims</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">0</span>
+							<span class="disabled">(after living victims)</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div style="margin-top: 2vh;">
+						<div class="table-layout-column-left">
+							<p class="table-layout-cell-left"></p>
+						</div>
+						<div class="table-layout-column-right">
+							<label class="disabled"><input type="checkbox" id="left-evacuation-zone" value="yes" disabled>Left Evacuation Zone</label>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<h3>Summary of Changes</h3>
+					+1 Intersection
+					
+					<h3>Confirmation</h3>
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Referee</span>
+						</div>
+						<div class="table-layout-column-right">
+							<span class="table-layout-cell-right disabled">Name of Referee</span>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Comments</span>
+						</div>
+						<div class="table-layout-column-right">
+							<textarea class="table-layout-cell-right"></textarea>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div style="margin-top: 2vh;">
+						<div class="table-layout-column-left">
+							<label for="review-teamname" class="table-layout-cell-left">Team</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="text" id="review-teamname" class="table-layout-cell-right" value="Team Rescue Line 1"/>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<p class="table-layout-cell-left"></p>
+						</div>
+						<div class="table-layout-column-right">
+							<label><input type="radio" name="ok-complaints" value="ok"> Ok</label>
+							<label><input type="radio" name="ok-complaints" value="complaints"> Complaints</label>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<div>
+						<div class="table-layout-column-left">
+							<span class="table-layout-cell-left">Complaints</span>
+						</div>
+						<div class="table-layout-column-right">
+							<textarea class="table-layout-cell-right"></textarea>
+						</div>
+						<p class="clear" />
+					</div>
+					
 				</form>
 				
 				<div class="nav-footer">
-					<button onclick="changeScreen(6, 7)">Submit</button>
+					<button onclick="changeScreen(6, 7)" style="margin: 2vh 0;">Submit</button>
 					<br>
 					<img id="s6-prev" onclick="changeScreen(6,5)" src="img/arrowLeft.svg" alt="Previous" class="nav-button" />
 					<img id="s6-next" src="img/arrowRight.svg" alt="Next" class="nav-button"  style="visibility: hidden;" />
