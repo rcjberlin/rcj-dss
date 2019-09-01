@@ -55,6 +55,12 @@ input, select {
 input.table-layout-cell-right[type="number"] {
 	width: 4em;
 }
+label.table-layout-cell-left, p.table-layout-cell-left, span.table-layout-cell-left {
+	margin-bottom: 0.25em;
+}
+p.clear {
+	clear: both;
+}
 
 .wrapper-ratio {
 	position: relative;

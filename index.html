@@ -24,8 +24,8 @@
 						<div class="table-layout-column-right">
 							<input type="text" id="referee-name" class="table-layout-cell-right" />
 						</div>
+						<p class="clear" />
 					</div>
-					
 					<div>
 						<div class="table-layout-column-left">
 							<label for="referee-password" class="table-layout-cell-left">Password</label>
@@ -33,9 +33,8 @@
 						<div class="table-layout-column-right">
 							<input type="password" id="referee-password" class="table-layout-cell-right" />
 						</div>
+						<p class="clear" />
 					</div>
-					
-					<p style="clear: both; margin: 0;"></p>
 					
 					<h2>Competition</h2>
 					<div>
@@ -48,6 +47,7 @@
 								<option value="entry">Rescue Line Entry</option>
 							</select>
 						</div>
+						<p class="clear" />
 					</div>
 					
 					<div>
@@ -62,6 +62,7 @@
 								<option value="d">Arena D</option>
 							</select>
 						</div>
+						<p class="clear" />
 					</div>
 					
 					<div>
@@ -75,9 +76,9 @@
 								<option value="3">Round 3</option>
 							</select>
 						</div>
+						<p class="clear" />
 					</div>
 					
-					<p style="clear: both; margin: 0;"></p>
 				</form>
 				
 				<div class="nav-footer">
@@ -102,7 +103,9 @@
 						<div class="table-layout-column-right">
 							<span class="table-layout-cell-right disabled">Name of Referee</span>
 						</div>
+						<p class="clear" />
 					</div>
+					
 					<div>
 						<div class="table-layout-column-left">
 							<span class="table-layout-cell-left">Competition</span>
@@ -110,7 +113,9 @@
 						<div class="table-layout-column-right">
 							<span class="table-layout-cell-right disabled">Rescue Line</span>
 						</div>
+						<p class="clear" />
 					</div>
+					
 					<div>
 						<div class="table-layout-column-left">
 							<span class="table-layout-cell-left">Arena</span>
@@ -118,7 +123,9 @@
 						<div class="table-layout-column-right">
 							<span class="table-layout-cell-right disabled">A</span>
 						</div>
+						<p class="clear" />
 					</div>
+					
 					<div>
 						<div class="table-layout-column-left">
 							<span class="table-layout-cell-left">Round</span>
@@ -126,9 +133,8 @@
 						<div class="table-layout-column-right">
 							<span class="table-layout-cell-right disabled">1</span>
 						</div>
+						<p class="clear" />
 					</div>
-					
-					<p style="clear: both; margin: 0;"></p>
 					
 					<h2>Team</h2>
 					<div>
@@ -141,6 +147,7 @@
 								<option value="rl2">Team Rescue Line 2</option>
 							</select>
 						</div>
+						<p class="clear" />
 					</div>
 					
 					<div>
@@ -151,9 +158,9 @@
 							<label><input type="radio" name="evacuation-point" value="low"> low</label><br>
 							<label><input type="radio" name="evacuation-point" value="high"> high</label>
 						</div>
+						<p class="clear" />
 					</div>
 					
-					<p style="clear: both; margin: 0;"></p>
 				</form>
 				
 				<div class="nav-footer">
@@ -176,7 +183,9 @@
 						<div class="table-layout-column-right">
 							<span class="table-layout-cell-right disabled">Team Rescue Line 1</span>
 						</div>
+						<p class="clear" />
 					</div>
+					
 					<div>
 						<div class="table-layout-column-left">
 							<span class="table-layout-cell-left">Evacuation Point</span>
@@ -184,9 +193,8 @@
 						<div class="table-layout-column-right">
 							<span class="table-layout-cell-right disabled">high</span>
 						</div>
+						<p class="clear" />
 					</div>
-					
-					<p style="clear: both; margin: 0;"></p>
 					
 					<div style="margin-top: 2vh;">
 						<div class="table-layout-column-left">
@@ -195,23 +203,25 @@
 						<div class="table-layout-column-right">
 							<label><input type="checkbox" id="team-showed-up" value="yes" checked>Team showed up</label>
 						</div>
+						<p class="clear" />
 					</div>
 					
-					<p style="clear: both; margin: 0;"></p>
-					
 					<h2>Time</h2>
-					<table border="0" width="80%" style="margin-left: 10%;"><tr>
-						<td width="33.3%" style="text-align: center; vertical-align: middle;">
+					<table border="0" cellspacing="0" width="100%"><tr>
+						<td width="28%" style="text-align: right; vertical-align: middle;">
 							<span id="s3-time" class="s4-text-time">0:00</span>
 						</td>
-						<td width="33.3%" style="text-align: center; vertical-align: middle;">
-							<img id="s3-time-start-pause" src="img/start.svg" alt="Start/Pause Time" style="width: 15vw;" />
+						<td width="12%"></td>
+						<td width="20%" style="text-align: center; vertical-align: middle;">
+							<img id="s3-time-start-pause" src="img/start.svg" alt="Start/Pause Time" style="width: 100%; max-width: 200px;" />
 						</td>
-						<td width="33.3%" style="text-align: center; vertical-align: middle;">
+						<td width="12%"></td>
+						<td width="28%" style="text-align: left; vertical-align: middle;">
 							<button onclick="btnResetTime()">Reset Time</button>
 						</td>
 						<!-- Set-Time-Button? -->
 					</tr></table>
+					
 				</form>
 				
 				<div class="nav-footer">
@@ -369,8 +379,9 @@
 						<div class="table-layout-column-right">
 							<input type="number" id="tiles-section-1" class="table-layout-cell-right" />
 						</div>
+						<p class="clear" />
 					</div>
-					<p style="clear: both; margin: 0;"></p>
+					
 					<div>
 						<div class="table-layout-column-left">
 							<label for="tiles-section-2" class="table-layout-cell-left">Section 2<br><span class="disabled">(skipped)</span></label>
@@ -378,8 +389,9 @@
 						<div class="table-layout-column-right">
 							<input type="number" id="tiles-section-2" class="table-layout-cell-right" />
 						</div>
+						<p class="clear" />
 					</div>
-					<p style="clear: both; margin: 0;"></p>
+					
 					<div>
 						<div class="table-layout-column-left">
 							<label for="tiles-section-3" class="table-layout-cell-left">Section 3<br><span class="disabled">(3rd try)</span></label>
@@ -387,8 +399,9 @@
 						<div class="table-layout-column-right">
 							<input type="number" id="tiles-section-3" class="table-layout-cell-right" />
 						</div>
+						<p class="clear" />
 					</div>
-					<p style="clear: both; margin: 0;"></p>
+					
 					<div>
 						<div class="table-layout-column-left">
 							<label for="tiles-section-4" class="table-layout-cell-left">Section 4<br><span class="disabled">(5th try)</span></label>
@@ -396,8 +409,9 @@
 						<div class="table-layout-column-right">
 							<input type="number" id="tiles-section-4" class="table-layout-cell-right" />
 						</div>
+						<p class="clear" />
 					</div>
-					<p style="clear: both; margin: 0;"></p>
+					
 					<div>
 						<div class="table-layout-column-left">
 							<label for="tiles-section-5" class="table-layout-cell-left">Section 5<br><span class="disabled">(not completed)</span></label>
@@ -405,8 +419,8 @@
 						<div class="table-layout-column-right">
 							<input type="number" id="tiles-section-5" class="table-layout-cell-right" />
 						</div>
+						<p class="clear" />
 					</div>
-					<p style="clear: both; margin: 0;"></p>
 					
 					<h2>Evacuation Zone</h2>
 					<div>
@@ -417,8 +431,9 @@
 							<input type="number" id="victims-dead-before" class="table-layout-cell-right" />
 							<span class="disabled">(before living victims)</span>
 						</div>
+						<p class="clear" />
 					</div>
-					<p style="clear: both; margin: 0;"></p>
+					
 					<div>
 						<div class="table-layout-column-left">
 							<label for="victims-alive" class="table-layout-cell-left">Living Victims</span></label>
@@ -426,8 +441,9 @@
 						<div class="table-layout-column-right">
 							<input type="number" id="victims-alive" class="table-layout-cell-right" />
 						</div>
+						<p class="clear" />
 					</div>
-					<p style="clear: both; margin: 0;"></p>
+					
 					<div>
 						<div class="table-layout-column-left">
 							<label for="vicitims-dead-after" class="table-layout-cell-left">Dead Victims</label>
@@ -436,8 +452,9 @@
 							<input type="number" id="victims-dead-after" class="table-layout-cell-right" />
 							<span class="disabled">(after living victims)</span>
 						</div>
+						<p class="clear" />
 					</div>
-					<p style="clear: both; margin: 0;"></p>
+					
 					<div style="margin-top: 2vh;">
 						<div class="table-layout-column-left">
 							<p class="table-layout-cell-left"></p>
@@ -445,8 +462,9 @@
 						<div class="table-layout-column-right">
 							<label><input type="checkbox" id="team-showed-up" value="yes">Left Evacuation Zone</label>
 						</div>
+						<p class="clear" />
 					</div>
-					<p style="clear: both; margin: 0;"></p>
+					
 				</form>
 				
 				<div class="nav-footer">
