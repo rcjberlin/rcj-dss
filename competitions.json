@@ -1,0 +1,21 @@
+competitionJSON = `{
+	"entry": {
+		"arenas": ["Arena A", "Arena B"],
+		"rounds": ["Round 1", "Round 2", "Round 3"],
+		"teams": [
+			"RLE 1",
+			"RLE 2",
+			"RLE 3",
+			"RLE 4"
+		]
+	},
+	"line": {
+		"arenas": ["Arena C", "Arena D"],
+		"rounds": ["Round 1", "Round 2", "Round 3"],
+		"teams": [
+			"RL 1",
+			"RL 2",
+			"RL 3"
+		]
+	}
+}`;

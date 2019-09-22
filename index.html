@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="style.css" />
 		<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
 		<script src="main.js" type="text/javascript" defer></script>
+		<script src="competitions.json" type="text/javascript" defer></script>
 	</head>
 
 	<body id="body" class="noselect">
@@ -55,12 +56,7 @@
 							<label for="arena" class="table-layout-cell-left">Arena</label>
 						</div>
 						<div class="table-layout-column-right">
-							<select id="arena" class="table-layout-cell-right">
-								<option value="a">Arena A</option>
-								<option value="b">Arena B</option>
-								<option value="c">Arena C</option>
-								<option value="d">Arena D</option>
-							</select>
+							<select id="arena" class="table-layout-cell-right"></select>
 						</div>
 						<p class="clear" />
 					</div>
@@ -70,11 +66,7 @@
 							<label for="round" class="table-layout-cell-left">Round</label>
 						</div>
 						<div class="table-layout-column-right">
-							<select id="round" class="table-layout-cell-right">
-								<option value="1">Round 1</option>
-								<option value="2">Round 2</option>
-								<option value="3">Round 3</option>
-							</select>
+							<select id="round" class="table-layout-cell-right"></select>
 						</div>
 						<p class="clear" />
 					</div>
@@ -101,7 +93,7 @@
 							<span class="table-layout-cell-left">Referee</span>
 						</div>
 						<div class="table-layout-column-right">
-							<span class="table-layout-cell-right disabled">Name of Referee</span>
+							<span id="s2-txt-referee-name" class="table-layout-cell-right disabled">Name of Referee</span>
 						</div>
 						<p class="clear" />
 					</div>
@@ -111,7 +103,7 @@
 							<span class="table-layout-cell-left">Competition</span>
 						</div>
 						<div class="table-layout-column-right">
-							<span class="table-layout-cell-right disabled">Rescue Line</span>
+							<span id="s2-txt-competition" class="table-layout-cell-right disabled">Rescue Line</span>
 						</div>
 						<p class="clear" />
 					</div>
@@ -121,7 +113,7 @@
 							<span class="table-layout-cell-left">Arena</span>
 						</div>
 						<div class="table-layout-column-right">
-							<span class="table-layout-cell-right disabled">A</span>
+							<span id="s2-txt-arena" class="table-layout-cell-right disabled">A</span>
 						</div>
 						<p class="clear" />
 					</div>
@@ -131,7 +123,7 @@
 							<span class="table-layout-cell-left">Round</span>
 						</div>
 						<div class="table-layout-column-right">
-							<span class="table-layout-cell-right disabled">1</span>
+							<span id="s2-txt-round" class="table-layout-cell-right disabled">1</span>
 						</div>
 						<p class="clear" />
 					</div>
@@ -142,10 +134,7 @@
 							<label for="teamname" class="table-layout-cell-left">Team</label>
 						</div>
 						<div class="table-layout-column-right">
-							<select id="teamname" class="table-layout-cell-right">
-								<option value="rl1">Team Rescue Line 1</option>
-								<option value="rl2">Team Rescue Line 2</option>
-							</select>
+							<select id="teamname" class="table-layout-cell-right"></select>
 						</div>
 						<p class="clear" />
 					</div>
@@ -155,8 +144,8 @@
 							<label for="evacuation-point" class="table-layout-cell-left">Evacuation Point</label>
 						</div>
 						<div class="table-layout-column-right">
-							<label><input type="radio" name="evacuation-point" value="low"> low</label><br>
-							<label><input type="radio" name="evacuation-point" value="high"> high</label>
+							<label><input type="radio" name="evacuation-point" id="evacuation-point-low"> low</label><br>
+							<label><input type="radio" name="evacuation-point" id="evacuation-point-high"> high</label>
 						</div>
 						<p class="clear" />
 					</div>
