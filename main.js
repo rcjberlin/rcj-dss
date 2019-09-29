@@ -95,6 +95,19 @@ let addEventListenersForNavigationButtons = function () {
 		changeScreen(1, 2);
 	});
 	
+	document.getElementById("s2-next").addEventListener("click", function(e) {
+		if (data["currentRun"] !== null &&
+			data["currentRun"]["referee"]["name"] !== "" &&
+			["line","entry"].includes(data["currentRun"]["competition"]) &&
+			competitions[data["currentRun"]["competition"]]["arenas"].includes(data["currentRun"]["arena"]) &&
+			competitions[data["currentRun"]["competition"]]["rounds"].includes(data["currentRun"]["round"]) &&
+			competitions[data["currentRun"]["competition"]]["teams"].includes(data["currentRun"]["teamname"]) &&
+			( data["currentRun"]["evacuationPoint"] === "low" ||
+			 (data["currentRun"]["evacuationPoint"] === "high" && data["currentRun"]["competition"] === "line"))) {
+			changeScreen(2, 3);
+		}
+	});
+	
 	document.getElementById("s4-prev").addEventListener("click", function(e) {
 		changeScreen(4, 3);
 	});
@@ -119,16 +132,38 @@ let addEventListenersForInputs = function () {
 	document.getElementById("competition").addEventListener("change", onChangeInputCompetition);
 	document.getElementById("arena").addEventListener("change", onChangeInputArena);
 	document.getElementById("round").addEventListener("change", onChangeInputRound);
+	
+	document.getElementById("teamname").addEventListener("change", onChangeInputTeamname);
+	document.getElementById("evacuation-point-low").addEventListener("change", onChangeInputEvacuationPoint);
+	document.getElementById("evacuation-point-high").addEventListener("change", onChangeInputEvacuationPoint);
+};
+
+let changeLocalData = function (name, value) {
+	if (name.startsWith("referee-")) {
+		name = name.substring(8);
+		data["referee"][name] = value;
+		if (data["currentRun"] !== null) {
+			data["currentRun"]["referee"][name] = value;
+		}
+	} else {
+		data[name] = value;
+		if (data["currentRun"] !== null) {
+			data["currentRun"][name] = value;
+		}
+	}
+	saveDataToLocalStorage();
 };
 
 let onChangeInputRefereeName = function () {
-	data["referee"]["name"] = document.getElementById("referee-name").value;
-	saveDataToLocalStorage();
+	changeLocalData("referee-name", document.getElementById("referee-name").value);
 };
 
 let onChangeInputRefereePassword = function () {
-	data["referee"]["password"] = document.getElementById("referee-password").value;
-	saveDataToLocalStorage();
+	changeLocalData("referee-password", document.getElementById("referee-password").value);
+};
+
+let getCompetitionInfo = function () {
+	
 };
 
 let onChangeInputCompetition = function () {
@@ -147,6 +182,9 @@ let onChangeInputCompetition = function () {
 	setSelectInputOptions("round", competitionInfo["rounds"]);
 	setSelectInputOptions("teamname", competitionInfo["teams"]);
 	
+	// teamname
+	data["currentRun"] = null;
+	
 	// evacuation point
 	document.getElementById("evacuation-point-low").checked = true;
 	if (selectedCompetition === "entry") {
@@ -158,21 +196,17 @@ let onChangeInputCompetition = function () {
 	}
 	
 	// save to data / Local Storage
-	data["competition"] = selectedCompetition;
-	data["arena"] = document.getElementById("arena").value;
-	data["round"] = document.getElementById("round").value;
-	
-	saveDataToLocalStorage();
+	changeLocalData("competition", selectedCompetition);
+	changeLocalData("arena", document.getElementById("arena").value);
+	changeLocalData("round", document.getElementById("round").value);
 };
 
 let onChangeInputArena = function () {
-	data["arena"] = document.getElementById("arena").value;
-	saveDataToLocalStorage();
+	changeLocalData("arena", document.getElementById("arena").value);
 };
 
 let onChangeInputRound = function () {
-	data["round"] = document.getElementById("round").value;
-	saveDataToLocalStorage();
+	changeLocalData("round", document.getElementById("round").value);
 };
 
 let setSelectInputOptions = function (selectId, options) {
@@ -188,6 +222,56 @@ let setSelectInputOptions = function (selectId, options) {
 	}
 	
 	selectInput.value = "";
+};
+
+let createNewRun = function (teamname, evacuationPoint) {
+	data["currentRun"] = getNewRun();
+	data["currentRun"]["teamname"] = teamname;
+	data["currentRun"]["evacuationPoint"] = evacuationPoint;
+	
+	saveDataToLocalStorage();
+};
+
+let onChangeInputTeamname = function () {
+	createNewRun(document.getElementById("teamname").value,
+				 document.getElementById("evacuation-point-high").checked ? "high" : "low");
+};
+
+let onChangeInputEvacuationPoint = function () {
+	data["currentRun"]["evacuationPoint"] = document.getElementById("evacuation-point-high").checked ? "high" : "low";
+	saveDataToLocalStorage();
+};
+
+let getNewRun = function () {
+	return {
+		referee: {
+			name: data["referee"]["name"],
+			auth: data["referee"]["password"],
+		},
+		competition: data["competition"],
+		arena: data["arena"],
+		round: data["round"],
+		teamname: "",
+		evacuationPoint: "",
+		time: {
+			timeOffset: 0.0,
+			timeStartedTimestamp: null,
+		},
+		sections: [],
+		victims: {
+			deadVictimsBeforeAllLivingVictims: 0,
+			livingVictims: 0,
+			deadVictimsAfterAllLivingVictims: 0,
+		},
+		leftEvacuationZone: false,
+		comments: "",
+		complaints: "",
+		logs: [],
+	};
+};
+
+let getNewSection = function () {
+	return {};
 };
 
 let addEventListenersForScoringElementButtons = function () {
@@ -275,7 +359,7 @@ let showInitialScreen = function () {
 };
 
 let showScreen = function (screenNumber) {
-	let initFunction = [null, null, initScreen2, null, null, null, null, null, null][screenNumber];
+	let initFunction = [null, null, initScreen2, initScreen3, null, null, null, null, null][screenNumber];
 	if (initFunction !== null) { initFunction(); }
 	document.getElementById("screen-" + screenNumber).style.display = "";
 };
@@ -325,6 +409,18 @@ let initScreen2 = function () {
 	document.getElementById("s2-txt-round").innerHTML = txt;
 };
 
+let initScreen3 = function () {
+	let txt;
+	
+	// teamname
+	txt = data["currentRun"]["teamname"];
+	document.getElementById("s3-txt-teamname").innerHTML = txt;
+	
+	// evacuation point
+	txt = data["currentRun"]["evacuationPoint"];
+	document.getElementById("s3-txt-evacuation-point").innerHTML = txt;
+};
+
 let addScoringElement = function (type) {
 	// append to list of transactions
 	// add specified scoring element in current section
@@ -351,14 +447,32 @@ let initializeInputs = function () {
 	
 	let arena = data["arena"]; // data["arena"] will be overwritten by initializing competition-input with onChangeInputCompetition()
 	let round = data["round"]; // ... same here ...
+	let teamname, evacuationPoint; // ... same here ...
+	if (data["currentRun"] !== null) {
+		teamname = data["currentRun"]["teamname"];
+		evacuationPoint = data["currentRun"]["evacuationPoint"];
+	}
 	
 	onChangeInputCompetition();
 	
-	data["arena"] = arena;
-	data["round"] = round;
+	changeLocalData("arena", arena);
+	changeLocalData("round", round);
 	
 	document.getElementById("arena").value = data["arena"];
 	document.getElementById("round").value = data["round"];
+	
+	if (teamname !== undefined) {
+		if (competitions[data["competition"]]["teams"].includes(teamname)) {
+			createNewRun(teamname, evacuationPoint);
+			
+			document.getElementById("teamname").value = data["currentRun"]["teamname"];
+			if (data["currentRun"]["evacuationPoint"] === "high") {
+				document.getElementById("evacuation-point-high").checked = true;
+			} else {
+				document.getElementById("evacuation-point-low").checked = true;
+			}
+		}
+	}
 	
 	saveDataToLocalStorage();
 }

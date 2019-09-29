@@ -61,9 +61,9 @@ run = {
         name: "NL",
         auth: "cnffjbeq"
     },
-    competition: "Rescue Line",
+    competition: "line",
+    arena: "A",
     round: "2",
-    field: "A",
     teamname: "pi++",
     evacuationPoint: "high",
     time: {
@@ -93,6 +93,7 @@ run = {
         deadVictimsAfterAllLivingVictims: 0
     },
     leftEvacuationZone: false,
+    comments: "",
     complaints: "",
     signature: "data:image/png;base64,gTHbnLsTGnGpHDcssCrNsHT01AAA...==",
     logs: [
@@ -132,4 +133,4 @@ Additional notes:
 
 ### Issues
 If you want to test it locally you may need to make sure that CORS requests are working.
-When using Firefox you can set *privacy.file_unique_origin* in about:config to false (see https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp?utm_source=devtools&utm_medium=firefox-cors-errors&utm_campaign=default for more details).
+When using Firefox you can set *privacy.file_unique_origin* in about:config to false (see https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp for more details).
