@@ -1,7 +1,7 @@
 # RCJ Rescue Line - Digital Scoring Sheet
 The aim of this project is to replace the paper scoring sheets at RCJ Rescue Line with digital ones on mobile devices.
 
-It's planned to use this software at RCJ Berlin (March/2020) if the project is finished until then.
+It's planned to use this software at RCJ Berlin (29.02.-01.03.2020) if the project is finished until then.
 
 ## Guide for Referees/Users
 *tbd*
@@ -130,3 +130,6 @@ Additional notes:
   * directly added/substracted in JSON
   * additional logs (only for documentation / possible later manual evaluation)
 
+### Issues
+If you want to test it locally you may need to make sure that CORS requests are working.
+When using Firefox you can set *privacy.file_unique_origin* in about:config to false (see https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp?utm_source=devtools&utm_medium=firefox-cors-errors&utm_campaign=default for more details).

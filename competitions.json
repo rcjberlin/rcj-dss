@@ -1,4 +1,4 @@
-competitionJSON = `{
+{
 	"entry": {
 		"arenas": ["Arena A", "Arena B"],
 		"rounds": ["Round 1", "Round 2", "Round 3"],
@@ -18,4 +18,4 @@ competitionJSON = `{
 			"RL 3"
 		]
 	}
-}`;
+}

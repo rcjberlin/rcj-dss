@@ -8,6 +8,7 @@ const RAMP         = "ramp";
 const INTERSECTION = "intersection";
 
 let data = {};
+let competitions = {};
 
 let timeOffset = 0.0;
 let timeStartedTimestamp = null;
@@ -20,6 +21,10 @@ let getTime = function () {
 };
 
 window.onload = function() {
+	loadCompetitionInfo();
+	loadDataFromLocalStorage();
+	initializeMissingData();
+	
 	adjustSizeOfMainUI();
 	
 	addEventListenersForNavigationButtons();
@@ -27,11 +32,7 @@ window.onload = function() {
 	addEventListenersForInputs();
 	addEventListenersForScoringElementButtons();
 	
-	loadDataFromLocalStorage();
-	initializeMissingData();
-	
 	showInitialScreen();
-	initializeInputs();
 };
 
 let isTimeRunning = function () {
@@ -137,7 +138,10 @@ let onChangeInputCompetition = function () {
 		document.getElementById("competition").value = selectedCompetition;
 	}
 	
-	let competitionInfo = JSON.parse(competitionJSON)[selectedCompetition];
+	let competitionInfo = competitions[selectedCompetition];
+	if (competitionInfo === undefined) {
+		competitionInfo = { arenas: [], rounds: [], teams: [] };
+	}
 	
 	setSelectInputOptions("arena", competitionInfo["arenas"]);
 	setSelectInputOptions("round", competitionInfo["rounds"]);
@@ -215,6 +219,13 @@ let adjustSizeOfMainUI = function () {
 		document.getElementById("screen-4").style.marginBottom = possibleHeight - possibleWidth * 3 / 2 + "px";
 		document.getElementById("screen-4").style.width = possibleWidth + "px";
 	}
+};
+
+let loadCompetitionInfo = async function () {
+	const response = await fetch("./competitions.json");
+	competitions = await response.json();
+	
+	initializeInputs();
 };
 
 let loadDataFromLocalStorage = function () {
