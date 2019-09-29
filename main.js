@@ -7,11 +7,12 @@ const SPEEDBUMP    = "speedbump";
 const RAMP         = "ramp";
 const INTERSECTION = "intersection";
 
+const pathImageTimeStart = "img/start.svg";
+const pathImageTimePause = "img/pause.svg";
+
 let data = {};
 let competitions = {};
 
-let timeOffset = 0.0;
-let timeStartedTimestamp = null;
 let intervalIdTime = null;
 
 let url = new URL(window.location.href);
@@ -36,32 +37,54 @@ window.onload = function() {
 };
 
 let isTimeRunning = function () {
-	return timeStartedTimestamp !== null;
+	if (data["currentRun"] === null) {
+		return false;
+	}
+	return data["currentRun"]["time"]["timeStartedTimestamp"] !== null;
+};
+
+let startAutoUpdatingTime = function () {
+	stopAutoUpdatingTime();
+	intervalIdTime = setInterval(updateTime, 200);
+};
+
+let stopAutoUpdatingTime = function () {
+	if (intervalIdTime !== null) {
+		clearInterval(intervalIdTime);
+		intervalIdTime = null;
+	}
 };
 
 let toggleTimeRunning = function () {
-	if (!isTimeRunning()) { // time currently paused
-		timeStartedTimestamp = getTime();
-		document.getElementById("s3-time-start-pause").src = "img/pause.svg";
-		document.getElementById("s4-time-start-pause").src = "img/pause.svg";
-		intervalIdTime = setInterval(updateTime, 200);
+	if (!isTimeRunning()) { // time currently paused -> start time
+		data["currentRun"]["time"]["timeStartedTimestamp"] = getTime();
+		document.getElementById("s3-time-start-pause").src = pathImageTimePause;
+		document.getElementById("s4-time-start-pause").src = pathImageTimePause;
+		startAutoUpdatingTime();
 	}
-	else { // time currently running
-		timeOffset = timeOffset + getTime() - timeStartedTimestamp;
-		timeStartedTimestamp = null;
-		document.getElementById("s3-time-start-pause").src = "img/start.svg";
-		document.getElementById("s4-time-start-pause").src = "img/start.svg";
-		clearInterval(intervalIdTime);
-		intervalIdTime = null;
+	else { // time currently running -> stop time
+		data["currentRun"]["time"]["timeOffset"] = data["currentRun"]["time"]["timeOffset"]
+													+ getTime()
+													- data["currentRun"]["time"]["timeStartedTimestamp"];
+		data["currentRun"]["time"]["timeStartedTimestamp"] = null;
+		document.getElementById("s3-time-start-pause").src = pathImageTimeStart;
+		document.getElementById("s4-time-start-pause").src = pathImageTimeStart;
+		stopAutoUpdatingTime();
 		updateTime();
 	}
+	saveDataToLocalStorage();
+};
+
+let getRunTimeInSeconds = function () {
+	let time = data["currentRun"]["time"]["timeOffset"];
+	if (data["currentRun"]["time"]["timeStartedTimestamp"] !== null) {
+		time += getTime() - data["currentRun"]["time"]["timeStartedTimestamp"];
+	}
+	return time;
 };
 
 let updateTime = function () {
-	let time = timeOffset;
-	if (timeStartedTimestamp !== null) {
-		time += getTime() - timeStartedTimestamp;
-	}
+	let time = getRunTimeInSeconds();
 	let minutes = Math.floor(time/60);
 	let seconds = Math.floor(time%60);
 	minutes = (minutes < 10 ? minutes : (minutes > 15 ? "X" : minutes.toString(16)));
@@ -71,21 +94,34 @@ let updateTime = function () {
 };
 
 let resetTime = function () {
-	if (intervalIdTime !== null) {
-		clearInterval(intervalIdTime);
-	}
-	timeOffset = 0.0;
-	timeStartedTimestamp = null;
-	intervalIdTime = null;
+	stopAutoUpdatingTime()
+	data["currentRun"]["time"]["timeOffset"] = 0.0;
+	data["currentRun"]["time"]["timeStartedTimestamp"] = null;
+	saveDataToLocalStorage();
+	
 	updateTime();
-	document.getElementById("s3-time-start-pause").src = "img/start.svg";
-	document.getElementById("s4-time-start-pause").src = "img/start.svg";
+	document.getElementById("s3-time-start-pause").src = pathImageTimeStart;
+	document.getElementById("s4-time-start-pause").src = pathImageTimeStart;
 };
 
 let btnResetTime = function () {
 	// TODO: confirm() leads to a page-reload sometimes
 	if (confirm("Are you sure to reset the time? You can't undo this step.")) {
 		resetTime();
+	}
+};
+
+let initializeTime = function () {
+	if (data["currentRun"] !== null) {
+		updateTime();
+		if (isTimeRunning()) {
+			startAutoUpdatingTime();
+			document.getElementById("s3-time-start-pause").src = pathImageTimePause;
+			document.getElementById("s4-time-start-pause").src = pathImageTimePause;
+		} else {
+			document.getElementById("s3-time-start-pause").src = pathImageTimeStart;
+			document.getElementById("s4-time-start-pause").src = pathImageTimeStart;
+		}
 	}
 };
 
@@ -160,10 +196,6 @@ let onChangeInputRefereeName = function () {
 
 let onChangeInputRefereePassword = function () {
 	changeLocalData("referee-password", document.getElementById("referee-password").value);
-};
-
-let getCompetitionInfo = function () {
-	
 };
 
 let onChangeInputCompetition = function () {
@@ -447,10 +479,9 @@ let initializeInputs = function () {
 	
 	let arena = data["arena"]; // data["arena"] will be overwritten by initializing competition-input with onChangeInputCompetition()
 	let round = data["round"]; // ... same here ...
-	let teamname, evacuationPoint; // ... same here ...
+	let run = null; // ... same here ...
 	if (data["currentRun"] !== null) {
-		teamname = data["currentRun"]["teamname"];
-		evacuationPoint = data["currentRun"]["evacuationPoint"];
+		run = data["currentRun"];
 	}
 	
 	onChangeInputCompetition();
@@ -461,9 +492,9 @@ let initializeInputs = function () {
 	document.getElementById("arena").value = data["arena"];
 	document.getElementById("round").value = data["round"];
 	
-	if (teamname !== undefined) {
-		if (competitions[data["competition"]]["teams"].includes(teamname)) {
-			createNewRun(teamname, evacuationPoint);
+	if (run !== null) {
+		if (competitions[data["competition"]]["teams"].includes(run["teamname"])) {
+			data["currentRun"] = run;
 			
 			document.getElementById("teamname").value = data["currentRun"]["teamname"];
 			if (data["currentRun"]["evacuationPoint"] === "high") {
@@ -471,6 +502,8 @@ let initializeInputs = function () {
 			} else {
 				document.getElementById("evacuation-point-low").checked = true;
 			}
+			
+			initializeTime();
 		}
 	}
 	
