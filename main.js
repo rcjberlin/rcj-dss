@@ -131,6 +131,10 @@ let addEventListenersForNavigationButtons = function () {
 		changeScreen(1, 2);
 	});
 	
+	document.getElementById("s2-prev").addEventListener("click", function(e) {
+		changeScreen(2,1);
+	});
+	
 	document.getElementById("s2-next").addEventListener("click", function(e) {
 		if (data["currentRun"] !== null &&
 			data["currentRun"]["referee"]["name"] !== "" &&
@@ -144,6 +148,14 @@ let addEventListenersForNavigationButtons = function () {
 		}
 	});
 	
+	document.getElementById("s3-prev").addEventListener("click", function(e) {
+		changeScreen(3, 2);
+	});
+	
+	document.getElementById("s3-next").addEventListener("click", function(e) {
+		changeScreen(3, 4);
+	});
+	
 	document.getElementById("s4-prev").addEventListener("click", function(e) {
 		changeScreen(4, 3);
 	});
@@ -151,6 +163,42 @@ let addEventListenersForNavigationButtons = function () {
 	document.getElementById("s4-next").addEventListener("click", function(e) {
 		changeScreen(4, 5);
 	});
+	
+	document.getElementById("s5-prev").addEventListener("click", function(e) {
+		changeScreen(5, 4);
+	});
+	
+	document.getElementById("s5-next").addEventListener("click", function(e) {
+		changeScreen(5, 6);
+	});
+	
+	document.getElementById("s6-prev").addEventListener("click", function(e) {
+		changeScreen(6, 5);
+	});
+};
+
+let btnS1ViewData = function () {
+	changeScreen(1, 8);
+};
+
+let btnS6Submit = function () {
+	changeScreen(6, 7);
+};
+
+let btnS7NewRun = function () {
+	changeScreen(7, 2);
+};
+
+let btnS7ViewData = function () {
+	changeScreen(7, 8);
+};
+
+let btnS8Setup = function () {
+	changeScreen(8, 1);
+};
+
+let btnS8NewRun = function () {
+	changeScreen(8, 2);
 };
 
 let addEventListenersForButtons = function () {
@@ -267,6 +315,7 @@ let createNewRun = function (teamname, evacuationPoint) {
 let onChangeInputTeamname = function () {
 	createNewRun(document.getElementById("teamname").value,
 				 document.getElementById("evacuation-point-high").checked ? "high" : "low");
+	// TODO: update UI, e.g. time
 };
 
 let onChangeInputEvacuationPoint = function () {
