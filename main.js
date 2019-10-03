@@ -76,6 +76,9 @@ let toggleTimeRunning = function () {
 };
 
 let getRunTimeInSeconds = function () {
+	if (data["currentRun"] === null) {
+		return 0;
+	}
 	let time = data["currentRun"]["time"]["timeOffset"];
 	if (data["currentRun"]["time"]["timeStartedTimestamp"] !== null) {
 		time += getTime() - data["currentRun"]["time"]["timeStartedTimestamp"];
@@ -220,6 +223,8 @@ let addEventListenersForInputs = function () {
 	document.getElementById("teamname").addEventListener("change", onChangeInputTeamname);
 	document.getElementById("evacuation-point-low").addEventListener("change", onChangeInputEvacuationPoint);
 	document.getElementById("evacuation-point-high").addEventListener("change", onChangeInputEvacuationPoint);
+	
+	document.getElementById("team-showed-up").addEventListener("change", onChangeInputTeamShowedUp);
 };
 
 let changeLocalData = function (name, value) {
@@ -310,16 +315,21 @@ let createNewRun = function (teamname, evacuationPoint) {
 	data["currentRun"]["evacuationPoint"] = evacuationPoint;
 	
 	saveDataToLocalStorage();
+	updateUIElementsForRun();
 };
 
 let onChangeInputTeamname = function () {
 	createNewRun(document.getElementById("teamname").value,
 				 document.getElementById("evacuation-point-high").checked ? "high" : "low");
-	// TODO: update UI, e.g. time
 };
 
 let onChangeInputEvacuationPoint = function () {
 	data["currentRun"]["evacuationPoint"] = document.getElementById("evacuation-point-high").checked ? "high" : "low";
+	saveDataToLocalStorage();
+};
+
+let onChangeInputTeamShowedUp = function () {
+	data["currentRun"]["teamStarted"] = document.getElementById("team-showed-up").checked;
 	saveDataToLocalStorage();
 };
 
@@ -338,6 +348,7 @@ let getNewRun = function () {
 			timeOffset: 0.0,
 			timeStartedTimestamp: null,
 		},
+		teamStarted: true,
 		sections: [],
 		victims: {
 			deadVictimsBeforeAllLivingVictims: 0,
@@ -353,6 +364,20 @@ let getNewRun = function () {
 
 let getNewSection = function () {
 	return {};
+};
+
+let updateUIElementsForRun = function () {
+	document.getElementById("teamname").value = data["currentRun"]["teamname"];
+	
+	if (data["currentRun"]["evacuationPoint"] === "high") {
+		document.getElementById("evacuation-point-high").checked = true;
+	} else {
+		document.getElementById("evacuation-point-low").checked = true;
+	}
+	
+	document.getElementById("team-showed-up").checked = data["currentRun"]["teamStarted"];
+	
+	updateTime();
 };
 
 let addEventListenersForScoringElementButtons = function () {
@@ -545,13 +570,7 @@ let initializeInputs = function () {
 		if (competitions[data["competition"]]["teams"].includes(run["teamname"])) {
 			data["currentRun"] = run;
 			
-			document.getElementById("teamname").value = data["currentRun"]["teamname"];
-			if (data["currentRun"]["evacuationPoint"] === "high") {
-				document.getElementById("evacuation-point-high").checked = true;
-			} else {
-				document.getElementById("evacuation-point-low").checked = true;
-			}
-			
+			updateUIElementsForRun();
 			initializeTime();
 		}
 	}
