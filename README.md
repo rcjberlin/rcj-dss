@@ -3,7 +3,12 @@ The aim of this project is to replace the paper scoring sheets at RCJ Rescue Lin
 
 It's planned to use this software at RCJ Berlin (29.02.-01.03.2020) if the project is finished until then.
 
+The implementation is according to rules of 2019. An implementation for 2020-rules will come later.
+
 ## Guide for Referees/Users
+Note: During development it is being tested with Firefox and at greater intervals even with Chrome.
+If you face issues with other browsers (e.g. Safari), feedback is highly appreciated (of course also if problems occur with Firefox/Chrome).
+
 *tbd*
 
 ## Documentation
@@ -37,7 +42,7 @@ This project must meet certain demands so that it can be used during competition
   5. Enter number of tiles per section; enter number of rescued victims; left evacuation zone successfully
   6. Review everything together with team captain and correct things if needed; text input for complaints; signature of team captain
   7. Send whole sheet to central evaluation system; get confirmation in case of successful transmission
-  8. View all locally saved data (including status whether transmitted successfully or not), possibility to send it again or to export data (&rarr; other medium for transmission can be used)
+  8. View all locally saved data (including status whether transmitted successfully or not), possibility to send it again or to export data (&rarr; other medium for transmission can be used); it should be possible to change name/password for all (past) runs
 * navigation between these parts (mostly only back/next)
 * step 1 will be used when competition starts / referee switches field / next round starts
 * normally you will go through step 2 till 7 sequentially for each team
