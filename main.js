@@ -55,20 +55,32 @@ let stopAutoUpdatingTime = function () {
 	}
 };
 
+let setIconsForTimeRunning = function () {
+	document.getElementById("s3-time-start-pause").src = pathImageTimePause;
+	document.getElementById("s4-time-start-pause").src = pathImageTimePause;
+	document.getElementById("s4-prev").classList.add("disabled");
+	document.getElementById("s4-next").classList.add("disabled");
+};
+
+let setIconsForTimePaused = function () {
+	document.getElementById("s3-time-start-pause").src = pathImageTimeStart;
+	document.getElementById("s4-time-start-pause").src = pathImageTimeStart;
+	document.getElementById("s4-prev").classList.remove("disabled");
+	document.getElementById("s4-next").classList.remove("disabled");
+};
+
 let toggleTimeRunning = function () {
 	if (!isTimeRunning()) { // time currently paused -> start time
 		data["currentRun"]["time"]["timeStartedTimestamp"] = getTime();
-		document.getElementById("s3-time-start-pause").src = pathImageTimePause;
-		document.getElementById("s4-time-start-pause").src = pathImageTimePause;
+		setIconsForTimeRunning();
 		startAutoUpdatingTime();
 	}
-	else { // time currently running -> stop time
+	else { // time currently running -> pause time
 		data["currentRun"]["time"]["timeOffset"] = data["currentRun"]["time"]["timeOffset"]
 													+ getTime()
 													- data["currentRun"]["time"]["timeStartedTimestamp"];
 		data["currentRun"]["time"]["timeStartedTimestamp"] = null;
-		document.getElementById("s3-time-start-pause").src = pathImageTimeStart;
-		document.getElementById("s4-time-start-pause").src = pathImageTimeStart;
+		setIconsForTimePaused();
 		stopAutoUpdatingTime();
 		updateTime();
 	}
@@ -119,11 +131,9 @@ let initializeTime = function () {
 		updateTime();
 		if (isTimeRunning()) {
 			startAutoUpdatingTime();
-			document.getElementById("s3-time-start-pause").src = pathImageTimePause;
-			document.getElementById("s4-time-start-pause").src = pathImageTimePause;
+			setIconsForTimeRunning();
 		} else {
-			document.getElementById("s3-time-start-pause").src = pathImageTimeStart;
-			document.getElementById("s4-time-start-pause").src = pathImageTimeStart;
+			setIconsForTimePaused();
 		}
 	}
 };
@@ -152,7 +162,11 @@ let addEventListenersForNavigationButtons = function () {
 	});
 	
 	document.getElementById("s3-prev").addEventListener("click", function(e) {
-		changeScreen(3, 2);
+		if (getRunTimeInSeconds() === 0) {
+			changeScreen(3, 2);
+		} else {
+			alert("You can't go back if the time already started. If you need to change the setup you can do this just before submitting the run.");
+		}
 	});
 	
 	document.getElementById("s3-next").addEventListener("click", function(e) {
@@ -160,11 +174,15 @@ let addEventListenersForNavigationButtons = function () {
 	});
 	
 	document.getElementById("s4-prev").addEventListener("click", function(e) {
-		changeScreen(4, 3);
+		if (!isTimeRunning()) {
+			changeScreen(4, 3);
+		}
 	});
 	
 	document.getElementById("s4-next").addEventListener("click", function(e) {
-		changeScreen(4, 5);
+		if (!isTimeRunning()) {
+			changeScreen(4, 5);
+		}
 	});
 	
 	document.getElementById("s5-prev").addEventListener("click", function(e) {
