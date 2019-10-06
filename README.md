@@ -78,7 +78,7 @@ run = {
     teamStarted: true,
     sections: [
         {
-            section: 1,
+            sectionId: 1,
             completedSection: true,
             skippedSection: false,
             lops: 0,
@@ -102,10 +102,10 @@ run = {
     complaints: "",
     signature: "data:image/png;base64,gTHbnLsTGnGpHDcssCrNsHT01AAA...==",
     logs: [
-        "ADD GAP",
-        "LACK OF PROGRESS",
-        "ADD GAP",
-        "SECTION COMPLETE",
+        { time: 31, log: "ADD GAP", undone: false },
+        { time: 41, log: "LACK OF PROGRESS", undone: false },
+        { time: 59, log: "ADD GAP", undone: false },
+        { time: 265, "SECTION COMPLETE", undone: false },
         ...
     ]
 }

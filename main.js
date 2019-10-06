@@ -7,6 +7,21 @@ const SPEEDBUMP    = "speedbump";
 const RAMP         = "ramp";
 const INTERSECTION = "intersection";
 
+const LOG_SECTION_COMPLETE = "SECTION COMPLETE";
+const LOG_LOP              = "LACK OF PROGRESS";
+const LOG_SKIP_SECTION     = "SKIP SECTION";
+const LOG_ADD_GAP          = "ADD GAP";
+const LOG_ADD_OBSTACLE     = "ADD OBSTACLE";
+const LOG_ADD_SPEEDBUMP    = "ADD SPEEDBUMP";
+const LOG_ADD_RAMP         = "ADD RAMP";
+const LOG_ADD_INTERSECTION = "ADD INTERSECTION";
+const LOG_DEL_GAP          = "DEL GAP";
+const LOG_DEL_OBSTACLE     = "DEL OBSTACLE";
+const LOG_DEL_SPEEDBUMP    = "DEL SPEEDBUMP";
+const LOG_DEL_RAMP         = "DEL RAMP";
+const LOG_DEL_INTERSECTION = "DEL INTERSECTION";
+const LOG_LAST_CHECKPOINT  = "LAST CHECKPOINT";
+
 const pathImageTimeStart = "img/start.svg";
 const pathImageTimePause = "img/pause.svg";
 
@@ -229,6 +244,15 @@ let addEventListenersForButtons = function () {
 	document.getElementById("s4-time-start-pause").addEventListener("click", function(e) {
 		toggleTimeRunning();
 	});
+	document.getElementById("s4-btn-section-complete").addEventListener("click", function(e) {
+		sectionComplete();
+	});
+	document.getElementById("s4-btn-section-lop").addEventListener("click", function(e) {
+		sectionLoP();
+	});
+	document.getElementById("s4-btn-section-skip").addEventListener("click", function(e) {
+		sectionSkip();
+	});
 };
 
 let addEventListenersForInputs = function () {
@@ -367,7 +391,9 @@ let getNewRun = function () {
 			timeStartedTimestamp: null,
 		},
 		teamStarted: true,
-		sections: [],
+		sections: [
+			getNewSection(1),
+		],
 		victims: {
 			deadVictimsBeforeAllLivingVictims: 0,
 			livingVictims: 0,
@@ -380,8 +406,24 @@ let getNewRun = function () {
 	};
 };
 
-let getNewSection = function () {
-	return {};
+let getNewSection = function (sectionId) {
+	return {
+		sectionId: sectionId,
+		completedSection: false,
+		skippedSection: false,
+		lops: 0,
+		isAfterLastCheckpoint: false,
+		gaps: 0,
+		obstacles: 0,
+		speedbumps: 0,
+		ramps: 0,
+		intersections: 0,
+		tiles: 0,
+	};
+};
+
+let createNewSection = function () {
+	data["currentRun"]["sections"].push(getNewSection(getNumberOfSections() + 1));
 };
 
 let updateUIElementsForRun = function () {
@@ -396,6 +438,69 @@ let updateUIElementsForRun = function () {
 	document.getElementById("team-showed-up").checked = data["currentRun"]["teamStarted"];
 	
 	updateTime();
+	
+	updateUIElementsS4();
+};
+
+let updateUIElementsS4 = function () {
+	updateUISectionAndTry();
+	setCaptionsForAllScoringElements();
+	updateSkipButton();
+};
+
+let updateUISectionAndTry = function () {
+	let currentSection = getCurrentSection();
+	document.getElementById("s4-section").innerHTML = currentSection.sectionId;
+	document.getElementById("s4-try").innerHTML = currentSection.lops + 1;
+};
+
+let getCurrentSection = function () {
+	return data["currentRun"]["sections"][getNumberOfSections() - 1];
+};
+
+let getNumberOfSections = function () {
+	return data["currentRun"]["sections"].length;
+};
+
+let setCaptionsForAllScoringElements = function () {
+	let arr = [GAP, OBSTACLE, SPEEDBUMP, RAMP, INTERSECTION];
+	for (let i=0; i<arr.length; i++) {
+		setCaptionForScoringElement(arr[i]);
+	}
+};
+
+// TODO: get names/ids from array for cleaner code
+let setCaptionForScoringElement = function (name) {
+	let uiElement = document.getElementById("txt-"+name);
+	let txt = "";
+	let sections = data["currentRun"]["sections"];
+	for (let i=0; i<sections.length; i++) {
+		txt += " | " + sections[i][name+"s"];
+	}
+	
+	txt = txt.substring(3);
+	
+	// fit to width of UI-Element (replace first numbers with "...")
+	uiElement.innerHTML = txt;
+	while (uiElement.clientHeight > uiElement.parentElement.clientHeight && txt !== "...") {
+		if (txt.startsWith("...") === false) { txt = "..." + txt; }
+		txt = "..." + txt.substring(4);
+		uiElement.innerHTML = txt;
+	}
+};
+
+let updateSkipButton = function () {
+	if (isAllowedToSkip()) {
+		document.getElementById("s4-btn-section-skip").style.background = "#fff";
+		document.getElementById("s4-btn-section-skip").children[0].classList.remove("disabled");
+	} else {
+		document.getElementById("s4-btn-section-skip").style.background = "#f8f8f8";
+		document.getElementById("s4-btn-section-skip").children[0].classList.add("disabled");
+	}
+};
+
+let isAllowedToSkip = function () {
+	return (getCurrentSection().lops >= 2);
 };
 
 let addEventListenersForScoringElementButtons = function () {
@@ -466,16 +571,22 @@ let initializeMissingData = function () {
 };
 
 let showInitialScreen = function () {
-	/* shows last screen, otherwise first screen */
+	/* shows last opened screen, otherwise first screen */
 	let currentScreen = localStorage.getItem(LS_CURRENT_SCREEN);
 	if (currentScreen === null) {
 		currentScreen = 1;
-		localStorage.setItem(LS_CURRENT_SCREEN, currentScreen);
+		
 	}
 	
 	let forceScreen = url.searchParams.get("fs");
 	if(forceScreen) {
 		currentScreen = forceScreen;
+		localStorage.setItem(LS_CURRENT_SCREEN, currentScreen);
+	}
+	
+	// no run exists but a screen which requires a run should be opened -> show first screen
+	if ([3, 4, 5, 6, 7].includes(+currentScreen) && data["currentRun"] === null) {
+		currentScreen = 1;
 		localStorage.setItem(LS_CURRENT_SCREEN, currentScreen);
 	}
 	
@@ -545,23 +656,92 @@ let initScreen3 = function () {
 	document.getElementById("s3-txt-evacuation-point").innerHTML = txt;
 };
 
-let addScoringElement = function (type) {
+let addScoringElement = function (name) {
 	// append to list of transactions
 	// add specified scoring element in current section
 	// save run to LocalStorage
 	// update UI
 	
-	let elem = document.getElementById("border-img-"+type);
+	let elem = document.getElementById("border-img-"+name);
 	elem.style.background = "#0f0";
 	setTimeout(function () { elem.style.background = "black"; }, 150);
 };
 
-let removeScoringElement = function (type) {
+let removeScoringElement = function (name) {
 	// ... (see above)
 	
-	let elem = document.getElementById("border-img-"+type);
+	let elem = document.getElementById("border-img-"+name);
 	elem.style.background = "#f00";
 	setTimeout(function () { elem.style.background = "black"; }, 150);
+};
+
+let sectionComplete = function () {
+	getCurrentSection().completedSection = true;
+	createNewSection();
+	writeLog(LOG_SECTION_COMPLETE);
+	
+	saveDataToLocalStorage();
+	updateUIElementsS4();
+};
+
+let undoSectionComplete = function () {
+	// TODO
+};
+
+let sectionLoP = function () {
+	getCurrentSection().lops += 1;
+	writeLog(LOG_LOP);
+	
+	saveDataToLocalStorage();
+	updateUIElementsS4();
+};
+
+let undoSectionLoP = function () {
+	// TODO
+};
+
+let sectionSkip = function () {
+	if (!isAllowedToSkip()) {
+		showNotification("Skipping is only allowed after 3 attempts", 1500);
+		return;
+	}
+	getCurrentSection().lops += 1;
+	getCurrentSection().skippedSection = true;
+	createNewSection();
+	writeLog(LOG_SKIP_SECTION);
+	
+	saveDataToLocalStorage();
+	updateUIElementsS4();
+};
+
+let undoSectionSkip = function () {
+	// TODO
+};
+
+let showWarningIfTimeIsNotRunning = function () {
+	if (!isTimeRunning()) {
+		showNotification("WARNING: Time is not running!", 3000);
+	}
+};
+
+let showNotification = function (notification, maxDuration) {
+	document.getElementById("txt-notification").innerHTML = notification;
+	if (maxDuration !== undefined) {
+		setTimeout(function () {
+			if (document.getElementById("txt-notification").innerHTML === notification) {
+				document.getElementById("txt-notification").innerHTML = "";
+			}
+		}, maxDuration);
+	}
+};
+
+let writeLog = function (log) {
+	showWarningIfTimeIsNotRunning();
+	data["currentRun"]["logs"].push({
+		time: getRunTimeInSeconds(),
+		log: log,
+		undone: false,
+	});
 };
 
 let initializeInputs = function () {

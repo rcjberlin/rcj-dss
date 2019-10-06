@@ -121,6 +121,7 @@ p.clear {
 .s4-text-completed { font-size: 12vmin; }
 .s4-text-lop { font-size: 8vmin; }
 .s4-text-skip { font-size: 8vmin; }
+.s4-text-notification { text-align: center; font-size: 3vmin; }
 .s4-text-scoring-elements { text-align: center; font-size: 4.5vmin; }
 .s4-text-last-checkpoint { font-size: 4.2vmin; }
 
