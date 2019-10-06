@@ -10,16 +10,8 @@ const INTERSECTION = "intersection";
 const LOG_SECTION_COMPLETE = "SECTION COMPLETE";
 const LOG_LOP              = "LACK OF PROGRESS";
 const LOG_SKIP_SECTION     = "SKIP SECTION";
-const LOG_ADD_GAP          = "ADD GAP";
-const LOG_ADD_OBSTACLE     = "ADD OBSTACLE";
-const LOG_ADD_SPEEDBUMP    = "ADD SPEEDBUMP";
-const LOG_ADD_RAMP         = "ADD RAMP";
-const LOG_ADD_INTERSECTION = "ADD INTERSECTION";
-const LOG_DEL_GAP          = "DEL GAP";
-const LOG_DEL_OBSTACLE     = "DEL OBSTACLE";
-const LOG_DEL_SPEEDBUMP    = "DEL SPEEDBUMP";
-const LOG_DEL_RAMP         = "DEL RAMP";
-const LOG_DEL_INTERSECTION = "DEL INTERSECTION";
+const LOG_ADD_PREFIX       = "ADD";
+const LOG_DEL_PREFIX       = "DEL";
 const LOG_LAST_CHECKPOINT  = "LAST CHECKPOINT";
 
 const pathImageTimeStart = "img/start.svg";
@@ -657,22 +649,21 @@ let initScreen3 = function () {
 };
 
 let addScoringElement = function (name) {
-	// append to list of transactions
-	// add specified scoring element in current section
-	// save run to LocalStorage
-	// update UI
+	getCurrentSection()[name+"s"] += 1;
+	writeLog(LOG_ADD_PREFIX + " " + name.toUpperCase());
 	
-	let elem = document.getElementById("border-img-"+name);
-	elem.style.background = "#0f0";
-	setTimeout(function () { elem.style.background = "black"; }, 150);
+	saveDataToLocalStorage();
+	setCaptionForScoringElement(name);
 };
 
 let removeScoringElement = function (name) {
-	// ... (see above)
+	if (getCurrentSection()[name+"s"] > 0) {
+		getCurrentSection()[name+"s"] -= 1;
+	}
+	writeLog(LOG_DEL_PREFIX + " " + name.toUpperCase());
 	
-	let elem = document.getElementById("border-img-"+name);
-	elem.style.background = "#f00";
-	setTimeout(function () { elem.style.background = "black"; }, 150);
+	saveDataToLocalStorage();
+	setCaptionForScoringElement(name);
 };
 
 let sectionComplete = function () {
