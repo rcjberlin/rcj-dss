@@ -575,7 +575,7 @@ let showInitialScreen = function () {
 	let currentScreen = localStorage.getItem(LS_CURRENT_SCREEN);
 	if (currentScreen === null) {
 		currentScreen = 1;
-		
+		localStorage.setItem(LS_CURRENT_SCREEN, currentScreen);
 	}
 	
 	let forceScreen = url.searchParams.get("fs");
