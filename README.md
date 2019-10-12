@@ -108,10 +108,10 @@ run = {
         { time: 265, "SECTION COMPLETE" },
         ...
     ],
-	logsUndone: [
-		{ time: 36, log: "ADD GAP", timeUndone: 39 },
-		...
-	]
+    logsUndone: [
+        { time: 36, log: "ADD GAP", timeUndone: 39 },
+        ...
+    ]
 }
 ```
 

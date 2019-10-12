@@ -248,6 +248,9 @@ let addEventListenersForButtons = function () {
 	document.getElementById("s4-btn-undo").addEventListener("click", function(e) {
 		undoLastLog();
 	});
+	document.getElementById("s4-btn-last-checkpoint").addEventListener("click", function(e) {
+		toggleLastCheckpoint();
+	});
 };
 
 let addEventListenersForInputs = function () {
@@ -441,8 +444,10 @@ let updateUIElementsForRun = function () {
 let updateUIElementsS4 = function () {
 	updateUISectionAndTry();
 	setCaptionsForAllScoringElements();
+	updateCompleteButton();
 	updateSkipButton();
 	updateUndoButton();
+	updateLastCheckpointButton();
 };
 
 let updateUISectionAndTry = function () {
@@ -486,6 +491,20 @@ let setCaptionForScoringElement = function (name) {
 	}
 };
 
+let updateCompleteButton = function () {
+	if (isAllowedToComplete()) {
+		document.getElementById("s4-btn-section-complete").style.background = "#fff";
+		document.getElementById("s4-btn-section-complete").children[0].classList.remove("disabled");
+	} else {
+		document.getElementById("s4-btn-section-complete").style.background = "#f8f8f8";
+		document.getElementById("s4-btn-section-complete").children[0].classList.add("disabled");
+	}
+};
+
+let isAllowedToComplete = function () {
+	return !isAfterLastCheckpoint();
+};
+
 let updateSkipButton = function () {
 	if (isAllowedToSkip()) {
 		document.getElementById("s4-btn-section-skip").style.background = "#fff";
@@ -497,7 +516,21 @@ let updateSkipButton = function () {
 };
 
 let isAllowedToSkip = function () {
-	return (getCurrentSection().lops >= 2);
+	return (getCurrentSection().lops >= 2) && (!isAfterLastCheckpoint());
+};
+
+let updateLastCheckpointButton = function () {
+	if (isAfterLastCheckpoint()) {
+		document.getElementById("s4-btn-last-checkpoint").style.background = "#fd5e53";
+		document.getElementById("s4-btn-last-checkpoint").style.color = "#fff";
+	} else {
+		document.getElementById("s4-btn-last-checkpoint").style.background = "#fff";
+		document.getElementById("s4-btn-last-checkpoint").style.color = "#000";
+	}
+};
+
+let isAfterLastCheckpoint = function () {
+	return getCurrentSection()["isAfterLastCheckpoint"];
 };
 
 let addEventListenersForScoringElementButtons = function () {
@@ -688,6 +721,10 @@ let undoRemoveScoringElement = function (name) {
 };
 
 let sectionComplete = function () {
+	if (!isAllowedToComplete()) {
+		showNotification("You can't complete a section after last checkpoint", 1500);
+		return;
+	}
 	getCurrentSection().completedSection = true;
 	createNewSection();
 	writeLog(LOG_SECTION_COMPLETE);
@@ -739,6 +776,22 @@ let undoSectionSkip = function () {
 	data["currentRun"]["sections"].pop();
 	getCurrentSection().skippedSection = false;
 	getCurrentSection().lops -= 1;
+	
+	saveDataToLocalStorage();
+	updateUIElementsS4();
+	return true;
+};
+
+let toggleLastCheckpoint = function () {
+	getCurrentSection()["isAfterLastCheckpoint"] = !getCurrentSection()["isAfterLastCheckpoint"];
+	writeLog(LOG_LAST_CHECKPOINT);
+	
+	saveDataToLocalStorage();
+	updateUIElementsS4();
+};
+
+let undoToggleLastCheckpoint = function () {
+	getCurrentSection()["isAfterLastCheckpoint"] = !getCurrentSection()["isAfterLastCheckpoint"];
 	
 	saveDataToLocalStorage();
 	updateUIElementsS4();
@@ -804,7 +857,7 @@ let undoLastLog = function () {
 		undoFunction = undoRemoveScoringElement;
 		undoFunctionArgument = lastLog.substring(LOG_DEL_PREFIX.length + 1).toLowerCase();
 	} else if (lastLog === LOG_LAST_CHECKPOINT) {
-		// TODO
+		undoFunction = undoToggleLastCheckpoint;
 	}
 	
 	if (undoFunction !== null && undoFunction(undoFunctionArgument)) {
