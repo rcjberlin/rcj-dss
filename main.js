@@ -245,6 +245,9 @@ let addEventListenersForButtons = function () {
 	document.getElementById("s4-btn-section-skip").addEventListener("click", function(e) {
 		sectionSkip();
 	});
+	document.getElementById("s4-btn-undo").addEventListener("click", function(e) {
+		undoLastLog();
+	});
 };
 
 let addEventListenersForInputs = function () {
@@ -395,6 +398,7 @@ let getNewRun = function () {
 		comments: "",
 		complaints: "",
 		logs: [],
+		logsUndone: [],
 	};
 };
 
@@ -438,6 +442,7 @@ let updateUIElementsS4 = function () {
 	updateUISectionAndTry();
 	setCaptionsForAllScoringElements();
 	updateSkipButton();
+	updateUndoButton();
 };
 
 let updateUISectionAndTry = function () {
@@ -656,6 +661,14 @@ let addScoringElement = function (name) {
 	setCaptionForScoringElement(name);
 };
 
+let undoAddScoringElement = function (name) {
+	getCurrentSection()[name+"s"] -= 1;
+	
+	saveDataToLocalStorage();
+	setCaptionForScoringElement(name);
+	return true;
+};
+
 let removeScoringElement = function (name) {
 	if (getCurrentSection()[name+"s"] > 0) {
 		getCurrentSection()[name+"s"] -= 1;
@@ -664,6 +677,14 @@ let removeScoringElement = function (name) {
 	
 	saveDataToLocalStorage();
 	setCaptionForScoringElement(name);
+};
+
+let undoRemoveScoringElement = function (name) {
+	getCurrentSection()[name+"s"] += 1;
+	
+	saveDataToLocalStorage();
+	setCaptionForScoringElement(name);
+	return true;
 };
 
 let sectionComplete = function () {
@@ -676,7 +697,12 @@ let sectionComplete = function () {
 };
 
 let undoSectionComplete = function () {
-	// TODO
+	data["currentRun"]["sections"].pop();
+	getCurrentSection().completedSection = false;
+	
+	saveDataToLocalStorage();
+	updateUIElementsS4();
+	return true;
 };
 
 let sectionLoP = function () {
@@ -688,7 +714,11 @@ let sectionLoP = function () {
 };
 
 let undoSectionLoP = function () {
-	// TODO
+	getCurrentSection().lops -= 1;
+	
+	saveDataToLocalStorage();
+	updateUIElementsS4();
+	return true;
 };
 
 let sectionSkip = function () {
@@ -706,7 +736,13 @@ let sectionSkip = function () {
 };
 
 let undoSectionSkip = function () {
-	// TODO
+	data["currentRun"]["sections"].pop();
+	getCurrentSection().skippedSection = false;
+	getCurrentSection().lops -= 1;
+	
+	saveDataToLocalStorage();
+	updateUIElementsS4();
+	return true;
 };
 
 let showWarningIfTimeIsNotRunning = function () {
@@ -731,8 +767,61 @@ let writeLog = function (log) {
 	data["currentRun"]["logs"].push({
 		time: getRunTimeInSeconds(),
 		log: log,
-		undone: false,
 	});
+	
+	updateUndoButton();
+};
+
+let moveLastLogToUndoneLogs = function () {
+	let lastLog = data["currentRun"]["logs"][data["currentRun"]["logs"].length - 1];
+	lastLog["timeUndone"] = getRunTimeInSeconds();
+	
+	data["currentRun"]["logsUndone"].push(lastLog);
+	data["currentRun"]["logs"].pop();
+	
+	updateUndoButton();
+};
+
+let undoLastLog = function () {
+	if (!isUndoPossible()) {
+		return;
+	}
+	
+	let undoFunction = null;
+	let undoFunctionArgument = undefined;
+	let lastLog = data["currentRun"]["logs"][data["currentRun"]["logs"].length - 1].log;
+	
+	if (lastLog === LOG_SECTION_COMPLETE) {
+		undoFunction = undoSectionComplete;
+	} else if (lastLog === LOG_LOP) {
+		undoFunction = undoSectionLoP;
+	} else if (lastLog === LOG_SKIP_SECTION) {
+		undoFunction = undoSectionSkip;
+	} else if (lastLog.startsWith(LOG_ADD_PREFIX)) {
+		undoFunction = undoAddScoringElement;
+		undoFunctionArgument = lastLog.substring(LOG_ADD_PREFIX.length + 1).toLowerCase();
+	} else if (lastLog.startsWith(LOG_DEL_PREFIX)) {
+		undoFunction = undoRemoveScoringElement;
+		undoFunctionArgument = lastLog.substring(LOG_DEL_PREFIX.length + 1).toLowerCase();
+	} else if (lastLog === LOG_LAST_CHECKPOINT) {
+		// TODO
+	}
+	
+	if (undoFunction !== null && undoFunction(undoFunctionArgument)) {
+		moveLastLogToUndoneLogs();
+	}
+};
+
+let isUndoPossible = function () {
+	return data["currentRun"]["logs"].length > 0;
+};
+
+let updateUndoButton = function () {
+	if (isUndoPossible()) {
+		document.getElementById("s4-btn-undo").classList.remove("disabled");
+	} else {
+		document.getElementById("s4-btn-undo").classList.add("disabled");
+	}
 };
 
 let initializeInputs = function () {

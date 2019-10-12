@@ -102,12 +102,16 @@ run = {
     complaints: "",
     signature: "data:image/png;base64,gTHbnLsTGnGpHDcssCrNsHT01AAA...==",
     logs: [
-        { time: 31, log: "ADD GAP", undone: false },
-        { time: 41, log: "LACK OF PROGRESS", undone: false },
-        { time: 59, log: "ADD GAP", undone: false },
-        { time: 265, "SECTION COMPLETE", undone: false },
+        { time: 31, log: "ADD GAP" },
+        { time: 41, log: "LACK OF PROGRESS" },
+        { time: 59, log: "ADD GAP" },
+        { time: 265, "SECTION COMPLETE" },
         ...
-    ]
+    ],
+	logsUndone: [
+		{ time: 36, log: "ADD GAP", timeUndone: 39 },
+		...
+	]
 }
 ```
 
