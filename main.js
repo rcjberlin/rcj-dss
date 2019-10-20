@@ -443,7 +443,7 @@ let updateUIElementsForRun = function () {
 
 let updateUIElementsS4 = function () {
 	updateUISectionAndTry();
-	setCaptionsForAllScoringElements();
+	setCaptions();
 	updateCompleteButton();
 	updateSkipButton();
 	updateUndoButton();
@@ -464,6 +464,11 @@ let getNumberOfSections = function () {
 	return data["currentRun"]["sections"].length;
 };
 
+let setCaptions = function () {
+	setCaptionForSections();
+	setCaptionsForAllScoringElements();
+};
+
 let setCaptionsForAllScoringElements = function () {
 	let arr = [GAP, OBSTACLE, SPEEDBUMP, RAMP, INTERSECTION];
 	for (let i=0; i<arr.length; i++) {
@@ -471,9 +476,7 @@ let setCaptionsForAllScoringElements = function () {
 	}
 };
 
-// TODO: get names/ids from array for cleaner code
 let setCaptionForScoringElement = function (name) {
-	let uiElement = document.getElementById("txt-"+name);
 	let txt = "";
 	let sections = data["currentRun"]["sections"];
 	for (let i=0; i<sections.length; i++) {
@@ -482,6 +485,31 @@ let setCaptionForScoringElement = function (name) {
 	
 	// remove " | " at front
 	txt = txt.substring(3);
+	
+	// adjust caption to take only the available space
+	adjustCaptionToMaxSize("txt-"+name, txt);
+};
+
+let setCaptionForSections = function () {
+	let txt = "";
+	let section;
+	for (let i=0; i<getNumberOfSections(); i++) {
+		section = data["currentRun"]["sections"][i];
+		if (section["isAfterLastCheckpoint"]) { break; }
+		if (section["skippedSection"]) {
+			txt += " | " + "-";
+		} else {
+			txt += " | " + (section["lops"] + 1);
+		}
+	}
+	
+	txt = txt.substring(3);
+	
+	adjustCaptionToMaxSize("txt-tries", txt);
+};
+
+let adjustCaptionToMaxSize = function (uiElementId, txt) {
+	let uiElement = document.getElementById(uiElementId);
 	
 	// add class for highlighting current section
 	let strPrepend = "<span class='s4-text-scoring-elements-last'>";
@@ -505,7 +533,6 @@ let setCaptionForScoringElement = function (name) {
 		txt = "..." + txt.substring(4);
 		uiElement.innerHTML = txt;
 	}
-	console.log(txt);
 };
 
 let updateCompleteButton = function () {
