@@ -480,15 +480,32 @@ let setCaptionForScoringElement = function (name) {
 		txt += " | " + sections[i][name+"s"];
 	}
 	
+	// remove " | " at front
 	txt = txt.substring(3);
+	
+	// add class for highlighting current section
+	let strPrepend = "<span class='s4-text-scoring-elements-last'>";
+	let strAppend = "</span>";
+	let indexOfLastSpace = txt.lastIndexOf(" ");
+	
+	if (indexOfLastSpace === -1) {
+		txt = strPrepend + txt + strAppend;
+	} else {
+		txt = txt.substring(0, indexOfLastSpace + 1)
+				+ strPrepend
+				+ txt.substring(indexOfLastSpace + 1)
+				+ strAppend;
+	}
 	
 	// fit to width of UI-Element (replace first numbers with "...")
 	uiElement.innerHTML = txt;
 	while (uiElement.clientHeight > uiElement.parentElement.clientHeight && txt !== "...") {
 		if (txt.startsWith("...") === false) { txt = "..." + txt; }
+		if (txt.substring(3).startsWith(strPrepend)) { break; }
 		txt = "..." + txt.substring(4);
 		uiElement.innerHTML = txt;
 	}
+	console.log(txt);
 };
 
 let updateCompleteButton = function () {
