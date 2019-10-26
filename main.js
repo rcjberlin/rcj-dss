@@ -21,6 +21,7 @@ let data = {};
 let competitions = {};
 
 let intervalIdTime = null;
+let timeoutIdNotification = null;
 
 let url = new URL(window.location.href);
 
@@ -855,12 +856,19 @@ let showWarningIfTimeIsOver = function () {
 };
 
 let showNotification = function (notification, maxDuration) {
+	// clear timeout if exists
+	if (timeoutIdNotification !== null) {
+		clearTimeout(timeoutIdNotification);
+		timeoutIdNotification = null;
+	}
+	
+	// show notification
 	document.getElementById("txt-notification").innerHTML = notification;
+	
+	// set timeout to clear notification
 	if (maxDuration !== undefined) {
-		setTimeout(function () {
-			if (document.getElementById("txt-notification").innerHTML === notification) {
-				document.getElementById("txt-notification").innerHTML = "";
-			}
+		timeoutIdNotification = setTimeout(function () {
+			document.getElementById("txt-notification").innerHTML = "";
 		}, maxDuration);
 	}
 };
