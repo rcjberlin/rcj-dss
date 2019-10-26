@@ -848,6 +848,12 @@ let showWarningIfTimeIsNotRunning = function () {
 	}
 };
 
+let showWarningIfTimeIsOver = function () {
+	if (getRunTimeInSeconds() > 8*60) {
+		showNotification("WARNING: Time is over!", 3000);
+	}
+};
+
 let showNotification = function (notification, maxDuration) {
 	document.getElementById("txt-notification").innerHTML = notification;
 	if (maxDuration !== undefined) {
@@ -861,6 +867,7 @@ let showNotification = function (notification, maxDuration) {
 
 let writeLog = function (log) {
 	showWarningIfTimeIsNotRunning();
+	showWarningIfTimeIsOver();
 	data["currentRun"]["logs"].push({
 		time: getRunTimeInSeconds(),
 		log: log,
