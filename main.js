@@ -17,6 +17,27 @@ const LOG_LAST_CHECKPOINT  = "LAST CHECKPOINT";
 const pathImageTimeStart = "img/start.svg";
 const pathImageTimePause = "img/pause.svg";
 
+const frequencyShortAlert = 600;
+const frequencyLongAlert  = 800;
+const durationShortAlert = 200;
+const durationLongAlert  = 500;
+
+let shortBeep = function () {
+	beep(frequencyShortAlert, durationShortAlert, 1, "sine");
+};
+
+let longBeep = function () {
+	beep(frequencyLongAlert, durationLongAlert, 1, "sine");
+	window.navigator.vibrate(durationLongAlert*1.2);
+};
+
+let alerts = [{ time: 8*60 - 5, func: shortBeep, finished: false },
+			  { time: 8*60 - 4, func: shortBeep, finished: false },
+			  { time: 8*60 - 3, func: shortBeep, finished: false },
+			  { time: 8*60 - 2, func: shortBeep, finished: false },
+			  { time: 8*60 - 1, func: shortBeep, finished: false },
+			  { time: 8*60 - 0, func: longBeep, finished: false }];
+
 let data = {};
 let competitions = {};
 
@@ -53,7 +74,7 @@ let isTimeRunning = function () {
 
 let startAutoUpdatingTime = function () {
 	stopAutoUpdatingTime();
-	intervalIdTime = setInterval(updateTime, 200);
+	intervalIdTime = setInterval(updateTime, 20);
 };
 
 let stopAutoUpdatingTime = function () {
@@ -107,6 +128,7 @@ let getRunTimeInSeconds = function () {
 };
 
 let updateTime = function () {
+	checkForAlerts();
 	let time = getRunTimeInSeconds();
 	let minutes = Math.floor(time/60);
 	let seconds = Math.floor(time%60);
@@ -122,6 +144,7 @@ let resetTime = function () {
 	data["currentRun"]["time"]["timeStartedTimestamp"] = null;
 	saveDataToLocalStorage();
 	
+	resetAlerts();
 	updateTime();
 	document.getElementById("s3-time-start-pause").src = pathImageTimeStart;
 	document.getElementById("s4-time-start-pause").src = pathImageTimeStart;
@@ -146,6 +169,24 @@ let initializeTime = function () {
 	}
 };
 
+let checkForAlerts = function () {
+	if (!isTimeRunning()) { return; }
+	let time = getRunTimeInSeconds();
+	let diff;
+	for (let i=0; i<alerts.length; i++) {
+		diff = time - alerts[i].time;
+		if (diff > 0 && diff < 1 && alerts[i].finished === false) {
+			alerts[i].func();
+			alerts[i].finished = true;
+		}
+	}
+};
+
+let resetAlerts = function () {
+	for (let i=0; i<alerts.length; i++) {
+		alerts[i].finished = false;
+	}
+};
 
 let addEventListenersForNavigationButtons = function () {
 	document.getElementById("s1-next").addEventListener("click", function(e) {
@@ -357,6 +398,7 @@ let createNewRun = function (teamname, evacuationPoint) {
 	
 	saveDataToLocalStorage();
 	updateUIElementsForRun();
+	resetAlerts();
 };
 
 let onChangeInputTeamname = function () {
@@ -967,3 +1009,34 @@ let initializeInputs = function () {
 	
 	saveDataToLocalStorage();
 }
+
+// sounds - credit goes to https://stackoverflow.com/a/41077092
+audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
+let beep = function (frequency, duration, volume, type) {
+  var oscillator = audioCtx.createOscillator();
+  var gainNode = audioCtx.createGain();
+
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  gainNode.gain.value = volume;
+  oscillator.frequency.value = frequency;
+  oscillator.type = type;
+
+  oscillator.start();
+
+  setTimeout(
+    function() {
+      oscillator.stop();
+    },
+    duration
+  );
+};
+
+let fiveSecondCountdown = function () {
+	shortBeep();
+	let i = setInterval(shortBeep, 1000);
+	setTimeout(function () { clearInterval(i); }, 4200);
+	setTimeout(function () { longBeep(); }, 5000);
+};
