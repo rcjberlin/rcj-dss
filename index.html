@@ -380,44 +380,7 @@
 				<form>
 					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
 					<h2>Tiles per Section</h2>
-					<div>
-						<div class="table-layout-column-left">
-							<label for="tiles-section-1" class="table-layout-cell-left">Section 1<br><span class="disabled">(1st try)</span></label>
-						</div>
-						<div class="table-layout-column-right">
-							<input type="number" id="tiles-section-1" class="table-layout-cell-right" />
-						</div>
-						<p class="clear" />
-					</div>
-					
-					<div>
-						<div class="table-layout-column-left">
-							<label for="tiles-section-2" class="table-layout-cell-left">Section 2<br><span class="disabled">(skipped)</span></label>
-						</div>
-						<div class="table-layout-column-right">
-							<input type="number" id="tiles-section-2" class="table-layout-cell-right" />
-						</div>
-						<p class="clear" />
-					</div>
-					
-					<div>
-						<div class="table-layout-column-left">
-							<label for="tiles-section-3" class="table-layout-cell-left">Section 3<br><span class="disabled">(3rd try)</span></label>
-						</div>
-						<div class="table-layout-column-right">
-							<input type="number" id="tiles-section-3" class="table-layout-cell-right" />
-						</div>
-						<p class="clear" />
-					</div>
-					
-					<div>
-						<div class="table-layout-column-left">
-							<label for="tiles-section-4" class="table-layout-cell-left">Section 4<br><span class="disabled">(5th try)</span></label>
-						</div>
-						<div class="table-layout-column-right">
-							<input type="number" id="tiles-section-4" class="table-layout-cell-right" />
-						</div>
-						<p class="clear" />
+					<div id="s5-tiles">
 					</div>
 					
 					<h2>Evacuation Zone</h2>
@@ -426,7 +389,7 @@
 							<label for="victims-dead-before" class="table-layout-cell-left">Dead Victims</label>
 						</div>
 						<div class="table-layout-column-right">
-							<input type="number" id="victims-dead-before" class="table-layout-cell-right" />
+							<input type="number" id="victims-dead-before" class="table-layout-cell-right" min="0" />
 							<span class="disabled">(before living victims)</span>
 						</div>
 						<p class="clear" />
@@ -437,7 +400,7 @@
 							<label for="victims-alive" class="table-layout-cell-left">Living Victims</label>
 						</div>
 						<div class="table-layout-column-right">
-							<input type="number" id="victims-alive" class="table-layout-cell-right" />
+							<input type="number" id="victims-alive" class="table-layout-cell-right" min="0" />
 						</div>
 						<p class="clear" />
 					</div>
@@ -447,7 +410,7 @@
 							<label for="vicitims-dead-after" class="table-layout-cell-left">Dead Victims</label>
 						</div>
 						<div class="table-layout-column-right">
-							<input type="number" id="victims-dead-after" class="table-layout-cell-right" />
+							<input type="number" id="victims-dead-after" class="table-layout-cell-right" min="0" />
 							<span class="disabled">(after living victims)</span>
 						</div>
 						<p class="clear" />

@@ -307,6 +307,11 @@ let addEventListenersForInputs = function () {
 	document.getElementById("evacuation-point-high").addEventListener("change", onChangeInputEvacuationPoint);
 	
 	document.getElementById("team-showed-up").addEventListener("change", onChangeInputTeamShowedUp);
+	
+	document.getElementById("victims-dead-before").addEventListener("change", onChangeInputVictims);
+	document.getElementById("victims-alive").addEventListener("change", onChangeInputVictims);
+	document.getElementById("victims-dead-after").addEventListener("change", onChangeInputVictims);
+	document.getElementById("left-evacuation-zone").addEventListener("change", onChangeInputLeftEvacuationZone);
 };
 
 let changeLocalData = function (name, value) {
@@ -711,7 +716,7 @@ let showInitialScreen = function () {
 };
 
 let showScreen = function (screenNumber) {
-	let initFunction = [null, null, initScreen2, initScreen3, null, null, null, null, null][screenNumber];
+	let initFunction = [null, null, initScreen2, initScreen3, null, initScreen5, null, null, null][screenNumber];
 	if (initFunction !== null) { initFunction(); }
 	document.getElementById("screen-" + screenNumber).style.display = "";
 };
@@ -771,6 +776,83 @@ let initScreen3 = function () {
 	// evacuation point
 	txt = data["currentRun"]["evacuationPoint"];
 	document.getElementById("s3-txt-evacuation-point").innerHTML = txt;
+};
+
+let templateS5Section = `
+	<div>
+		<div class="table-layout-column-left">
+			<label for="tiles-section-{sectionId}" class="table-layout-cell-left">Section {sectionId}<br><span class="disabled">({tries})</span></label>
+		</div>
+		<div class="table-layout-column-right">
+			<input type="number" id="tiles-section-{sectionId}" class="table-layout-cell-right" value="{tiles}" min="0" />
+		</div>
+		<p class="clear" />
+	</div>
+`;
+
+let initScreen5 = function () {
+	// tiles for each section
+	let sections = "", sectionIds = [], tries = null, section = null;
+	for (let i=0; i<data["currentRun"]["sections"].length; i++) {
+		section = data["currentRun"]["sections"][i];
+		if (section["isAfterLastCheckpoint"]) {
+			continue;
+		} else if (section["completedSection"]) {
+			tries = section["lops"] + 1;
+			switch (tries) {
+				case 1: tries += "st"; break;
+				case 2: tries += "nd"; break;
+				case 3: tries += "rd"; break;
+				default: tries += "th";
+			}
+			tries += " try";
+		} else if (section["skippedSection"]) {
+			tries = "skipped";
+		} else {
+			tries = "aborted";
+		}
+		sections += templateS5Section
+					.replace(/\{sectionId\}/g, section["sectionId"])
+					.replace(/\{tries\}/g, tries)
+					.replace(/\{tiles\}/g, section["tiles"]);
+		sectionIds.push(section["sectionId"]);
+	}
+	document.getElementById("s5-tiles").innerHTML = sections;
+	for (let i=0; i<sectionIds.length; i++) {
+		document.getElementById("tiles-section-"+sectionIds[i]).addEventListener("change", onChangeInputTiles);
+	}
+	
+	// victims
+	document.getElementById("victims-dead-before").value = data["currentRun"]["victims"]["deadVictimsBeforeAllLivingVictims"];
+	document.getElementById("victims-alive").value       = data["currentRun"]["victims"]["livingVictims"];
+	document.getElementById("victims-dead-after").value  = data["currentRun"]["victims"]["deadVictimsAfterAllLivingVictims"];
+	
+	// left evacuation zone
+	document.getElementById("left-evacuation-zone").checked = data["currentRun"]["leftEvacuationZone"];
+};
+
+let onChangeInputTiles = function () {
+	let section;
+	for (let i=0; i<data["currentRun"]["sections"].length; i++) {
+		section = data["currentRun"]["sections"][i];
+		if (section["isAfterLastCheckpoint"]) {
+			continue;
+		}
+		section.tiles = Math.max(0, +document.getElementById("tiles-section-"+section["sectionId"]).value);
+	}
+	saveDataToLocalStorage();
+};
+
+let onChangeInputVictims = function () {
+	data["currentRun"]["victims"]["deadVictimsBeforeAllLivingVictims"] = Math.max(0, +document.getElementById("victims-dead-before").value);
+	data["currentRun"]["victims"]["livingVictims"] = Math.max(0, +document.getElementById("victims-alive").value);
+	data["currentRun"]["victims"]["deadVictimsAfterAllLivingVictims"] = Math.max(0, +document.getElementById("victims-dead-after").value);
+	saveDataToLocalStorage();
+};
+
+let onChangeInputLeftEvacuationZone = function () {
+	data["currentRun"]["leftEvacuationZone"] = document.getElementById("left-evacuation-zone").checked;
+	saveDataToLocalStorage();
 };
 
 let addScoringElement = function (name) {
