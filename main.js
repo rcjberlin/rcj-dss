@@ -716,7 +716,7 @@ let showInitialScreen = function () {
 };
 
 let showScreen = function (screenNumber) {
-	let initFunction = [null, null, initScreen2, initScreen3, null, initScreen5, null, null, null][screenNumber];
+	let initFunction = [null, null, initScreen2, initScreen3, null, initScreen5, initScreen6, null, null][screenNumber];
 	if (initFunction !== null) { initFunction(); }
 	document.getElementById("screen-" + screenNumber).style.display = "";
 };
@@ -853,6 +853,15 @@ let onChangeInputVictims = function () {
 let onChangeInputLeftEvacuationZone = function () {
 	data["currentRun"]["leftEvacuationZone"] = document.getElementById("left-evacuation-zone").checked;
 	saveDataToLocalStorage();
+};
+
+let initScreen6 = function () {
+	document.getElementById("review-referee-name").innerHTML = data["currentRun"]["referee"]["name"];
+	document.getElementById("review-comments").value = data["currentRun"]["comments"];
+	document.getElementById("review-teamname").value = data["currentRun"]["teamname"];
+	document.getElementById("review-radio-ok").checked = false;
+	document.getElementById("review-radio-complaints").checked = (data["currentRun"]["complaints"] !== "");
+	document.getElementById("review-complaints").value = data["currentRun"]["complaints"];
 };
 
 let addScoringElement = function (name) {
