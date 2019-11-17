@@ -65,6 +65,12 @@ textarea {
 p.clear {
 	clear: both;
 }
+#review-table td {
+	width: 12.5%;
+}
+#review-table input {
+	width: 2em;
+}
 
 .wrapper-ratio {
 	position: relative;

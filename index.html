@@ -421,7 +421,7 @@
 							<p class="table-layout-cell-left"></p>
 						</div>
 						<div class="table-layout-column-right">
-							<label><input type="checkbox" id="left-evacuation-zone" value="yes">Left Evacuation Zone</label>
+							<label><input type="checkbox" id="left-evacuation-zone">Left Evacuation Zone</label>
 						</div>
 						<p class="clear" />
 					</div>
@@ -442,56 +442,36 @@
 					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
 					<h2>Review</h2>
 					<h3>Sections and Scoring Elements</h3>
-					<table width="100%" cellspacing="0" border="1">
+					<table id="review-table" width="100%" cellspacing="0" border="1">
 						<tr>
-							<td width="12.5%">S</td>
-							<td width="12.5%">Ti</td>
-							<td width="12.5%">Tr</td>
-							<td width="12.5%">G</td>
-							<td width="12.5%">O</td>
-							<td width="12.5%">S</td>
-							<td width="12.5%">R</td>
-							<td width="12.5%">I</td>
+							<td>S</td>
+							<td>Ti</td>
+							<td>Tr</td>
+							<td>G</td>
+							<td>O</td>
+							<td>S</td>
+							<td>R</td>
+							<td>I</td>
 						</tr>
 						<tr>
-							<td width="12.5%">1</td>
-							<td width="12.5%">10</td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="3"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="1"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="1"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="0"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="3"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="4"></td>
+							<td>ALC</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
 						</tr>
 						<tr>
-							<td width="12.5%">2</td>
-							<td width="12.5%">8</td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="1"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="2"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="1"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="0"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="1"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="3"></td>
-						</tr>
-						<tr>
-							<td width="12.5%">ALC</td>
-							<td width="12.5%">-</td>
-							<td width="12.5%">-</td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="1"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="0"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="0"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="2"></td>
-							<td width="12.5%"><input type="number" style="width: 2em" value="2"></td>
-						</tr>
-						<tr>
-							<td width="12.5%">Sum</td>
-							<td width="12.5%">18</td>
-							<td width="12.5%">-</td>
-							<td width="12.5%">4</td>
-							<td width="12.5%">2</td>
-							<td width="12.5%">0</td>
-							<td width="12.5%">6</td>
-							<td width="12.5%">9</td>
+							<td>Sum</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
 						</tr>
 					</table>
 					
@@ -511,7 +491,7 @@
 							<span class="table-layout-cell-left">Dead Victims</span>
 						</div>
 						<div class="table-layout-column-right">
-							<span class="table-layout-cell-right disabled">2</span>
+							<span id="review-dead-victims-before" class="table-layout-cell-right disabled"></span>
 							<span class="disabled">(before living victims)</span>
 						</div>
 						<p class="clear" />
@@ -522,7 +502,7 @@
 							<span class="table-layout-cell-left">Living Victims</span>
 						</div>
 						<div class="table-layout-column-right">
-							<span class="table-layout-cell-right disabled">1</span>
+							<span id="review-living-victims" class="table-layout-cell-right disabled"></span>
 						</div>
 						<p class="clear" />
 					</div>
@@ -532,7 +512,7 @@
 							<span class="table-layout-cell-left">Dead Victims</span>
 						</div>
 						<div class="table-layout-column-right">
-							<span class="table-layout-cell-right disabled">0</span>
+							<span id="review-dead-victims-after" class="table-layout-cell-right disabled"></span>
 							<span class="disabled">(after living victims)</span>
 						</div>
 						<p class="clear" />
@@ -543,7 +523,7 @@
 							<p class="table-layout-cell-left"></p>
 						</div>
 						<div class="table-layout-column-right">
-							<label class="disabled"><input type="checkbox" id="left-evacuation-zone" disabled>Left Evacuation Zone</label>
+							<label class="disabled"><input type="checkbox" id="review-left-evacuation-zone" disabled>Left Evacuation Zone</label>
 						</div>
 						<p class="clear" />
 					</div>
