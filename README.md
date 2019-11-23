@@ -57,7 +57,6 @@ This project must meet certain demands so that it can be used during competition
 * to implement Single-Page-Application: multiple `div`'s which can be hidden through JavaScript
 * Main UI should work without scrolling, everything should fit on screen: everything is in a 3:2-box (as large as possible)
 * Undo-function should be implemented by logging all user input (in main UI)
-* signature of team captain: with fullscreen canvas (e.g. https://github.com/szimek/signature_pad) or maybe an alternative to signatures
 
 Example object for a run:
 ```
@@ -99,8 +98,8 @@ run = {
     },
     leftEvacuationZone: false,
     comments: "",
+    confirmedByTeamCaptain: true,
     complaints: "",
-    signature: "data:image/png;base64,gTHbnLsTGnGpHDcssCrNsHT01AAA...==",
     logs: [
         { time: 31, log: "ADD GAP" },
         { time: 41, log: "LACK OF PROGRESS" },
@@ -111,6 +110,11 @@ run = {
     logsUndone: [
         { time: 36, log: "ADD GAP", timeUndone: 39 },
         ...
+    ],
+    changes: [
+        { sectionId: 1, attribute: "gaps", newValue: 4 },
+        { sectionId: 2, attribute: "gaps", newValue: 1 },
+        { sectionId: undefined, attribute: "teamname", newValue: "m++" }
     ]
 }
 ```
@@ -124,9 +128,8 @@ Additional notes:
 * last checkpoint
   * everything after last checkpoint is saved as a section which will not be marked as completed
   * scoring elements are still counted and also LoPs (which will be deduced from points for victims)
-* signature
-  * signature of team captain is text representation of canvas (`canvas.toDataURL()`)
-  * maybe replaced by something better
+* signature/confirmation of team captain
+  * no signatures, just selecting a radiobutton to confirm
 * logs / history - list of possible logs:
   * SECTION COMPLETE
   * LACK OF PROGRESS
@@ -136,9 +139,14 @@ Additional notes:
   * LAST CHECKPOINT
   * a redo-function is not planned
 * corrections (in review)
-  * edit number of LoPs, number of scoring elements; add sections (only tiles and tries)?!
-  * directly added/substracted in JSON
-  * additional logs (only for documentation / possible later manual evaluation)
+  * edit number of LoPs, number of scoring elements
+  * adding sections or deleting sections is not planned
+  * new value is stored in array (original value will not be overwritten)
+
+### Evaluation
+* runs are submitted to a central system to evaluate all runs and create standings (check out https://github.com/mb/rcj-server)
+* the run-object is modified slightly before submitting so that it can be evaluated easily
+
 
 ### Issues
 If you want to test it locally you may need to make sure that CORS requests are working.
