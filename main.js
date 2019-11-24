@@ -312,6 +312,7 @@ let addEventListenersForInputs = function () {
 	document.getElementById("victims-alive").addEventListener("change", onChangeInputVictims);
 	document.getElementById("victims-dead-after").addEventListener("change", onChangeInputVictims);
 	document.getElementById("left-evacuation-zone").addEventListener("change", onChangeInputLeftEvacuationZone);
+	document.getElementById("review-comments").addEventListener("change", onChangeInputReviewComments);
 	document.getElementById("review-teamname").addEventListener("change", onChangeInputReviewTeamname);
 	document.getElementById("review-radio-ok").addEventListener("change", onChangeInputReviewOk);
 	document.getElementById("review-radio-complaints").addEventListener("change", onChangeInputReviewRadioComplaints);
@@ -864,6 +865,7 @@ let onChangeInputLeftEvacuationZone = function () {
 let initScreen6 = function () {
 	updateReviewTable();
 	updateReviewAfterLastCheckpoint();
+	updateReviewSummaryOfChanges();
 	document.getElementById("review-referee-name").innerHTML = data["currentRun"]["referee"]["name"];
 	document.getElementById("review-comments").value = data["currentRun"]["comments"];
 	document.getElementById("review-teamname").value = data["currentRun"]["teamname"];
@@ -987,12 +989,62 @@ let onChangeInputReviewTable = function (domElement, sectionId, scoringElement) 
 	
 	saveDataToLocalStorage();
 	updateSumInReviewTable();
+	updateReviewSummaryOfChanges();
 };
 
 let onChangeInputReviewLoPsAfterLastCheckpoint = function () {
 	onChangeInputReviewTable(document.getElementById("review-after-last-checkpoint-lops"),
 							 data["currentRun"]["sections"].length,
 							 "lops");
+};
+
+let updateReviewSummaryOfChanges = function () {
+	let txt = "";
+	
+	let ovs = data["currentRun"]["originalValues"];
+	
+	if (ovs["teamname"] !== undefined) {
+		txt += "<li>Teamname: " + ovs["teamname"] + " &rarr; " + data["currentRun"]["teamname"] + "</li>";
+	}
+	
+	let sections = Object.keys(ovs);
+	sections.sort();
+	for (let i=0; i<sections.length; i++) {
+		if (sections[i].startsWith("section")) {
+			let elems = Object.keys(ovs[sections[i]]);
+			if (elems.length > 0) {
+				elems.sort();
+				let section = +sections[i].substring("section".length);
+				txt += "<li>Section " + section;
+				if (section === data["currentRun"]["sections"].length) { txt += " / ALC"; }
+				txt += "<ul>";
+				for (let j=0; j<elems.length; j++) {
+					let elem = elems[j];
+					txt += "<li>";
+					txt += elem.charAt(0).toUpperCase() + elem.substring(1);
+					txt += ": ";
+					txt += ovs["section"+section][elem];
+					txt += " &rarr; ";
+					txt += data["currentRun"]["sections"][section-1][elem];
+					txt += "</li>";
+				}
+				txt += "</ul></li>";
+			}
+		}
+	}
+	
+	if (txt === "") {
+		txt = "No changes were made";
+	} else {
+		txt = "<ul>" + txt + "</ul>";
+	}
+	
+	document.getElementById("s6-changes").innerHTML = txt;
+};
+
+let onChangeInputReviewComments = function () {
+	data["currentRun"]["comments"] = document.getElementById("review-comments").value;
+	saveDataToLocalStorage();
 };
 
 let onChangeInputReviewTeamname = function () {
@@ -1011,6 +1063,7 @@ let onChangeInputReviewTeamname = function () {
 	}
 	
 	saveDataToLocalStorage();
+	updateReviewSummaryOfChanges();
 };
 
 let onChangeInputReviewOk = function () {
