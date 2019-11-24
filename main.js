@@ -314,6 +314,7 @@ let addEventListenersForInputs = function () {
 	document.getElementById("left-evacuation-zone").addEventListener("change", onChangeInputLeftEvacuationZone);
 	document.getElementById("review-teamname").addEventListener("change", onChangeInputReviewTeamname);
 	document.getElementById("review-radio-ok").addEventListener("change", onChangeInputReviewOk);
+	document.getElementById("review-radio-complaints").addEventListener("change", onChangeInputReviewRadioComplaints);
 	document.getElementById("review-complaints").addEventListener("change", onChangeInputReviewComplaints);
 };
 
@@ -454,6 +455,7 @@ let getNewRun = function () {
 		complaints: "",
 		logs: [],
 		logsUndone: [],
+		originalValues: {},
 	};
 };
 
@@ -888,26 +890,29 @@ let clearReviewTable = function () {
 	}
 };
 
-let templateTableCellInput = '<td><input type="number" value="{value}" onchange="onChangeInputReviewTable()"></td>';
+let templateTableCellInput = '<td><input type="number" value="{value}" min="0" onchange="onChangeInputReviewTable(this,{sectionId},\'{element}\')"></td>';
 let addSectionsToReviewTable = function () {
 	let table = document.getElementById("review-table");
-	let row, section;
+	document.getElementById("tr-alc").style.display = "none";
+	let row, section, templ;
 	for (let s=0; s<data["currentRun"]["sections"].length; s++) {
 		section = data["currentRun"]["sections"][s];
+		templ = templateTableCellInput.replace("{sectionId}", section["sectionId"]);
 		if (section.isAfterLastCheckpoint) {
 			row = table.rows[table.rows.length-2];
+			document.getElementById("tr-alc").style.display = "";
 		} else {
 			row = table.insertRow(table.rows.length-2);
 			for (let i=0; i<8; i++) { row.insertCell(i); }
 			row.cells[0].innerHTML = section["sectionId"];
 			row.cells[1].innerHTML = section["tiles"];
-			row.cells[2].innerHTML = templateTableCellInput.replace("{value}", section["lops"]+1);
+			row.cells[2].innerHTML = templ.replace("{value}", section["lops"]+1).replace("{element}", "lops").replace('min="0"', 'min="1"');
 		}
-		row.cells[3].innerHTML = templateTableCellInput.replace("{value}", section["gaps"]);
-		row.cells[4].innerHTML = templateTableCellInput.replace("{value}", section["obstacles"]);
-		row.cells[5].innerHTML = templateTableCellInput.replace("{value}", section["speedbumps"]);
-		row.cells[6].innerHTML = templateTableCellInput.replace("{value}", section["ramps"]);
-		row.cells[7].innerHTML = templateTableCellInput.replace("{value}", section["intersections"]);
+		row.cells[3].innerHTML = templ.replace("{value}", section["gaps"]).replace("{element}", "gaps");
+		row.cells[4].innerHTML = templ.replace("{value}", section["obstacles"]).replace("{element}", "obstacles");
+		row.cells[5].innerHTML = templ.replace("{value}", section["speedbumps"]).replace("{element}", "speedbumps");
+		row.cells[6].innerHTML = templ.replace("{value}", section["ramps"]).replace("{element}", "ramps");
+		row.cells[7].innerHTML = templ.replace("{value}", section["intersections"]).replace("{element}", "intersections");
 	}
 };
 
@@ -936,29 +941,91 @@ let updateSumInReviewTable = function () {
 };
 
 let updateReviewAfterLastCheckpoint = function () {
-	document.getElementById("review-after-last-checkpoint-lops").value = data["currentRun"]["sections"][data["currentRun"]["sections"].length-1].lops;
+	if (data["currentRun"]["sections"][data["currentRun"]["sections"].length-1].isAfterLastCheckpoint) {
+		document.getElementById("review-after-last-checkpoint-lops").value = data["currentRun"]["sections"][data["currentRun"]["sections"].length-1].lops;
+		document.getElementById("review-after-last-checkpoint-lops").disabled = false;
+	} else {
+		document.getElementById("review-after-last-checkpoint-lops").value = 0;
+		document.getElementById("review-after-last-checkpoint-lops").disabled = true;
+	}
 	document.getElementById("review-dead-victims-before").innerHTML = data["currentRun"]["victims"]["deadVictimsBeforeAllLivingVictims"];
 	document.getElementById("review-living-victims").innerHTML      = data["currentRun"]["victims"]["livingVictims"];
 	document.getElementById("review-dead-victims-after").innerHTML  = data["currentRun"]["victims"]["deadVictimsAfterAllLivingVictims"];
 	document.getElementById("review-left-evacuation-zone").checked = data["currentRun"]["leftEvacuationZone"];
 };
 
-let onChangeInputReviewTable = function () {
-	// TODO
+let onChangeInputReviewTable = function (domElement, sectionId, scoringElement) {
+	let currentValue = data["currentRun"]["sections"][sectionId-1][scoringElement];
+	let inputValue = +domElement.value;
+	
+	if (scoringElement === "lops" && sectionId !== data["currentRun"]["sections"].length) {
+		inputValue -= 1; // user entered number of tries -> lops = tries - 1
+	}
+	if (inputValue === undefined || inputValue < 0) { return; }
+	
+	let originalValue = undefined;
+	let ovs = data["currentRun"]["originalValues"];
+	if (ovs["section"+sectionId] !== undefined) {
+		originalValue = ovs["section"+sectionId][scoringElement];
+	}
+	
+	if (inputValue === originalValue) {
+		// reset to original value -> delete from originalValues
+		data["currentRun"]["sections"][sectionId-1][scoringElement] = inputValue;
+		delete ovs["section"+sectionId][scoringElement];
+	} else {
+		// set new value and save original value
+		data["currentRun"]["sections"][sectionId-1][scoringElement] = inputValue;
+		if (originalValue === undefined) {
+			// create section if needed and then save original value
+			if (ovs["section"+sectionId] === undefined) {
+				ovs["section"+sectionId] = {};
+			}
+			ovs["section"+sectionId][scoringElement] = currentValue;
+		}
+	}
+	
+	saveDataToLocalStorage();
 	updateSumInReviewTable();
 };
 
+let onChangeInputReviewLoPsAfterLastCheckpoint = function () {
+	onChangeInputReviewTable(document.getElementById("review-after-last-checkpoint-lops"),
+							 data["currentRun"]["sections"].length,
+							 "lops");
+};
+
 let onChangeInputReviewTeamname = function () {
-	// TODO
+	let currentValue = data["currentRun"]["teamname"];
+	let inputValue = document.getElementById("review-teamname").value;
+	let originalValue = data["currentRun"]["originalValues"]["teamname"];
+	
+	if (inputValue === originalValue) {
+		data["currentRun"]["teamname"] = inputValue;
+		delete data["currentRun"]["originalValues"]["teamname"];
+	} else {
+		data["currentRun"]["teamname"] = inputValue;
+		if (originalValue === undefined) {
+			data["currentRun"]["originalValues"]["teamname"] = currentValue;
+		}
+	}
+	
+	saveDataToLocalStorage();
 };
 
 let onChangeInputReviewOk = function () {
 	if (document.getElementById("review-complaints").value === "") {
-		data["currentRun"]["confirmedByTeamCaptain"] = true;
+		data["currentRun"]["confirmedByTeamCaptain"] = document.getElementById("review-radio-ok").checked;
 	} else {
 		data["currentRun"]["confirmedByTeamCaptain"] = false;
 		document.getElementById("review-radio-complaints").checked = true;
 	}
+	saveDataToLocalStorage();
+};
+
+let onChangeInputReviewRadioComplaints = function () {
+	data["currentRun"]["confirmedByTeamCaptain"] = document.getElementById("review-radio-ok").checked;
+	saveDataToLocalStorage();
 };
 
 let onChangeInputReviewComplaints = function () {
@@ -967,6 +1034,7 @@ let onChangeInputReviewComplaints = function () {
 		data["currentRun"]["confirmedByTeamCaptain"] = false;
 		document.getElementById("review-radio-complaints").checked = true;
 	}
+	saveDataToLocalStorage();
 };
 
 let addScoringElement = function (name) {

@@ -89,7 +89,7 @@ run = {
             intersections: 4,
             tiles: 15
         },
-        { ... }
+        ...
     ],
     victims: {
         deadVictimsBeforeAllLivingVictims: 3,
@@ -111,11 +111,18 @@ run = {
         { time: 36, log: "ADD GAP", timeUndone: 39 },
         ...
     ],
-    changes: [
-        { sectionId: 1, attribute: "gaps", newValue: 4 },
-        { sectionId: 2, attribute: "gaps", newValue: 1 },
-        { sectionId: undefined, attribute: "teamname", newValue: "m++" }
-    ]
+    originalValues: {
+        teamname: "m++",
+        section1: {
+            gaps: 4,
+            ramps: 1
+        },
+        section2: {
+            ramps: 0,
+            ...
+        },
+        ...
+    }
 }
 ```
 
@@ -141,7 +148,7 @@ Additional notes:
 * corrections (in review)
   * edit number of LoPs, number of scoring elements
   * adding sections or deleting sections is not planned
-  * new value is stored in array (original value will not be overwritten)
+  * old values will be overwritten directly, nevertheless they are stored in an additional object (&rarr; best performance when accessing number of scoring elements)
 
 ### Evaluation
 * runs are submitted to a central system to evaluate all runs and create standings (check out https://github.com/mb/rcj-server)

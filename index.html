@@ -453,7 +453,7 @@
 							<td>R</td>
 							<td>I</td>
 						</tr>
-						<tr>
+						<tr id="tr-alc">
 							<td>ALC</td>
 							<td>-</td>
 							<td>-</td>
@@ -481,7 +481,7 @@
 							<label for="review-after-last-checkpoint-lops" class="table-layout-cell-left">LoPs</label>
 						</div>
 						<div class="table-layout-column-right">
-							<input type="number" id="review-after-last-checkpoint-lops" class="table-layout-cell-right" value="2" />
+							<input type="number" id="review-after-last-checkpoint-lops" class="table-layout-cell-right" min="0" onchange="onChangeInputReviewLoPsAfterLastCheckpoint()" />
 						</div>
 						<p class="clear" />
 					</div>
