@@ -1316,12 +1316,10 @@ let initializeInputs = function () {
 	document.getElementById("round").value = data["round"];
 	
 	if (run !== null) {
-		if (competitions[data["competition"]]["teams"].includes(run["teamname"])) {
-			data["currentRun"] = run;
-			
-			updateUIElementsForRun();
-			initializeTime();
-		}
+		data["currentRun"] = run;
+		
+		updateUIElementsForRun();
+		initializeTime();
 	}
 	
 	saveDataToLocalStorage();
