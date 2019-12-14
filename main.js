@@ -1,5 +1,6 @@
 const LS_CURRENT_SCREEN = "currentScreen";
 const LS_DATA           = "data";
+const LS_RUN_HISTORY    = "runHistory";
 
 const GAP          = "gap";
 const OBSTACLE     = "obstacle";
@@ -40,6 +41,7 @@ let alerts = [{ time: 8*60 - 5, func: shortBeep, finished: false },
 
 let data = {};
 let competitions = {};
+let runHistory = {};
 
 let intervalIdTime = null;
 let timeoutIdNotification = null;
@@ -48,6 +50,10 @@ let url = new URL(window.location.href);
 
 let getTime = function () {
 	return (new Date).getTime() / 1000;
+};
+
+let cloneObject = function (obj) {
+	return JSON.parse(JSON.stringify(obj));
 };
 
 window.onload = function() {
@@ -99,16 +105,22 @@ let setIconsForTimePaused = function () {
 };
 
 let toggleTimeRunning = function () {
+	let time = getTime();
 	if (!isTimeRunning()) { // time currently paused -> start time
-		data["currentRun"]["time"]["timeStartedTimestamp"] = getTime();
+		data["currentRun"]["time"]["timeStartedTimestamp"] = time;
+		if (data["currentRun"]["time"]["timestampRunStart"] === null) {
+			data["currentRun"]["time"]["timestampRunStart"] = time;
+		}
+		data["currentRun"]["time"]["timestampRunEnd"] = null;
 		setIconsForTimeRunning();
 		startAutoUpdatingTime();
 	}
 	else { // time currently running -> pause time
 		data["currentRun"]["time"]["timeOffset"] = data["currentRun"]["time"]["timeOffset"]
-													+ getTime()
+													+ time
 													- data["currentRun"]["time"]["timeStartedTimestamp"];
 		data["currentRun"]["time"]["timeStartedTimestamp"] = null;
+		data["currentRun"]["time"]["timestampRunEnd"] = time;
 		setIconsForTimePaused();
 		stopAutoUpdatingTime();
 		updateTime();
@@ -142,12 +154,13 @@ let resetTime = function () {
 	stopAutoUpdatingTime()
 	data["currentRun"]["time"]["timeOffset"] = 0.0;
 	data["currentRun"]["time"]["timeStartedTimestamp"] = null;
+	data["currentRun"]["time"]["timestampRunStart"] = null;
+	data["currentRun"]["time"]["timestampRunEnd"] = null;
 	saveDataToLocalStorage();
 	
 	resetAlerts();
 	updateTime();
-	document.getElementById("s3-time-start-pause").src = pathImageTimeStart;
-	document.getElementById("s4-time-start-pause").src = pathImageTimeStart;
+	setIconsForTimePaused();
 };
 
 let btnResetTime = function () {
@@ -251,10 +264,6 @@ let btnS1ViewData = function () {
 	changeScreen(1, 8);
 };
 
-let btnS6Submit = function () {
-	changeScreen(6, 7);
-};
-
 let btnS7NewRun = function () {
 	changeScreen(7, 2);
 };
@@ -292,6 +301,9 @@ let addEventListenersForButtons = function () {
 	});
 	document.getElementById("s4-btn-last-checkpoint").addEventListener("click", function(e) {
 		toggleLastCheckpoint();
+	});
+	document.getElementById("s6-btn-submit").addEventListener("click", function(e) {
+		tryToSubmitRun();
 	});
 };
 
@@ -409,6 +421,7 @@ let createNewRun = function (teamname, evacuationPoint) {
 	saveDataToLocalStorage();
 	updateUIElementsForRun();
 	resetAlerts();
+	resetTime();
 };
 
 let onChangeInputTeamname = function () {
@@ -440,6 +453,8 @@ let getNewRun = function () {
 		time: {
 			timeOffset: 0.0,
 			timeStartedTimestamp: null,
+			timestampRunStart: null,
+			timestampRunEnd: null
 		},
 		teamStarted: true,
 		sections: [
@@ -699,6 +714,19 @@ let initializeMissingData = function () {
 	saveDataToLocalStorage();
 };
 
+let loadRunHistoryFromLocalStorage = function () {
+	runHistory = localStorage.getItem(LS_RUN_HISTORY);
+	if (runHistory === null) {
+		runHistory = {};
+	} else {
+		runHistory = JSON.parse(runHistory);
+	}
+};
+
+let saveRunHistoryToLocalStorage = function () {
+	localStorage.setItem(LS_RUN_HISTORY, JSON.stringify(runHistory));
+};
+
 let showInitialScreen = function () {
 	/* shows last opened screen, otherwise first screen */
 	let currentScreen = localStorage.getItem(LS_CURRENT_SCREEN);
@@ -723,7 +751,7 @@ let showInitialScreen = function () {
 };
 
 let showScreen = function (screenNumber) {
-	let initFunction = [null, null, initScreen2, initScreen3, null, initScreen5, initScreen6, null, null][screenNumber];
+	let initFunction = [null, null, initScreen2, initScreen3, null, initScreen5, initScreen6, null, initScreen8][screenNumber];
 	if (initFunction !== null) { initFunction(); }
 	document.getElementById("screen-" + screenNumber).style.display = "";
 };
@@ -836,6 +864,12 @@ let initScreen5 = function () {
 	
 	// left evacuation zone
 	document.getElementById("left-evacuation-zone").checked = data["currentRun"]["leftEvacuationZone"];
+};
+
+let initScreen8 = function () {
+	let txt = JSON.stringify(data["currentRun"]);
+	txt = txt.replace(/,/g, ",<br>");
+	document.getElementById("s8-debug-text").innerHTML = txt;
 };
 
 let onChangeInputTiles = function () {
@@ -960,7 +994,7 @@ let onChangeInputReviewTable = function (domElement, sectionId, scoringElement) 
 	let currentValue = data["currentRun"]["sections"][sectionId-1][scoringElement];
 	let inputValue = +domElement.value;
 	
-	if (scoringElement === "lops" && sectionId !== data["currentRun"]["sections"].length) {
+	if (scoringElement === "lops" && !data["currentRun"]["sections"][sectionId-1]["isAfterLastCheckpoint"]) {
 		inputValue -= 1; // user entered number of tries -> lops = tries - 1
 	}
 	if (inputValue === undefined || inputValue < 0) { return; }
@@ -975,7 +1009,7 @@ let onChangeInputReviewTable = function (domElement, sectionId, scoringElement) 
 		// reset to original value -> delete from originalValues
 		data["currentRun"]["sections"][sectionId-1][scoringElement] = inputValue;
 		delete ovs["section"+sectionId][scoringElement];
-	} else {
+	} else if (inputValue !== currentValue) {
 		// set new value and save original value
 		data["currentRun"]["sections"][sectionId-1][scoringElement] = inputValue;
 		if (originalValue === undefined) {
@@ -1004,7 +1038,18 @@ let updateReviewSummaryOfChanges = function () {
 	let ovs = data["currentRun"]["originalValues"];
 	
 	if (ovs["teamname"] !== undefined) {
-		txt += "<li>Teamname: " + ovs["teamname"] + " &rarr; " + data["currentRun"]["teamname"] + "</li>";
+		let note;
+		if (competitions[data["currentRun"]["competition"]] === undefined ||
+			competitions[data["currentRun"]["competition"]]["teams"] === undefined ) {
+			note = "couldn't load list of teams to check whether team exists or not";
+			setTimeout(updateReviewSummaryOfChanges, 1500);
+		}
+		else if (competitions[data["currentRun"]["competition"]]["teams"].includes(data["currentRun"]["teamname"])) {
+			note = "team already exists";
+		} else {
+			note = "team doesn't exist";
+		}
+		txt += "<li>Teamname: " + ovs["teamname"] + " &rarr; " + data["currentRun"]["teamname"] + " (" + note + ")</li>";
 	}
 	
 	let sections = Object.keys(ovs);
@@ -1016,7 +1061,7 @@ let updateReviewSummaryOfChanges = function () {
 				elems.sort();
 				let section = +sections[i].substring("section".length);
 				txt += "<li>Section " + section;
-				if (section === data["currentRun"]["sections"].length) { txt += " / ALC"; }
+				if (data["currentRun"]["sections"][section-1]["isAfterLastCheckpoint"]) { txt += " / ALC"; }
 				txt += "<ul>";
 				for (let j=0; j<elems.length; j++) {
 					let elem = elems[j];
@@ -1090,6 +1135,70 @@ let onChangeInputReviewComplaints = function () {
 	saveDataToLocalStorage();
 };
 
+let tryToSubmitRun = function () {
+	if (checkWhetherRunCanBeSubmitted() !== true) {
+		return false;
+	}
+	
+	let runSubmit = getRunSubmitObject();
+	// TODO: push to runHistory, send and show result
+};
+
+let checkWhetherRunCanBeSubmitted = function () {
+	let reviewInputs = document.getElementById("review-table").getElementsByTagName("input");
+	for (let i=0; i<reviewInputs.length; i++) {
+		if (+reviewInputs[i].value < +reviewInputs[i].min) {
+			return false;
+		}
+	}
+	let el = document.getElementById("review-after-last-checkpoint-lops");
+	if (+el.value < +el.min) {
+		return false;
+	}
+	
+	if ( (data["currentRun"]["confirmedByTeamCaptain"] &&
+		  document.getElementById("review-radio-ok").checked) ||
+		 (document.getElementById("review-radio-complaints").checked &&
+		  document.getElementById("review-complaints").value !== "")) {
+		return true;
+	}
+	return false;
+};
+
+let getRunSubmitObject = function () {
+	return {
+		referee: cloneObject(data["currentRun"]["referee"]),
+		competition: data["currentRun"],
+		arena: data["currentRun"]["arena"],
+		round: data["currentRun"]["round"],
+		teamname: data["currentRun"]["teamname"],
+		time: {
+			timeRun: Math.min(8*60, Math.round(data["currentRun"]["time"]["timeOffset"])),
+			timestampRunStart: data["currentRun"]["time"]["timestampRunStart"],
+			timestampRunEnd: data["currentRun"]["time"]["timestampRunEnd"],
+		},
+		scoring: {
+			teamStarted: data["currentRun"]["teamStarted"],
+			evacuationPoint: data["currentRun"]["evacuationPoint"],
+			sections: cloneObject(data["currentRun"]["sections"]),
+			victims: cloneObject(data["currentRun"]["victims"]),
+			leftEvacuationZone: data["currentRun"]["leftEvacuationZone"],
+			score: calculateScore(),
+		},
+		comments: data["currentRun"]["comments"],
+		confirmedByTeamCaptain: data["currentRun"]["confirmedByTeamCaptain"],
+		complaints: data["currentRun"]["complaints"],
+		logs: cloneObject(data["currentRun"]["logs"]),
+		logsUndone: cloneObject(data["currentRun"]["logsUndone"]),
+		originalValues: cloneObject(data["currentRun"]["originalValues"]),
+		submits: [],
+	};
+};
+
+let calculateScore = function () {
+	return 0; // TODO
+};
+
 let addScoringElement = function (name) {
 	getCurrentSection()[name+"s"] += 1;
 	writeLog(LOG_ADD_PREFIX + " " + name.toUpperCase());
@@ -1109,8 +1218,8 @@ let undoAddScoringElement = function (name) {
 let removeScoringElement = function (name) {
 	if (getCurrentSection()[name+"s"] > 0) {
 		getCurrentSection()[name+"s"] -= 1;
+		writeLog(LOG_DEL_PREFIX + " " + name.toUpperCase());
 	}
-	writeLog(LOG_DEL_PREFIX + " " + name.toUpperCase());
 	
 	saveDataToLocalStorage();
 	setCaptionForScoringElement(name);
