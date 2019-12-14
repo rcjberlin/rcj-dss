@@ -63,7 +63,7 @@ Example object for a run:
 run = {
     referee: {
         name: "NL",
-        auth: "cnffjbeq"
+        auth: "wbSwFU6tY1c"
     },
     competition: "line",
     arena: "A",
@@ -71,8 +71,10 @@ run = {
     teamname: "pi++",
     evacuationPoint: "high",
     time: {
-        timeOffset: 42.1337,
-        timeStartedTimestamp: 1566147684.692
+        timeOffset: 21.49,
+        timeStartedTimestamp: 1555975800,
+        timestampRunStart: 1554854400,
+        timestampRunEnd: null
     },
     teamStarted: true,
     sections: [
@@ -80,14 +82,14 @@ run = {
             sectionId: 1,
             completedSection: true,
             skippedSection: false,
-            lops: 0,
+            lops: 5,
             isAfterLastCheckpoint: false,
-            gaps: 3,
-            obstacles: 1,
+            gaps: 7,
+            obstacles: 8,
             speedbumps: 2,
-            ramps: 0,
-            intersections: 4,
-            tiles: 15
+            ramps: 1,
+            intersections: 0,
+            tiles: 8
         },
         ...
     ],
@@ -114,11 +116,11 @@ run = {
     originalValues: {
         teamname: "m++",
         section1: {
-            gaps: 4,
-            ramps: 1
+            gaps: 3,
+            ramps: 5
         },
         section2: {
-            ramps: 0,
+            tiles: 8,
             ...
         },
         ...
@@ -149,11 +151,54 @@ Additional notes:
   * edit number of LoPs, number of scoring elements
   * adding sections or deleting sections is not planned
   * old values will be overwritten directly, nevertheless they are stored in an additional object (&rarr; best performance when accessing number of scoring elements)
+  * even the teamname can be changed (not yet sure whether text-input or select-input)
+  * it is still being considered whether the time can also be changed
 
 ### Evaluation
 * runs are submitted to a central system to evaluate all runs and create standings (check out https://github.com/mb/rcj-server)
 * the run-object is modified slightly before submitting so that it can be evaluated easily
+* all runs are saved in a local variable so that runs can be re-submitted if something failed
 
+Example object for a submitted run / run to submit (most parts are similiar to run-object above):
+```
+runSubmit = {
+    referee: {
+        name: "NL",
+        auth: "wbSwFU6tY1c"
+    },
+    competition: "line",
+    arena: "A",
+    round: "2",
+    teamname: "pi++",
+    time: {
+        timeRun: 57.82108,
+        timestampRunStart: 1554854400,
+        timestampRunEnd: 1558665000
+    },
+    scoring: {
+        teamStarted: true,
+        evacuationPoint: "high",
+        sections: [ ... ],
+        victims: {
+            deadVictimsBeforeAllLivingVictims: 3,
+            livingVictims: 2,
+            deadVictimsAfterAllLivingVictims: 0
+        },
+        leftEvacuationZone: false,
+        score: 314
+    },
+    comments: "",
+    confirmedByTeamCaptain: true,
+    complaints: "",
+    logs: [ ... ],
+    logsUndone: [ ... ],
+    originalValues: { ... },
+    submits: [
+        { time: 1143239400, submitStatus: "FAILED" },
+        { time: 1517949900, submitStatus: "SUCCESS" }
+    ]
+}
+```
 
 ### Issues
 If you want to test it locally you may need to make sure that CORS requests are working.
