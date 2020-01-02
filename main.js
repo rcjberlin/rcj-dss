@@ -1145,17 +1145,23 @@ let tryToSubmitRun = async function () {
 	console.log(runSubmit);
 	// TODO: push to runHistory, send and show result
 	
-	let url = "http://192.168.2.120:5000/api/v1/submit_run"; //"https://rcj.pythonanywhere.com/api/v1/submit_run";
+	let host = "http://192.168.2.120:5000";
+	host = "http://localhost:5000";
+	// host = "https://rcj.pythonanywhere.com";
+	let path = "/api/v1/submit_run";
+	
+	let url = host + path;
+	
 	const response = await fetch(url, {
 		method: 'POST',
+		credentials: 'include',
 		headers: {
 			'Content-Type': 'application/json',
 			'Authorization': 'Basic ' + btoa(runSubmit["referee"]["name"] + ":" + runSubmit["referee"]["auth"])
 		},
 		body: JSON.stringify(runSubmit)
 	});
-	const data = await response.json();
-	console.log(data);
+	console.log(response.status);
 };
 
 let checkWhetherRunCanBeSubmitted = function () {
@@ -1182,7 +1188,7 @@ let checkWhetherRunCanBeSubmitted = function () {
 let getRunSubmitObject = function () {
 	return {
 		referee: cloneObject(data["currentRun"]["referee"]),
-		competition: data["currentRun"],
+		competition: data["currentRun"]["competition"], // TODO: add event
 		arena: data["currentRun"]["arena"],
 		round: data["currentRun"]["round"],
 		teamname: data["currentRun"]["teamname"],
