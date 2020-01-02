@@ -352,7 +352,7 @@ let onChangeInputRefereeName = function () {
 };
 
 let onChangeInputRefereePassword = function () {
-	changeLocalData("referee-password", document.getElementById("referee-password").value);
+	changeLocalData("referee-auth", document.getElementById("referee-password").value);
 };
 
 let onChangeInputCompetition = function () {
@@ -443,7 +443,7 @@ let getNewRun = function () {
 	return {
 		referee: {
 			name: data["referee"]["name"],
-			auth: data["referee"]["password"],
+			auth: data["referee"]["auth"],
 		},
 		competition: data["competition"],
 		arena: data["arena"],
@@ -699,7 +699,7 @@ let saveDataToLocalStorage = function () {
 };
 
 let initializeMissingData = function () {
-	let arr = [ { name: "referee", initialValue: { name: "", password: "" } },
+	let arr = [ { name: "referee", initialValue: { name: "", auth: "" } },
 				{ name: "competition", initialValue: "line" },
 				{ name: "arena", initialValue: "" },
 				{ name: "round", initialValue: "" },
@@ -1420,7 +1420,7 @@ let updateUndoButton = function () {
 
 let initializeInputs = function () {
 	document.getElementById("referee-name").value = data["referee"]["name"];
-	document.getElementById("referee-password").value = data["referee"]["password"];
+	document.getElementById("referee-password").value = data["referee"]["auth"];
 	document.getElementById("competition").value = data["competition"];
 	
 	let arena = data["arena"]; // data["arena"] will be overwritten by initializing competition-input with onChangeInputCompetition()
