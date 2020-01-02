@@ -1135,13 +1135,27 @@ let onChangeInputReviewComplaints = function () {
 	saveDataToLocalStorage();
 };
 
-let tryToSubmitRun = function () {
+let tryToSubmitRun = async function () {
+	console.log("trying");
 	if (checkWhetherRunCanBeSubmitted() !== true) {
 		return false;
 	}
 	
 	let runSubmit = getRunSubmitObject();
+	console.log(runSubmit);
 	// TODO: push to runHistory, send and show result
+	
+	let url = "http://192.168.2.120:5000/api/v1/submit_run"; //"https://rcj.pythonanywhere.com/api/v1/submit_run";
+	const response = await fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': 'Basic ' + btoa(runSubmit["referee"]["name"] + ":" + runSubmit["referee"]["auth"])
+		},
+		body: JSON.stringify(runSubmit)
+	});
+	const data = await response.json();
+	console.log(data);
 };
 
 let checkWhetherRunCanBeSubmitted = function () {
