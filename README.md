@@ -195,7 +195,7 @@ runSubmit = {
     originalValues: { ... },
     submits: [
         { time: 1143239400, submitStatus: "FAILED" },
-        { time: 1517949900, submitStatus: "SUCCESS" }
+        { time: 1517949900, submitStatus: "SUCCESSFUL" }
     ]
 }
 ```

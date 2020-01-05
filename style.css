@@ -132,13 +132,26 @@ p.clear {
 .s4-text-scoring-elements-last { font-weight: bold; }
 .s4-text-last-checkpoint { font-size: 4.2vmin; }
 
+.s7-status-box {
+	text-align: center;
+}
+.s7-status-box > * {
+	margin: 10px;
+}
+.s7-status-icon {
+	height: 30vh;
+	max-width: 60vw;
+}
+#s7-error-message-text {
+	font-family: "Courier New", Courier, monospace;
+}
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
-	-webkit-user-select: none; /* Safari */
-	 -khtml-user-select: none; /* Konqueror HTML */
-	   -moz-user-select: none; /* Firefox */
-		-ms-user-select: none; /* Internet Explorer/Edge */
-			user-select: none; /* Non-prefixed version, currently
-								  supported by Chrome and Opera */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }

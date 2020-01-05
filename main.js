@@ -1,3 +1,7 @@
+const DEFAULT_SUBMIT_HOST = "https://rcj.pythonanywhere.com";
+const DEFAULT_SUBMIT_PATH = "/api/v1/submit_run";
+
+
 const LS_CURRENT_SCREEN = "currentScreen";
 const LS_DATA           = "data";
 const LS_RUN_HISTORY    = "runHistory";
@@ -14,6 +18,9 @@ const LOG_SKIP_SECTION     = "SKIP SECTION";
 const LOG_ADD_PREFIX       = "ADD";
 const LOG_DEL_PREFIX       = "DEL";
 const LOG_LAST_CHECKPOINT  = "LAST CHECKPOINT";
+
+const STATUS_SUCCESSFUL = "SUCCESSFUL";
+const STATUS_FAILED     = "FAILED";
 
 const pathImageTimeStart = "img/start.svg";
 const pathImageTimePause = "img/pause.svg";
@@ -265,6 +272,7 @@ let btnS1ViewData = function () {
 };
 
 let btnS7NewRun = function () {
+	document.getElementById("teamname").value = "";
 	changeScreen(7, 2);
 };
 
@@ -338,6 +346,12 @@ let changeLocalData = function (name, value) {
 		if (data["currentRun"] !== null) {
 			data["currentRun"]["referee"][name] = value;
 		}
+	} else if (name.startsWith("submitConfig-")) {
+		name = name.substring(13);
+		data["submitConfig"][name] = value;
+	} else if (name.startsWith("lastSubmitStatus-")) {
+		name = name.substring(17);
+		data["lastSubmitStatus"][name] = value;
 	} else {
 		data[name] = value;
 		if (data["currentRun"] !== null) {
@@ -352,7 +366,7 @@ let onChangeInputRefereeName = function () {
 };
 
 let onChangeInputRefereePassword = function () {
-	changeLocalData("referee-password", document.getElementById("referee-password").value);
+	changeLocalData("referee-auth", document.getElementById("referee-password").value);
 };
 
 let onChangeInputCompetition = function () {
@@ -443,7 +457,7 @@ let getNewRun = function () {
 	return {
 		referee: {
 			name: data["referee"]["name"],
-			auth: data["referee"]["password"],
+			auth: data["referee"]["auth"],
 		},
 		competition: data["competition"],
 		arena: data["arena"],
@@ -699,7 +713,9 @@ let saveDataToLocalStorage = function () {
 };
 
 let initializeMissingData = function () {
-	let arr = [ { name: "referee", initialValue: { name: "", password: "" } },
+	let arr = [ { name: "referee", initialValue: { name: "", auth: "" } },
+				{ name: "submitConfig", initialValue: { host: DEFAULT_SUBMIT_HOST, path: DEFAULT_SUBMIT_PATH } },
+				{ name: "lastSubmitStatus", initialValue: { status: null, response: null, runInfo: null } },
 				{ name: "competition", initialValue: "line" },
 				{ name: "arena", initialValue: "" },
 				{ name: "round", initialValue: "" },
@@ -742,7 +758,7 @@ let showInitialScreen = function () {
 	}
 	
 	// no run exists but a screen which requires a run should be opened -> show first screen
-	if ([3, 4, 5, 6, 7].includes(+currentScreen) && data["currentRun"] === null) {
+	if ([3, 4, 5, 6].includes(+currentScreen) && data["currentRun"] === null) {
 		currentScreen = 1;
 		localStorage.setItem(LS_CURRENT_SCREEN, currentScreen);
 	}
@@ -751,7 +767,7 @@ let showInitialScreen = function () {
 };
 
 let showScreen = function (screenNumber) {
-	let initFunction = [null, null, initScreen2, initScreen3, null, initScreen5, initScreen6, null, initScreen8][screenNumber];
+	let initFunction = [null, null, initScreen2, initScreen3, null, initScreen5, initScreen6, initScreen7, initScreen8][screenNumber];
 	if (initFunction !== null) { initFunction(); }
 	document.getElementById("screen-" + screenNumber).style.display = "";
 };
@@ -864,12 +880,6 @@ let initScreen5 = function () {
 	
 	// left evacuation zone
 	document.getElementById("left-evacuation-zone").checked = data["currentRun"]["leftEvacuationZone"];
-};
-
-let initScreen8 = function () {
-	let txt = JSON.stringify(data["currentRun"]);
-	txt = txt.replace(/,/g, ",<br>");
-	document.getElementById("s8-debug-text").innerHTML = txt;
 };
 
 let onChangeInputTiles = function () {
@@ -1135,13 +1145,42 @@ let onChangeInputReviewComplaints = function () {
 	saveDataToLocalStorage();
 };
 
-let tryToSubmitRun = function () {
+let initScreen7 = function () {
+	// hide all status icons and messages
+	document.getElementById("s7-success").style.display = "none";
+	document.getElementById("s7-fail").style.display = "none";
+	document.getElementById("s7-not-found").style.display = "none";
+
+	if (data["lastSubmitStatus"] &&
+		data["lastSubmitStatus"]["status"] === STATUS_SUCCESSFUL) {
+		document.getElementById("s7-success").style.display = "";
+	} else if (data["lastSubmitStatus"] &&
+				data["lastSubmitStatus"]["status"] === STATUS_FAILED) {
+		document.getElementById("s7-fail").style.display = "";
+		document.getElementById("s7-error-message-text").innerText = JSON.stringify(data["lastSubmitStatus"]["response"]);
+	} else {
+		// found no data about last submit
+		document.getElementById("s7-not-found").style.display = "";
+	}
+}
+
+let initScreen8 = function () {
+	let txt = JSON.stringify(data["currentRun"]);
+	txt = txt.replace(/,/g, ",<br>");
+	document.getElementById("s8-debug-text").innerHTML = txt;
+};
+
+let tryToSubmitRun = async function () {
 	if (checkWhetherRunCanBeSubmitted() !== true) {
 		return false;
 	}
 	
 	let runSubmit = getRunSubmitObject();
-	// TODO: push to runHistory, send and show result
+	
+	// TODO: push to runHistory
+	data["currentRun"] = null;
+	
+	submitRunAndShowResult(runSubmit);
 };
 
 let checkWhetherRunCanBeSubmitted = function () {
@@ -1168,7 +1207,7 @@ let checkWhetherRunCanBeSubmitted = function () {
 let getRunSubmitObject = function () {
 	return {
 		referee: cloneObject(data["currentRun"]["referee"]),
-		competition: data["currentRun"],
+		competition: data["currentRun"]["competition"], // TODO: add event
 		arena: data["currentRun"]["arena"],
 		round: data["currentRun"]["round"],
 		teamname: data["currentRun"]["teamname"],
@@ -1197,6 +1236,38 @@ let getRunSubmitObject = function () {
 
 let calculateScore = function () {
 	return 0; // TODO
+};
+
+let submitRunAndShowResult = function (runSubmit) {
+	let url = data["submitConfig"]["host"] + data["submitConfig"]["path"];
+
+	fetch(url, {
+		method: 'POST',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': 'Basic ' + btoa(runSubmit["referee"]["name"] + ":" + runSubmit["referee"]["auth"])
+		},
+		body: JSON.stringify(runSubmit)
+	})
+	.then((response) => {
+		changeLocalData("lastSubmitStatus-status", STATUS_SUCCESSFUL);
+		changeLocalData("lastSubmitStatus-response", cloneObject(reponse));
+		changeLocalData("lastSubmitStatus-runInfo", null);
+
+		// TODO: update status in runHistory
+	})
+	.catch((error) => {
+		changeLocalData("lastSubmitStatus-status", STATUS_FAILED);
+		changeLocalData("lastSubmitStatus-response", error+"");
+		changeLocalData("lastSubmitStatus-runInfo", null);
+
+		// TODO: update status in runHistory
+	})
+	.finally(() => {
+		// the submit result will be displayed by init function of screen 7 automatically
+		changeScreen(6, 7);
+	});
 };
 
 let addScoringElement = function (name) {
@@ -1406,7 +1477,7 @@ let updateUndoButton = function () {
 
 let initializeInputs = function () {
 	document.getElementById("referee-name").value = data["referee"]["name"];
-	document.getElementById("referee-password").value = data["referee"]["password"];
+	document.getElementById("referee-password").value = data["referee"]["auth"];
 	document.getElementById("competition").value = data["competition"];
 	
 	let arena = data["arena"]; // data["arena"] will be overwritten by initializing competition-input with onChangeInputCompetition()

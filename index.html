@@ -600,7 +600,21 @@
 			<div class="screen-container">
 				<form>
 					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
-					Screen 7
+					<h2>Result of Submit</h2>
+					<div id="s7-success" class="s7-status-box">
+						<img id="s7-img-successful" src="img/successful.svg" alt="Successful" class="s7-status-icon" />
+						<p>Submitted run sucessfully!</p>
+						<p>You will still find it in the run history.</p>
+					</div>
+					<div id="s7-fail" class="s7-status-box">
+						<img id="s7-img-failed" src="img/failed.svg" alt="Failed" class="s7-status-icon" draggable="false" />
+						<p>An error occurred while submitting the run.</p>
+						<p id="s7-error-message-text"></p>
+						<p>However the run is stored in the run history and you can try to submit it again later.</p>
+					</div>
+					<div id="s7-not-found" class="s7-status-box">
+						<p>Can't show status of submit.</p>
+					</div>
 				</form>
 				
 				<div class="nav-footer">
