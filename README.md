@@ -166,7 +166,7 @@ runSubmit = {
         name: "NL",
         auth: "wbSwFU6tY1c"
     },
-    competition: "line",
+    competition: "2020-berlin-line",
     arena: "A",
     round: "2",
     teamname: "pi++",

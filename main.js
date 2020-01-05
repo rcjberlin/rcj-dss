@@ -1,6 +1,7 @@
 const DEFAULT_SUBMIT_HOST = "https://rcj.pythonanywhere.com";
 const DEFAULT_SUBMIT_PATH = "/api/v1/submit_run";
 
+const DEFAULT_EVENT = "2020-berlin";
 
 const LS_CURRENT_SCREEN = "currentScreen";
 const LS_DATA           = "data";
@@ -717,6 +718,7 @@ let initializeMissingData = function () {
 				{ name: "submitConfig", initialValue: { host: DEFAULT_SUBMIT_HOST, path: DEFAULT_SUBMIT_PATH } },
 				{ name: "lastSubmitStatus", initialValue: { status: null, response: null, runInfo: null } },
 				{ name: "competition", initialValue: "line" },
+				{ name: "event", initialValue: DEFAULT_EVENT },
 				{ name: "arena", initialValue: "" },
 				{ name: "round", initialValue: "" },
 				{ name: "currentRun", initialValue: null }];
@@ -1207,7 +1209,7 @@ let checkWhetherRunCanBeSubmitted = function () {
 let getRunSubmitObject = function () {
 	return {
 		referee: cloneObject(data["currentRun"]["referee"]),
-		competition: data["currentRun"]["competition"], // TODO: add event
+		competition: data["event"] + "-" + data["currentRun"]["competition"],
 		arena: data["currentRun"]["arena"],
 		round: data["currentRun"]["round"],
 		teamname: data["currentRun"]["teamname"],
