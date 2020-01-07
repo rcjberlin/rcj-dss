@@ -120,6 +120,10 @@ p.clear {
 .img-border {
 	background: white;
 }
+.img-flip-x {
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+}
 .s4-text-section-try { font-size: 3vmin; }
 .s4-text-section-try-value { font-size: 9vmin; }
 .s4-text-time { font-size: 5vmin; }
