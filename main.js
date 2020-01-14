@@ -26,6 +26,23 @@ const STATUS_FAILED     = "FAILED";
 const pathImageTimeStart = "img/start.svg";
 const pathImageTimePause = "img/pause.svg";
 
+const POINTS_TILE_FIRST_TRY  = 5;
+const POINTS_TILE_SECOND_TRY = 3;
+const POINTS_TILE_THIRD_TRY  = 1;
+const POINTS_GAP          = 10;
+const POINTS_OBSTACLE     = 10;
+const POINTS_SPEEDBUMP    =  5;
+const POINTS_RAMP         =  5;
+const POINTS_INTERSECTION = 15;
+const POINTS_LOW_VICTIM_ALIVE   = 30;
+const POINTS_LOW_VICTIM_DEAD    = 20;
+const POINTS_HIGH_VICTIM_ALIVE  = 40;
+const POINTS_HIGH_VICTIM_DEAD   = 30;
+const POINTS_VICTIM_DEAD_BEFORE =  5;
+const POINTS_DEDUCTION_LOP      =  5; // per victim
+const POINTS_FINDING_LINE       = 20;
+const POINTS_ENTRY_VICTIM       = 40;
+
 const frequencyShortAlert = 600;
 const frequencyLongAlert  = 800;
 const durationShortAlert = 200;
@@ -1224,7 +1241,7 @@ let getRunSubmitObject = function () {
 			sections: cloneObject(data["currentRun"]["sections"]),
 			victims: cloneObject(data["currentRun"]["victims"]),
 			leftEvacuationZone: data["currentRun"]["leftEvacuationZone"],
-			score: calculateScore(),
+			score: calculateScore(data["currentRun"]),
 		},
 		comments: data["currentRun"]["comments"],
 		confirmedByTeamCaptain: data["currentRun"]["confirmedByTeamCaptain"],
@@ -1236,8 +1253,67 @@ let getRunSubmitObject = function () {
 	};
 };
 
-let calculateScore = function () {
-	return 0; // TODO
+let calculateScore = function (run) {
+	let score = 0;
+
+	if (!run["teamStarted"]) {
+		return 0;
+	} else {
+		score += POINTS_TILE_FIRST_TRY;
+	}
+
+	for (let section of run["sections"]) {
+		if (section["completedSection"]) {
+			if (section["lops"] === 0) {
+				score += section["tiles"] * POINTS_TILE_FIRST_TRY;
+			} else if (section["lops"] === 1) {
+				score += section["tiles"] * POINTS_TILE_SECOND_TRY;
+			} else if (section["lops"] === 2) {
+				score += section["tiles"] * POINTS_TILE_THIRD_TRY;
+			}
+		}
+
+		score += section["gaps"]          * POINTS_GAP;
+		score += section["obstacles"]     * POINTS_OBSTACLE;
+		score += section["speedbumps"]    * POINTS_SPEEDBUMP;
+		score += section["ramps"]         * POINTS_RAMP;
+		score += section["intersections"] * POINTS_INTERSECTION;
+	}
+
+	let lopsAfterLastCheckpoint = 0;
+	if (run["sections"][run["sections"].length-1]["isAfterLastCheckpoint"]) {
+		// if last section is not behind last checkpoint there will also be no victims rescued
+		//  -> can safely calculate deduction based on last section
+		lopsAfterLastCheckpoint = run["sections"][run["sections"].length-1]["lops"];
+	}
+	let deduction = lopsAfterLastCheckpoint * POINTS_DEDUCTION_LOP;
+
+	if (run["competition"] === "entry") {
+		score += run["victims"]["livingVictims"] * POINTS_ENTRY_VICTIM;
+	} else if (run["competition"] === "line") {
+		let pointsVictimAlive = null, pointsVictimDead = null;
+		if (run["evacuationPoint"] === "low") {
+			pointsVictimAlive = POINTS_LOW_VICTIM_ALIVE;
+			pointsVictimDead = POINTS_LOW_VICTIM_DEAD;
+		} else if (run["evacuationPoint"] === "high") {
+			pointsVictimAlive = POINTS_HIGH_VICTIM_ALIVE;
+			pointsVictimDead = POINTS_HIGH_VICTIM_DEAD;
+		}
+		let pointsVictimDeadBefore = POINTS_VICTIM_DEAD_BEFORE;
+
+		score += run["victims"]["livingVictims"]
+				* Math.max(0, pointsVictimAlive - deduction);
+		score += run["victims"]["deadVictimsAfterAllLivingVictims"]
+				* Math.max(0, pointsVictimDead - deduction);
+		score += run["victims"]["deadVictimsBeforeAllLivingVictims"]
+				* Math.max(0, pointsVictimDeadBefore - deduction);
+	}
+
+	if (run["competition"] === "line" && run["leftEvacuationZone"]) {
+		score += POINTS_FINDING_LINE;
+	}
+
+	return score;
 };
 
 let submitRunAndShowResult = function (runSubmit) {
