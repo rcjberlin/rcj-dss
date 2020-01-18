@@ -632,10 +632,52 @@
 			<div class="screen-container">
 				<form>
 					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
-					Screen 8
-					<br>
 					<button onclick="fiveSecondCountdown()">Play 5-Second-Test-Countdown</button>
-					<p id="s8-debug-text"></p>
+					
+					<h2>Settings</h2>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="event" class="table-layout-cell-left">Event</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="text" id="event" class="table-layout-cell-right" />
+						</div>
+						<p class="clear" />
+					</div>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="submit-host" class="table-layout-cell-left">Submit Host</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="text" id="submit-host" class="table-layout-cell-right" />
+						</div>
+						<p class="clear" />
+					</div>
+					<div>
+						<div class="table-layout-column-left">
+							<label for="submit-path" class="table-layout-cell-left">Submit Path</label>
+						</div>
+						<div class="table-layout-column-right">
+							<input type="text" id="submit-path" class="table-layout-cell-right" />
+						</div>
+						<p class="clear" />
+					</div>
+					<div>
+						<div class="table-layout-column-left">
+							<p class="table-layout-cell-left"></p>
+						</div>
+						<div class="table-layout-column-right">
+							<button onclick="resetS8SettingsToDefault()">Reset to Default</button>
+						</div>
+						<p class="clear" />
+					</div>
+					
+					<h2>Current Run</h2>
+					<button id="btn-s8-current-run" onclick="btnS8ToggleCurrentRun()">Show Current Run</button>
+					<p id="s8-current-run" style="display: none;"></p>
+					
+					<h2>Run History</h2>
+					<p id="s8-run-history"></p>
 				</form>
 				
 				<div class="nav-footer">

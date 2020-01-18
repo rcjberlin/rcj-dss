@@ -356,6 +356,10 @@ let addEventListenersForInputs = function () {
 	document.getElementById("review-radio-ok").addEventListener("change", onChangeInputReviewOk);
 	document.getElementById("review-radio-complaints").addEventListener("change", onChangeInputReviewRadioComplaints);
 	document.getElementById("review-complaints").addEventListener("change", onChangeInputReviewComplaints);
+	
+	document.getElementById("event").addEventListener("change", onChangeInputSettingsEvent);
+	document.getElementById("submit-host").addEventListener("change", onChangeInputSettingsSubmitHost);
+	document.getElementById("submit-path").addEventListener("change", onChangeInputSettingsSubmitPath);
 };
 
 let changeLocalData = function (name, value) {
@@ -1185,10 +1189,50 @@ let initScreen7 = function () {
 }
 
 let initScreen8 = function () {
-	let txt = JSON.stringify(data["currentRun"]);
-	txt = txt.replace(/,/g, ",<br>");
-	document.getElementById("s8-debug-text").innerHTML = txt;
+	updateS8SettingsInputs();
 };
+
+let updateS8SettingsInputs = function () {
+	document.getElementById("event").value = data["event"];
+	document.getElementById("submit-host").value = data["submitConfig"]["host"];
+	document.getElementById("submit-path").value = data["submitConfig"]["path"];
+};
+
+let resetS8SettingsToDefault = function () {
+	// TODO: confirm()?
+	changeLocalData("event", DEFAULT_EVENT);
+	changeLocalData("submitConfig-host", DEFAULT_SUBMIT_HOST);
+	changeLocalData("submitConfig-path", DEFAULT_SUBMIT_PATH);
+
+	updateS8SettingsInputs();
+};
+
+let onChangeInputSettingsEvent = function () {
+	changeLocalData("event", document.getElementById("event").value);
+};
+
+let onChangeInputSettingsSubmitHost = function () {
+	changeLocalData("submitConfig-host", document.getElementById("submit-host").value);
+};
+
+let onChangeInputSettingsSubmitPath = function () {
+	changeLocalData("submitConfig-path", document.getElementById("submit-path").value);
+};
+
+let btnS8ToggleCurrentRun = function () {
+	if (document.getElementById("s8-current-run").style.display === "") {
+		// currently displayed -> hide
+		document.getElementById("s8-current-run").style.display = "none";
+		document.getElementById("btn-s8-current-run").innerText = "Show Current Run";
+	} else {
+		// currently hidden -> update and show
+		let txt = JSON.stringify(data["currentRun"]);
+		txt = txt.replace(/,/g, ",<br>");
+		document.getElementById("s8-current-run").innerHTML = txt;
+		document.getElementById("s8-current-run").style.display = "";
+		document.getElementById("btn-s8-current-run").innerText = "Hide Current Run";
+	}
+}
 
 let getRunIdentifier = function (run) {
 	return run["competition"] + "-" + run["round"] + "-" + run["arena"] + "-" + run["teamname"];
