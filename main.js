@@ -84,6 +84,7 @@ let cloneObject = function (obj) {
 window.onload = function() {
 	loadCompetitionInfo();
 	loadDataFromLocalStorage();
+	loadRunHistoryFromLocalStorage();
 	initializeMissingData();
 	
 	adjustSizeOfMainUI();
@@ -1189,16 +1190,23 @@ let initScreen8 = function () {
 	document.getElementById("s8-debug-text").innerHTML = txt;
 };
 
+let getRunIdentifier = function (run) {
+	return run["competition"] + "-" + run["round"] + "-" + run["arena"] + "-" + run["teamname"];
+};
+
 let tryToSubmitRun = async function () {
 	if (checkWhetherRunCanBeSubmitted() !== true) {
 		return false;
 	}
-	
+
 	let runSubmit = getRunSubmitObject();
-	
-	// TODO: push to runHistory
+
+	runHistory[getRunIdentifier(runSubmit)] = runSubmit;
+	saveRunHistoryToLocalStorage();
+
 	data["currentRun"] = null;
-	
+	saveDataToLocalStorage();
+
 	submitRunAndShowResult(runSubmit);
 };
 
@@ -1318,6 +1326,7 @@ let calculateScore = function (run) {
 
 let submitRunAndShowResult = function (runSubmit) {
 	let url = data["submitConfig"]["host"] + data["submitConfig"]["path"];
+	let runId = getRunIdentifier(runSubmit);
 
 	fetch(url, {
 		method: 'POST',
@@ -1331,16 +1340,16 @@ let submitRunAndShowResult = function (runSubmit) {
 	.then((response) => {
 		changeLocalData("lastSubmitStatus-status", STATUS_SUCCESSFUL);
 		changeLocalData("lastSubmitStatus-response", cloneObject(reponse));
-		changeLocalData("lastSubmitStatus-runInfo", null);
+		changeLocalData("lastSubmitStatus-runInfo", runId);
 
-		// TODO: update status in runHistory
+		runHistory[runId]["submits"].push({ time: getTime(), submitStatus: STATUS_SUCCESSFUL });
 	})
 	.catch((error) => {
 		changeLocalData("lastSubmitStatus-status", STATUS_FAILED);
 		changeLocalData("lastSubmitStatus-response", error+"");
-		changeLocalData("lastSubmitStatus-runInfo", null);
+		changeLocalData("lastSubmitStatus-runInfo", runId);
 
-		// TODO: update status in runHistory
+		runHistory[runId]["submits"].push({ time: getTime(), submitStatus: STATUS_FAILED });
 	})
 	.finally(() => {
 		// the submit result will be displayed by init function of screen 7 automatically
