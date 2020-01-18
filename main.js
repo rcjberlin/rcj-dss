@@ -190,7 +190,6 @@ let resetTime = function () {
 };
 
 let btnResetTime = function () {
-	// TODO: confirm() leads to a page-reload sometimes
 	if (confirm("Are you sure to reset the time? You can't undo this step.")) {
 		resetTime();
 	}
