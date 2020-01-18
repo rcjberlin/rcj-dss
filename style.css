@@ -58,6 +58,9 @@ input.table-layout-cell-right[type="number"] {
 label.table-layout-cell-left, p.table-layout-cell-left, span.table-layout-cell-left {
 	margin-bottom: 0.25em;
 }
+.table-layout-vertical-space-above {
+	margin-top: 2vh;
+}
 textarea {
 	resize: none;
 	height: 3.5em;
