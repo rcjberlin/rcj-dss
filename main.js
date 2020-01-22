@@ -3,9 +3,9 @@ const DEFAULT_SUBMIT_PATH = "/api/v1/submit_run";
 
 const DEFAULT_EVENT = "2020-berlin";
 
-const LS_CURRENT_SCREEN = "currentScreen";
-const LS_DATA           = "data";
-const LS_RUN_HISTORY    = "runHistory";
+const LS_CURRENT_SCREEN = "rcj-currentScreen";
+const LS_DATA           = "rcj-data";
+const LS_RUN_HISTORY    = "rcj-runHistory";
 
 const GAP          = "gap";
 const OBSTACLE     = "obstacle";
