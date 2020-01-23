@@ -618,6 +618,9 @@
 					<div id="s7-not-found" class="s7-status-box">
 						<p>Can't show status of submit.</p>
 					</div>
+					<div id="s7-run-id-box" class="s7-status-box">
+						<p>Run ID: <span id="s7-run-id"></span></p>
+					</div>
 				</form>
 				
 				<div class="nav-footer">
@@ -632,6 +635,12 @@
 			<div class="screen-container">
 				<form>
 					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
+					<div class="nav-footer">
+						<button type="button" onclick="btnS8Setup()">Setup</button>
+						<button type="button" onclick="btnS8NewRun()">New Run</button>
+					</div>
+					
+					<h2>Testing</h2>
 					<button type="button" onclick="fiveSecondCountdown()">Play 5-Second-Test-Countdown</button>
 					
 					<h2>Settings</h2>
@@ -677,7 +686,10 @@
 					<p id="s8-current-run" style="display: none;"></p>
 					
 					<h2>Run History</h2>
-					<p id="s8-run-history"></p>
+					<button type="button">Export Run History</button>
+					<button type="button">Submit All Failed Again</button>
+					
+					<p id="s8-run-history" style="margin-top: 2vh;"></p>
 				</form>
 				
 				<div class="nav-footer">

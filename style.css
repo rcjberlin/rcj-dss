@@ -149,8 +149,11 @@ p.clear {
 	height: 30vh;
 	max-width: 60vw;
 }
-#s7-error-message-text {
+#s7-error-message-text, #s7-run-id {
 	font-family: "Courier New", Courier, monospace;
+}
+.s8-run-history-icon {
+	width: 1.2em;
 }
 
 .noselect {

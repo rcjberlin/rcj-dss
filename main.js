@@ -1195,10 +1195,18 @@ let initScreen7 = function () {
 		// found no data about last submit
 		document.getElementById("s7-not-found").style.display = "";
 	}
+
+	if (data["lastSubmitStatus"]) {
+		document.getElementById("s7-run-id").innerText = data["lastSubmitStatus"]["runInfo"];
+		document.getElementById("s7-run-id-box").style.display = "";
+	} else {
+		document.getElementById("s7-run-id-box").style.display = "none";
+	}
 }
 
 let initScreen8 = function () {
 	updateS8SettingsInputs();
+	initS8RunHistoryList();
 };
 
 let updateS8SettingsInputs = function () {
@@ -1237,11 +1245,46 @@ let btnS8ToggleCurrentRun = function () {
 		// currently hidden -> update and show
 		let txt = JSON.stringify(data["currentRun"]);
 		txt = txt.replace(/,/g, ",<br>");
+		txt = txt.replace(/"auth":".*"\},/g, "\"auth\": ---},");
 		document.getElementById("s8-current-run").innerHTML = txt;
 		document.getElementById("s8-current-run").style.display = "";
 		document.getElementById("btn-s8-current-run").innerText = "Hide Current Run";
 	}
-}
+};
+
+let initS8RunHistoryList = function () {
+	let el = document.getElementById("s8-run-history");
+	el.innerHTML = "";
+
+	for (let runId in runHistory) {
+		// check whether run has been submitted successful (one successful submit in list of submits)
+		let successful = false;
+		for (let s of runHistory[runId]["submits"]) {
+			if (s.submitStatus === STATUS_SUCCESSFUL) {
+				successful = true;
+				break;
+			}
+		}
+
+		let path = "", alt = "";
+		if (successful) {
+			path = "img/successful.svg";
+			alt = "Successful";
+		} else {
+			path = "img/failed.svg";
+			alt = "Failed";
+		}
+		el.innerHTML += '<img src="{path}" alt="{alt}" class="s8-run-history-icon" /> '
+							.replace("{path}", path)
+							.replace("{alt}", alt);
+		el.innerHTML += runId;
+		el.innerHTML += "<br>";
+	}
+
+	if (el.innerHTML === "") {
+		el.innerHTML = "No Runs in Run History";
+	}
+};
 
 let getRunIdentifier = function (run) {
 	return run["competition"] + "-" + run["round"] + "-" + run["arena"] + "-" + run["teamname"];
@@ -1392,7 +1435,7 @@ let submitRunAndShowResult = function (runSubmit) {
 	})
 	.then((response) => {
 		changeLocalData("lastSubmitStatus-status", STATUS_SUCCESSFUL);
-		changeLocalData("lastSubmitStatus-response", cloneObject(reponse));
+		changeLocalData("lastSubmitStatus-response", cloneObject(response));
 		changeLocalData("lastSubmitStatus-runInfo", runId);
 
 		runHistory[runId]["submits"].push({ time: getTime(), submitStatus: STATUS_SUCCESSFUL });
