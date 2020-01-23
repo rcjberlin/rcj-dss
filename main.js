@@ -903,6 +903,16 @@ let initScreen5 = function () {
 	
 	// left evacuation zone
 	document.getElementById("left-evacuation-zone").checked = data["currentRun"]["leftEvacuationZone"];
+	
+	// disable victims and left-evacuation-zone if not after-last-checkpoint
+	let elementIds = ["victims-dead-before", "victims-alive", "victims-dead-after", "left-evacuation-zone"];
+	let alc = false;
+	if (data["currentRun"]["sections"][data["currentRun"]["sections"].length-1].isAfterLastCheckpoint) {
+		alc = true;
+	}
+	for (let elementId of elementIds) {
+		document.getElementById(elementId).disabled = !alc;
+	}
 };
 
 let onChangeInputTiles = function () {
@@ -1279,7 +1289,7 @@ let getRunSubmitObject = function () {
 		referee: cloneObject(data["currentRun"]["referee"]),
 		competition: data["event"] + "-" + data["currentRun"]["competition"],
 		arena: data["currentRun"]["arena"],
-		round: data["currentRun"]["round"],
+		round: data["currentRun"]["round"].replace(/^\D+/g, ""), // replace all non-digits with empty string
 		teamname: data["currentRun"]["teamname"],
 		time: {
 			timeRun: Math.min(8*60, Math.round(data["currentRun"]["time"]["timeOffset"])),
