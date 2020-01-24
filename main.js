@@ -1286,6 +1286,22 @@ let initS8RunHistoryList = function () {
 	}
 };
 
+let btnS8ExportRunHistory = function () {
+	downloadJSON(runHistory, "runHistory-"+(new Date()).toISOString()+".json");
+};
+
+let downloadJSON = function (object, filename) {
+	let hiddenElement = document.createElement("a");
+	hiddenElement.href = "data:text/json;charset=utf-8," + encodeURI(JSON.stringify(object));
+	hiddenElement.target = "_blank";
+	hiddenElement.download = filename;
+	hiddenElement.click();
+};
+
+let btnS8SubmitAllFailedAgain = function () {
+	
+};
+
 let getRunIdentifier = function (run) {
 	return run["competition"] + "-" + run["round"] + "-" + run["arena"] + "-" + run["teamname"];
 };
