@@ -170,11 +170,9 @@ runSubmit = {
     arena: "A",
     round: "2",
     teamname: "pi++",
-    time: {
-        timeRun: 57.82108,
-        timestampRunStart: 1554854400,
-        timestampRunEnd: 1558665000
-    },
+    time_duration: 57.82108,
+    time_start: 1554854400,
+    time_end: 1558665000,
     scoring: {
         teamStarted: true,
         evacuationPoint: "high",
@@ -188,7 +186,7 @@ runSubmit = {
         score: 314
     },
     comments: "",
-    confirmedByTeamCaptain: true,
+    confirmed: true,
     complaints: "",
     logs: [ ... ],
     logsUndone: [ ... ],
