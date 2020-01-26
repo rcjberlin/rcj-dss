@@ -1350,11 +1350,9 @@ let getRunSubmitObject = function () {
 		arena: data["currentRun"]["arena"],
 		round: data["currentRun"]["round"].replace(/^\D+/g, ""), // replace all non-digits with empty string
 		teamname: data["currentRun"]["teamname"],
-		time: {
-			timeRun: Math.min(8*60, Math.round(data["currentRun"]["time"]["timeOffset"])),
-			timestampRunStart: data["currentRun"]["time"]["timestampRunStart"],
-			timestampRunEnd: data["currentRun"]["time"]["timestampRunEnd"],
-		},
+		time_duration: Math.min(8*60, Math.round(data["currentRun"]["time"]["timeOffset"])),
+		time_start: data["currentRun"]["time"]["timestampRunStart"],
+		time_end: data["currentRun"]["time"]["timestampRunEnd"],
 		scoring: {
 			teamStarted: data["currentRun"]["teamStarted"],
 			evacuationPoint: data["currentRun"]["evacuationPoint"],
@@ -1364,7 +1362,7 @@ let getRunSubmitObject = function () {
 			score: calculateScore(data["currentRun"]),
 		},
 		comments: data["currentRun"]["comments"],
-		confirmedByTeamCaptain: data["currentRun"]["confirmedByTeamCaptain"],
+		confirmed: data["currentRun"]["confirmedByTeamCaptain"],
 		complaints: data["currentRun"]["complaints"],
 		logs: cloneObject(data["currentRun"]["logs"]),
 		logsUndone: cloneObject(data["currentRun"]["logsUndone"]),
