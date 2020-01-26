@@ -1257,14 +1257,7 @@ let initS8RunHistoryList = function () {
 	el.innerHTML = "";
 
 	for (let runId in runHistory) {
-		// check whether run has been submitted successful (one successful submit in list of submits)
-		let successful = false;
-		for (let s of runHistory[runId]["submits"]) {
-			if (s.submitStatus === STATUS_SUCCESSFUL) {
-				successful = true;
-				break;
-			}
-		}
+		let successful = hasRunBeenSubmittedSuccesfully(runId);
 
 		let path = "", alt = "";
 		if (successful) {
@@ -1286,6 +1279,15 @@ let initS8RunHistoryList = function () {
 	}
 };
 
+let hasRunBeenSubmittedSuccesfully = function (runId) {
+	for (let s of runHistory[runId]["submits"]) {
+		if (s.submitStatus === STATUS_SUCCESSFUL) {
+			return true;
+		}
+	}
+	return false;
+};
+
 let btnS8ExportRunHistory = function () {
 	downloadJSON(runHistory, "runHistory-"+(new Date()).toISOString()+".json");
 };
@@ -1299,7 +1301,12 @@ let downloadJSON = function (object, filename) {
 };
 
 let btnS8SubmitAllFailedAgain = function () {
-	
+	for (let runId in runHistory) {
+		let successful = hasRunBeenSubmittedSuccesfully(runId);
+		
+		if (!successful) {
+			//TODO: resubmitRun 
+		}
 };
 
 let getRunIdentifier = function (run) {
