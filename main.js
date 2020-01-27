@@ -1307,6 +1307,7 @@ let btnS8SubmitAllFailedAgain = function () {
 		if (!successful) {
 			//TODO: resubmitRun 
 		}
+	}
 };
 
 let getRunIdentifier = function (run) {
