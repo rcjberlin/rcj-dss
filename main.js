@@ -1356,11 +1356,11 @@ let getRunSubmitObject = function () {
 		referee: cloneObject(data["currentRun"]["referee"]),
 		competition: data["event"] + "-" + data["currentRun"]["competition"],
 		arena: data["currentRun"]["arena"],
-		round: data["currentRun"]["round"].replace(/^\D+/g, ""), // replace all non-digits with empty string
+		round: Number(data["currentRun"]["round"].replace(/^\D+/g, "")), // replace all non-digits with empty string and cast to int
 		teamname: data["currentRun"]["teamname"],
 		time_duration: Math.min(8*60, Math.round(data["currentRun"]["time"]["timeOffset"])),
-		time_start: data["currentRun"]["time"]["timestampRunStart"],
-		time_end: data["currentRun"]["time"]["timestampRunEnd"],
+		time_start: Math.round(data["currentRun"]["time"]["timestampRunStart"]*1000), // convert unix timestamps back to ms
+		time_end: Math.round(data["currentRun"]["time"]["timestampRunEnd"]*1000),
 		scoring: {
 			teamStarted: data["currentRun"]["teamStarted"],
 			evacuationPoint: data["currentRun"]["evacuationPoint"],
@@ -1455,12 +1455,17 @@ let submitRunAndShowResult = function (runSubmit) {
 		},
 		body: JSON.stringify(runSubmit)
 	})
-	.then((response) => {
-		changeLocalData("lastSubmitStatus-status", STATUS_SUCCESSFUL);
-		changeLocalData("lastSubmitStatus-response", cloneObject(response));
-		changeLocalData("lastSubmitStatus-runInfo", runId);
+	.then(async function (response) {
+		let text = await response.text();
+		if (response.status === 200 || response.status === 201) {
+			changeLocalData("lastSubmitStatus-status", STATUS_SUCCESSFUL);
+			changeLocalData("lastSubmitStatus-response", text);
+			changeLocalData("lastSubmitStatus-runInfo", runId);
 
-		runHistory[runId]["submits"].push({ time: getTime(), submitStatus: STATUS_SUCCESSFUL });
+			runHistory[runId]["submits"].push({ time: getTime(), submitStatus: STATUS_SUCCESSFUL });
+		} else {
+			throw text;
+		}
 	})
 	.catch((error) => {
 		changeLocalData("lastSubmitStatus-status", STATUS_FAILED);
