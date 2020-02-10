@@ -81,6 +81,13 @@ let cloneObject = function (obj) {
 	return JSON.parse(JSON.stringify(obj));
 };
 
+let pad = function (value, length, character) {
+	if (length === undefined) { length = 2; }
+	if (character === undefined) { character = 0; }
+	value = String(value);
+	return String(character).repeat(Math.max(0, length-value.length)) + value;
+};
+
 window.onload = function() {
 	loadCompetitionInfo();
 	loadDataFromLocalStorage();
@@ -167,13 +174,19 @@ let getRunTimeInSeconds = function () {
 
 let updateTime = function () {
 	checkForAlerts();
+	let timeString = getRunTimeAsString();
+	document.getElementById("s3-time").innerText = timeString;
+	document.getElementById("s4-time").innerText = timeString;
+	document.getElementById("time-modal-original-time").innerText = timeString;
+};
+
+let getRunTimeAsString = function () {
 	let time = getRunTimeInSeconds();
 	let minutes = Math.floor(time/60);
 	let seconds = Math.floor(time%60);
 	minutes = (minutes < 10 ? minutes : (minutes > 15 ? "X" : minutes.toString(16)));
 	seconds = (seconds < 10 ? "0" : "") + seconds;
-	document.getElementById("s3-time").innerHTML = minutes + ":" + seconds;
-	document.getElementById("s4-time").innerHTML = minutes + ":" + seconds;
+	return minutes + ":" + seconds;
 };
 
 let resetTime = function () {
@@ -192,7 +205,16 @@ let resetTime = function () {
 let btnResetTime = function () {
 	if (confirm("Are you sure to reset the time? You can't undo this step.")) {
 		resetTime();
+		hideTimeModal();
 	}
+};
+
+let btnSetTime = function () {
+	let time = getRunTimeInSeconds();
+	document.getElementById("time-modal-minutes").value = Math.floor(time/60);
+	document.getElementById("time-modal-seconds").value = Math.floor(time%60);
+	makeTimeDoubleDigit();
+	showTimeModal();
 };
 
 let initializeTime = function () {
@@ -331,6 +353,17 @@ let addEventListenersForButtons = function () {
 	document.getElementById("s6-btn-submit").addEventListener("click", function(e) {
 		tryToSubmitRun();
 	});
+	document.getElementById("time-modal-close").addEventListener("click", function(e) {
+		hideTimeModal();
+	});
+	window.onclick = function(event) {
+		if (event.target === document.getElementById("time-modal")) {
+			hideTimeModal();
+		}
+	};
+	document.getElementById("time-modal-save").addEventListener("click", function(e) {
+		saveTimeFromTimeModal();
+	});
 };
 
 let addEventListenersForInputs = function () {
@@ -359,6 +392,133 @@ let addEventListenersForInputs = function () {
 	document.getElementById("event").addEventListener("change", onChangeInputSettingsEvent);
 	document.getElementById("submit-host").addEventListener("change", onChangeInputSettingsSubmitHost);
 	document.getElementById("submit-path").addEventListener("change", onChangeInputSettingsSubmitPath);
+
+	let tmm = document.getElementById("time-modal-minutes");
+	tmm.addEventListener("input", onInputTimeModalMinutes);
+	tmm.addEventListener("change", makeTimeDoubleDigit);
+	tmm.addEventListener("keydown", function (e) {
+		if (e.key === "ArrowUp") { onClickTimeModalMinutesPlus(); }
+		else if (e.key === "ArrowDown") { onClickTimeModalMinutesMinus(); }
+	});
+	tmm.parentNode.parentNode.childNodes[1].addEventListener("click", onClickTimeModalMinutesPlus);
+	tmm.parentNode.parentNode.childNodes[5].addEventListener("click", onClickTimeModalMinutesMinus);
+	let tms = document.getElementById("time-modal-seconds");
+	tms.addEventListener("input", onInputTimeModalSeconds);
+	tms.addEventListener("change", makeTimeDoubleDigit);
+	tms.addEventListener("keydown", function (e) {
+		if (e.key === "ArrowUp") { onClickTimeModalSecondsPlus(); }
+		else if (e.key === "ArrowDown") { onClickTimeModalSecondsMinus(); }
+	});
+	tms.parentNode.parentNode.childNodes[1].addEventListener("click", onClickTimeModalSecondsPlus);
+	tms.parentNode.parentNode.childNodes[5].addEventListener("click", onClickTimeModalSecondsMinus);
+	makeTimeDoubleDigit();
+};
+
+let onInputTimeModalMinutes = function (e) {
+	let el = document.getElementById("time-modal-minutes");
+	if (e.inputType === "insertText" && !["0","1","2","3","4","5","6","7","8","9"].includes(e.data)) {
+		let value = "";
+		for (let c of el.value) {
+			if (["0","1","2","3","4","5","6","7","8","9"].includes(c)) {
+				value += String(c);
+			}
+		}
+		el.value = value;
+		return;
+	}
+	if (el.value < 0) {
+		el.value = 0;
+		document.getElementById("time-modal-seconds").value = 0;
+	} else if (el.value > 7) {
+		el.value = 8;
+		document.getElementById("time-modal-seconds").value = 0;
+	}
+};
+
+let onInputTimeModalSeconds = function (e) {
+	let el = document.getElementById("time-modal-seconds");
+	if (e.inputType === "insertText" && !["0","1","2","3","4","5","6","7","8","9"].includes(e.data)) {
+		let value = "";
+		for (let c of el.value) {
+			if (["0","1","2","3","4","5","6","7","8","9"].includes(c)) {
+				value += String(c);
+			}
+		}
+		el.value = value;
+		return;
+	}
+	if (el.value < 0) {
+		el.value = 0;
+	} else if (el.value > 59) {
+		onClickTimeModalMinutesPlus();
+		el.value = el.value%60;
+	}
+};
+
+let onClickTimeModalMinutesPlus = function () {
+	let el = document.getElementById("time-modal-minutes");
+	el.value = Number(el.value) + 1;
+	if (el.value > 7) {
+		el.value = 8;
+		document.getElementById("time-modal-seconds").value = 0;
+	}
+	makeTimeDoubleDigit();
+};
+
+let onClickTimeModalMinutesMinus = function () {
+	let el = document.getElementById("time-modal-minutes");
+	el.value = Number(el.value) - 1;
+	if (el.value < 0) {
+		el.value = 0;
+		document.getElementById("time-modal-seconds").value = 0;
+	}
+	makeTimeDoubleDigit();
+};
+
+let onClickTimeModalSecondsPlus = function () {
+	let el = document.getElementById("time-modal-seconds");
+	el.value = Number(el.value) + 1;
+	if (document.getElementById("time-modal-minutes").value > 7) {
+		el.value = 0;
+	} else if (el.value > 59) {
+		el.value = 0;
+		onClickTimeModalMinutesPlus();
+	}
+	makeTimeDoubleDigit();
+};
+
+let onClickTimeModalSecondsMinus = function () {
+	let el = document.getElementById("time-modal-seconds");
+	el.value = Number(el.value) - 1;
+	if (el.value < 0) {
+		el.value = 59;
+		onClickTimeModalMinutesMinus();
+	}
+	makeTimeDoubleDigit();
+};
+
+let makeTimeDoubleDigit = function () {
+	let tmm = document.getElementById("time-modal-minutes");
+	let tms = document.getElementById("time-modal-seconds");
+	tmm.value = pad(tmm.value).slice(-2);
+	tms.value = pad(tms.value).slice(-2);
+};
+
+let saveTimeFromTimeModal = function () {
+	let minutes = Number(document.getElementById("time-modal-minutes").value);
+	let seconds = Number(document.getElementById("time-modal-seconds").value);
+	let newRunTimeInSeconds = minutes*60 + seconds;
+	data["currentRun"]["time"]["timeOffset"] += newRunTimeInSeconds - getRunTimeInSeconds();
+	saveDataToLocalStorage();
+	updateTime();
+	hideTimeModal();
+};
+
+let hideTimeModal = function () {
+	document.getElementById("time-modal").style.display = "none";
+};
+let showTimeModal = function () {
+	document.getElementById("time-modal").style.display = "block";
 };
 
 let changeLocalData = function (name, value) {
