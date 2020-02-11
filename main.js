@@ -157,6 +157,7 @@ let toggleTimeRunning = function () {
 		setIconsForTimePaused();
 		stopAutoUpdatingTime();
 		updateTime();
+		data["currentRun"]["originalValues"]["time"] = getRunTimeInSeconds();
 	}
 	saveDataToLocalStorage();
 };
@@ -177,13 +178,23 @@ let updateTime = function () {
 	let timeString = getRunTimeAsString();
 	document.getElementById("s3-time").innerText = timeString;
 	document.getElementById("s4-time").innerText = timeString;
-	document.getElementById("time-modal-original-time").innerText = timeString;
+
+	let ovs = data["currentRun"]["originalValues"];
+	if (ovs["time"] !== undefined) {
+		document.getElementById("time-modal-original-time").innerText = getSecondsAsTimeString(ovs["time"]);
+	} else {
+		document.getElementById("time-modal-original-time").innerText = timeString;
+	}
+	document.getElementById("review-time").innerText = timeString;
 };
 
 let getRunTimeAsString = function () {
-	let time = getRunTimeInSeconds();
-	let minutes = Math.floor(time/60);
-	let seconds = Math.floor(time%60);
+	return getSecondsAsTimeString(getRunTimeInSeconds());
+};
+
+let getSecondsAsTimeString = function (timeInSeconds) {
+	let minutes = Math.floor(timeInSeconds/60);
+	let seconds = Math.floor(timeInSeconds%60);
 	minutes = (minutes < 10 ? minutes : (minutes > 15 ? "X" : minutes.toString(16)));
 	seconds = (seconds < 10 ? "0" : "") + seconds;
 	return minutes + ":" + seconds;
@@ -203,9 +214,18 @@ let resetTime = function () {
 };
 
 let btnResetTime = function () {
-	if (confirm("Are you sure to reset the time? You can't undo this step.")) {
-		resetTime();
+	// if in review -> reset to original value
+	if (localStorage.getItem(LS_CURRENT_SCREEN) == "6") {
+		data["currentRun"]["time"]["timeOffset"] = data["currentRun"]["originalValues"]["time"];
+		updateTime();
+		updateReviewSummaryOfChanges();
+		saveDataToLocalStorage();
 		hideTimeModal();
+	} else {
+		if (confirm("Are you sure to reset the time? You can't undo this step.")) {
+			resetTime();
+			hideTimeModal();
+		}
 	}
 };
 
@@ -363,6 +383,11 @@ let addEventListenersForButtons = function () {
 			hideTimeModal();
 		}
 	};
+	window.addEventListener("keydown", function (e) {
+		if (e.key === "Escape") {
+			hideTimeModal();
+		}
+	});
 	document.getElementById("time-modal-save").addEventListener("click", function(e) {
 		saveTimeFromTimeModal();
 	});
@@ -514,6 +539,7 @@ let saveTimeFromTimeModal = function () {
 	saveDataToLocalStorage();
 	updateTime();
 	hideTimeModal();
+	updateReviewSummaryOfChanges();
 };
 
 let hideTimeModal = function () {
@@ -972,36 +998,28 @@ let changeScreen = function (screenNumberFrom, screenNumberTo) {
 };
 
 let initScreen2 = function () {
-	let txt;
-	
-	// name of referee
-	txt = data["referee"]["name"];
-	document.getElementById("s2-txt-referee-name").innerHTML = txt;
-	
-	// competition
-	txt = "error";
-	if (data["competition"] == "line") {
-		txt = "Rescue Line";
-	} else if (data["competition"] == "entry") {
-		txt = "Rescue Line Entry";
+	document.getElementById("s2-txt-referee-name").innerText = data["referee"]["name"];
+	document.getElementById("s2-txt-competition").innerText = convertCompetitionIdToString(data["competition"]);
+	document.getElementById("s2-txt-arena").innerText = convertArenaIdToString(data["arena"]);
+	document.getElementById("s2-txt-round").innerText = convertRoundIdToString(data["round"]);
+};
+
+let convertCompetitionIdToString = function (competitionId) {
+	let str = "Error";
+	if (competitionId === "line") {
+		str = "Rescue Line";
+	} else if (competitionId === "entry") {
+		str = "Rescue Line Entry";
 	}
-	document.getElementById("s2-txt-competition").innerHTML = txt;
-	
-	// arena
-	if (data["arena"].startsWith("Arena ")) {
-		txt = data["arena"].substring(6);
-	} else {
-		txt = data["arena"];
-	}
-	document.getElementById("s2-txt-arena").innerHTML = txt;
-	
-	// round
-	if (data["round"].startsWith("Round ")) {
-		txt = data["round"].substring(6);
-	} else {
-		txt = data["round"];
-	}
-	document.getElementById("s2-txt-round").innerHTML = txt;
+	return str;
+};
+
+let convertArenaIdToString = function (arenaId) {
+	return arenaId.startsWith("Arena ") ? arenaId.substring(6) : arenaId;
+};
+
+let convertRoundIdToString = function (roundId) {
+	return roundId.startsWith("Round ") ? roundId.substring(6) : roundId;
 };
 
 let initScreen3 = function () {
@@ -1104,8 +1122,11 @@ let onChangeInputLeftEvacuationZone = function () {
 };
 
 let initScreen6 = function () {
+	stopTimeAndCutTo8Minutes();
+
 	updateReviewTable();
 	updateReviewAfterLastCheckpoint();
+	updateReviewArenaRoundTime();
 	updateReviewSummaryOfChanges();
 	document.getElementById("review-referee-name").innerHTML = data["currentRun"]["referee"]["name"];
 	document.getElementById("review-comments").value = data["currentRun"]["comments"];
@@ -1113,6 +1134,16 @@ let initScreen6 = function () {
 	document.getElementById("review-radio-ok").checked = data["currentRun"]["confirmedByTeamCaptain"];
 	document.getElementById("review-radio-complaints").checked = (data["currentRun"]["complaints"] !== "");
 	document.getElementById("review-complaints").value = data["currentRun"]["complaints"];
+};
+
+let stopTimeAndCutTo8Minutes = function () {
+	if (isTimeRunning()) {
+		toggleTimeRunning();
+	}
+	if (getRunTimeInSeconds() > 8*60) {
+		data["currentRun"]["originalValues"]["time"] = getRunTimeInSeconds();
+		data["currentRun"]["time"]["timeOffset"] = 8*60;
+	}
 };
 
 let updateReviewTable = function () {
@@ -1239,6 +1270,13 @@ let onChangeInputReviewLoPsAfterLastCheckpoint = function () {
 							 "lops");
 };
 
+let updateReviewArenaRoundTime = function () {
+	document.getElementById("review-competition").innerText = convertCompetitionIdToString(data["currentRun"]["competition"]);
+	document.getElementById("review-arena").innerText = convertArenaIdToString(data["currentRun"]["arena"]);
+	document.getElementById("review-round").innerText = convertRoundIdToString(data["currentRun"]["round"]);
+	document.getElementById("review-time").innerText = getRunTimeAsString();
+};
+
 let updateReviewSummaryOfChanges = function () {
 	let txt = "";
 	
@@ -1257,6 +1295,12 @@ let updateReviewSummaryOfChanges = function () {
 			note = "team doesn't exist";
 		}
 		txt += "<li>Teamname: " + ovs["teamname"] + " &rarr; " + data["currentRun"]["teamname"] + " (" + note + ")</li>";
+	}
+
+	if (ovs["time"] !== undefined) {
+		if (getSecondsAsTimeString(ovs["time"]) !== getRunTimeAsString()) {
+			txt += "<li>Time: " + getSecondsAsTimeString(ovs["time"]) + " &rarr; " + getRunTimeAsString() + "</li>";
+		}
 	}
 	
 	let sections = Object.keys(ovs);
