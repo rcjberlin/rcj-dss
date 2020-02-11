@@ -274,7 +274,9 @@ let addEventListenersForNavigationButtons = function () {
 		if (getRunTimeInSeconds() === 0) {
 			changeScreen(3, 2);
 		} else {
-			alert("You can't go back if the time already started. If you need to change the setup you can do this just before submitting the run.");
+			if (confirm("Warning: If you change the competition or team you delete the current run and probably lose data.")) {
+				changeScreen(3, 2);
+			}
 		}
 	});
 	
