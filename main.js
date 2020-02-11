@@ -603,7 +603,9 @@ let setSelectInputOptions = function (selectId, options) {
 	selectInput.options.length = 0;
 	
 	// add option for all elements in passed array
-	options.sort();
+	options.sort((op1,op2) => {
+		return op1.toLowerCase().localeCompare(op2.toLowerCase());
+	});
 	for (let i=0; i < options.length; i++) {
 		selectInput.options[selectInput.options.length] = new Option(options[i], options[i], false, false);
 	}
