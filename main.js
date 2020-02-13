@@ -347,6 +347,7 @@ let btnS8Setup = function () {
 };
 
 let btnS8NewRun = function () {
+	document.getElementById("teamname").value = "";
 	changeScreen(8, 2);
 };
 
