@@ -1,6 +1,8 @@
 const DEFAULT_SUBMIT_HOST = "https://rcj.pythonanywhere.com";
 const DEFAULT_SUBMIT_PATH = "/api/v1/submit_run";
 
+const CHECK_LOGIN_PATH = "/api/v1/login_required";
+
 const DEFAULT_EVENT = "2020-berlin";
 
 const LS_CURRENT_SCREEN = "rcj-currentScreen";
@@ -349,6 +351,30 @@ let btnS8Setup = function () {
 let btnS8NewRun = function () {
 	document.getElementById("teamname").value = "";
 	changeScreen(8, 2);
+};
+
+let btnS8CheckLogin = function () {
+	let url = data["submitConfig"]["host"] + CHECK_LOGIN_PATH;
+
+	fetch(url, {
+		method: 'GET',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': 'Basic ' + btoa(data["referee"]["name"] + ":" + data["referee"]["auth"])
+		}
+	})
+	.then(async function (response) {
+		let text = await response.text();
+		if (response.status === 200 && text === "ok") {
+			document.getElementById("s8-check-login-result").innerText = "Login OK";
+		} else {
+			throw text;
+		}
+	})
+	.catch((error) => {
+		document.getElementById("s8-check-login-result").innerText = "Login Failed";
+	});
 };
 
 let addEventListenersForButtons = function () {
