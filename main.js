@@ -1540,7 +1540,10 @@ let btnS8SubmitAllFailedAgain = function () {
 		let successful = hasRunBeenSubmittedSuccesfully(runId);
 		
 		if (!successful) {
-			//TODO: resubmitRun 
+			let run = runHistory[runId];
+			run["referee"]["name"] = data["referee"]["name"];
+			run["referee"]["auth"] = data["referee"]["auth"];
+			submitRunAndShowResult(run, true);
 		}
 	}
 };
@@ -1677,7 +1680,8 @@ let calculateScore = function (run) {
 	return score;
 };
 
-let submitRunAndShowResult = function (runSubmit) {
+let submitRunAndShowResult = function (runSubmit, showResultOnlyInRunHistory) {
+	if (showResultOnlyInRunHistory === undefined) { showResultOnlyInRunHistory = false; }
 	let url = data["submitConfig"]["host"] + data["submitConfig"]["path"];
 	let runId = getRunIdentifier(runSubmit);
 
@@ -1697,21 +1701,27 @@ let submitRunAndShowResult = function (runSubmit) {
 			changeLocalData("lastSubmitStatus-response", text);
 			changeLocalData("lastSubmitStatus-runInfo", runId);
 
-			runHistory[runId]["submits"].push({ time: getTime(), submitStatus: STATUS_SUCCESSFUL });
+			runHistory[runId]["submits"].push({ time: getTime(), submitStatus: STATUS_SUCCESSFUL, response: text });
 		} else {
 			throw text;
 		}
 	})
 	.catch((error) => {
 		changeLocalData("lastSubmitStatus-status", STATUS_FAILED);
-		changeLocalData("lastSubmitStatus-response", error+"");
+		changeLocalData("lastSubmitStatus-response", error.toString());
 		changeLocalData("lastSubmitStatus-runInfo", runId);
 
-		runHistory[runId]["submits"].push({ time: getTime(), submitStatus: STATUS_FAILED });
+		runHistory[runId]["submits"].push({ time: getTime(), submitStatus: STATUS_FAILED, response: error.toString() });
 	})
 	.finally(() => {
-		// the submit result will be displayed by init function of screen 7 automatically
-		changeScreen(6, 7);
+		saveDataToLocalStorage();
+		saveRunHistoryToLocalStorage();
+		if (showResultOnlyInRunHistory) {
+			initS8RunHistoryList();
+		} else {
+			// the submit result will be displayed by init function of screen 7 automatically
+			changeScreen(6, 7);
+		}
 	});
 };
 
