@@ -1263,6 +1263,7 @@ let updateReviewAfterLastCheckpoint = function () {
 	document.getElementById("review-dead-victims-before").innerHTML = data["currentRun"]["victims"]["deadVictimsBeforeAllLivingVictims"];
 	document.getElementById("review-living-victims").innerHTML      = data["currentRun"]["victims"]["livingVictims"];
 	document.getElementById("review-dead-victims-after").innerHTML  = data["currentRun"]["victims"]["deadVictimsAfterAllLivingVictims"];
+	document.getElementById("review-evacuation-point").innerHTML    = data["currentRun"]["evacuationPoint"];;
 	document.getElementById("review-left-evacuation-zone").checked = data["currentRun"]["leftEvacuationZone"];
 };
 
