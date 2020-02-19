@@ -15,6 +15,9 @@ const SPEEDBUMP    = "speedbump";
 const RAMP         = "ramp";
 const INTERSECTION = "intersection";
 
+const COMPETITION_LINE = "line";
+const COMPETITION_ENTRY = "entry";
+
 const LOG_SECTION_COMPLETE = "SECTION COMPLETE";
 const LOG_LOP              = "LACK OF PROGRESS";
 const LOG_SKIP_SECTION     = "SKIP SECTION";
@@ -282,12 +285,12 @@ let addEventListenersForNavigationButtons = function () {
 	document.getElementById("s2-next").addEventListener("click", function(e) {
 		if (data["currentRun"] !== null &&
 			data["currentRun"]["referee"]["name"] !== "" &&
-			["line","entry"].includes(data["currentRun"]["competition"]) &&
+			[COMPETITION_LINE, COMPETITION_ENTRY].includes(data["currentRun"]["competition"]) &&
 			competitions[data["currentRun"]["competition"]]["arenas"].includes(data["currentRun"]["arena"]) &&
 			competitions[data["currentRun"]["competition"]]["rounds"].includes(data["currentRun"]["round"]) &&
 			competitions[data["currentRun"]["competition"]]["teams"].includes(data["currentRun"]["teamname"]) &&
 			( data["currentRun"]["evacuationPoint"] === "low" ||
-			 (data["currentRun"]["evacuationPoint"] === "high" && data["currentRun"]["competition"] === "line"))) {
+			 (data["currentRun"]["evacuationPoint"] === "high" && data["currentRun"]["competition"] === COMPETITION_LINE))) {
 			changeScreen(2, 3);
 		}
 	});
@@ -608,8 +611,8 @@ let onChangeInputRefereePassword = function () {
 
 let onChangeInputCompetition = function () {
 	let selectedCompetition = document.getElementById("competition").value;
-	if (selectedCompetition !== "line" && selectedCompetition !== "entry") {
-		selectedCompetition = "line";
+	if (selectedCompetition !== COMPETITION_LINE && selectedCompetition !== COMPETITION_ENTRY) {
+		selectedCompetition = COMPETITION_LINE;
 		document.getElementById("competition").value = selectedCompetition;
 	}
 	
@@ -627,7 +630,7 @@ let onChangeInputCompetition = function () {
 	
 	// evacuation point
 	document.getElementById("evacuation-point-low").checked = true;
-	if (selectedCompetition === "entry") {
+	if (selectedCompetition === COMPETITION_ENTRY) {
 		document.getElementById("evacuation-point-low").disabled = true;
 		document.getElementById("evacuation-point-high").disabled = true;
 	} else {
@@ -1033,9 +1036,9 @@ let initScreen2 = function () {
 
 let convertCompetitionIdToString = function (competitionId) {
 	let str = "Error";
-	if (competitionId === "line") {
+	if (competitionId === COMPETITION_LINE) {
 		str = "Rescue Line";
-	} else if (competitionId === "entry") {
+	} else if (competitionId === COMPETITION_ENTRY) {
 		str = "Rescue Line Entry";
 	}
 	return str;
@@ -1121,6 +1124,13 @@ let initScreen5 = function () {
 	}
 	for (let elementId of elementIds) {
 		document.getElementById(elementId).disabled = !alc;
+	}
+
+	// entry: disable dead victims and exit-bonus
+	if (data["currentRun"]["competition"] === COMPETITION_ENTRY) {
+		for (let elementId of ["victims-dead-before", "victims-dead-after", "left-evacuation-zone"]) {
+			document.getElementById(elementId).disabled = true;
+		}
 	}
 };
 
@@ -1242,7 +1252,8 @@ let updateSumInReviewTable = function () {
 };
 
 let updateReviewAfterLastCheckpoint = function () {
-	if (data["currentRun"]["sections"][data["currentRun"]["sections"].length-1].isAfterLastCheckpoint) {
+	if (data["currentRun"]["sections"][data["currentRun"]["sections"].length-1].isAfterLastCheckpoint
+		&& data["currentRun"]["competition"] !== COMPETITION_ENTRY) {
 		document.getElementById("review-after-last-checkpoint-lops").value = data["currentRun"]["sections"][data["currentRun"]["sections"].length-1].lops;
 		document.getElementById("review-after-last-checkpoint-lops").disabled = false;
 	} else {
@@ -1652,9 +1663,9 @@ let calculateScore = function (run) {
 	}
 	let deduction = lopsAfterLastCheckpoint * POINTS_DEDUCTION_LOP;
 
-	if (run["competition"] === "entry") {
+	if (run["competition"] === COMPETITION_ENTRY) {
 		score += run["victims"]["livingVictims"] * POINTS_ENTRY_VICTIM;
-	} else if (run["competition"] === "line") {
+	} else if (run["competition"] === COMPETITION_LINE) {
 		let pointsVictimAlive = null, pointsVictimDead = null;
 		if (run["evacuationPoint"] === "low") {
 			pointsVictimAlive = POINTS_LOW_VICTIM_ALIVE;
@@ -1673,7 +1684,7 @@ let calculateScore = function (run) {
 				* Math.max(0, pointsVictimDeadBefore - deduction);
 	}
 
-	if (run["competition"] === "line" && run["leftEvacuationZone"]) {
+	if (run["competition"] === COMPETITION_LINE && run["leftEvacuationZone"]) {
 		score += POINTS_FINDING_LINE;
 	}
 
