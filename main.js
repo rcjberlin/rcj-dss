@@ -184,6 +184,7 @@ let updateTime = function () {
 	let timeString = getRunTimeAsString();
 	document.getElementById("s3-time").innerText = timeString;
 	document.getElementById("s4-time").innerText = timeString;
+	document.getElementById("s4-remaining-time").innerText = getRemainingTimeAsString();
 
 	let ovs = data["currentRun"]["originalValues"];
 	if (ovs["time"] !== undefined) {
@@ -196,6 +197,11 @@ let updateTime = function () {
 
 let getRunTimeAsString = function () {
 	return getSecondsAsTimeString(getRunTimeInSeconds());
+};
+
+let getRemainingTimeAsString = function () {
+    let time = 8*60 - Math.floor(getRunTimeInSeconds());
+    return (time < 0 ? "-" : "") + getSecondsAsTimeString(Math.abs(time));
 };
 
 let getSecondsAsTimeString = function (timeInSeconds) {

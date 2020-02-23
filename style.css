@@ -133,6 +133,7 @@ p.clear {
 .s4-text-section-try { font-size: 3vmin; }
 .s4-text-section-try-value { font-size: 9vmin; }
 .s4-text-time { font-size: 5vmin; }
+.s4-text-remaining-time { font-size: 8vmin; color: #a8a8a8; }
 .s4-text-undo { font-size: 11vmin; }
 .s4-text-completed { font-size: 12vmin; }
 .s4-text-lop { font-size: 8vmin; }
