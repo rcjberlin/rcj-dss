@@ -863,10 +863,10 @@ let adjustCaptionToMaxSize = function (uiElementId, txt) {
 
 let updateCompleteButton = function () {
 	if (isAllowedToComplete()) {
-		document.getElementById("s4-btn-section-complete").style.background = "#fff";
+		document.getElementById("s4-btn-section-complete").classList.remove("disabled");
 		document.getElementById("s4-btn-section-complete").children[0].classList.remove("disabled");
 	} else {
-		document.getElementById("s4-btn-section-complete").style.background = "#f8f8f8";
+		document.getElementById("s4-btn-section-complete").classList.add("disabled");
 		document.getElementById("s4-btn-section-complete").children[0].classList.add("disabled");
 	}
 };
@@ -877,10 +877,10 @@ let isAllowedToComplete = function () {
 
 let updateSkipButton = function () {
 	if (isAllowedToSkip()) {
-		document.getElementById("s4-btn-section-skip").style.background = "#fff";
+		document.getElementById("s4-btn-section-skip").classList.remove("disabled");
 		document.getElementById("s4-btn-section-skip").children[0].classList.remove("disabled");
 	} else {
-		document.getElementById("s4-btn-section-skip").style.background = "#f8f8f8";
+		document.getElementById("s4-btn-section-skip").classList.add("disabled");
 		document.getElementById("s4-btn-section-skip").children[0].classList.add("disabled");
 	}
 };
@@ -1738,6 +1738,7 @@ let submitRunAndShowResult = function (runSubmit, showResultOnlyInRunHistory) {
 };
 
 let addScoringElement = function (name) {
+	highlightAddScoringElement(name);
 	getCurrentSection()[name+"s"] += 1;
 	writeLog(LOG_ADD_PREFIX + " " + name.toUpperCase());
 	
@@ -1746,6 +1747,7 @@ let addScoringElement = function (name) {
 };
 
 let undoAddScoringElement = function (name) {
+	highlightRemoveScoringElement(name);
 	getCurrentSection()[name+"s"] -= 1;
 	
 	saveDataToLocalStorage();
@@ -1753,8 +1755,29 @@ let undoAddScoringElement = function (name) {
 	return true;
 };
 
+let highlightAddScoringElement = function (name) {
+	addClassForShortTimeToParent("img-"+name, "active-add");
+};
+
+let highlightRemoveScoringElement = function (name) {
+	addClassForShortTimeToParent("img-"+name, "active-del");
+};
+
+let elementsWithTimeoutsForShortTimeClasses = {}; // elementId -> timeoutId
+let addClassForShortTimeToParent = function (elementId, className, timeInMs) {
+	let element = document.getElementById(elementId).parentElement;
+	clearTimeout(elementsWithTimeoutsForShortTimeClasses[elementId]);
+	element.classList.add(className);
+	let timeoutId = setTimeout(() => {
+		element.classList.remove(className);
+	}, Math.min(500, timeInMs || 200)); // 200 is default, 500 is max value
+	elementsWithTimeoutsForShortTimeClasses[elementId] = timeoutId;
+	// TODO: concurrency - read/clear/save could fail
+};
+
 let removeScoringElement = function (name) {
 	if (getCurrentSection()[name+"s"] > 0) {
+		highlightRemoveScoringElement(name);
 		getCurrentSection()[name+"s"] -= 1;
 		writeLog(LOG_DEL_PREFIX + " " + name.toUpperCase());
 	}
@@ -1764,6 +1787,7 @@ let removeScoringElement = function (name) {
 };
 
 let undoRemoveScoringElement = function (name) {
+	highlightAddScoringElement(name);
 	getCurrentSection()[name+"s"] += 1;
 	
 	saveDataToLocalStorage();
@@ -1776,6 +1800,7 @@ let sectionComplete = function () {
 		showNotification("You can't complete a section after last checkpoint", 1500);
 		return;
 	}
+	addClassForShortTimeToParent("s4-btn-section-complete", "active-add");
 	getCurrentSection().completedSection = true;
 	createNewSection();
 	writeLog(LOG_SECTION_COMPLETE);
@@ -1785,6 +1810,7 @@ let sectionComplete = function () {
 };
 
 let undoSectionComplete = function () {
+	addClassForShortTimeToParent("s4-btn-section-complete", "active-del");
 	data["currentRun"]["sections"].pop();
 	getCurrentSection().completedSection = false;
 	
@@ -1794,6 +1820,7 @@ let undoSectionComplete = function () {
 };
 
 let sectionLoP = function () {
+	addClassForShortTimeToParent("s4-btn-section-lop", "active-add");
 	getCurrentSection().lops += 1;
 	writeLog(LOG_LOP);
 	
@@ -1802,6 +1829,7 @@ let sectionLoP = function () {
 };
 
 let undoSectionLoP = function () {
+	addClassForShortTimeToParent("s4-btn-section-lop", "active-del");
 	getCurrentSection().lops -= 1;
 	
 	saveDataToLocalStorage();
@@ -1814,6 +1842,7 @@ let sectionSkip = function () {
 		showNotification("Skipping is only allowed after 3 attempts", 1500);
 		return;
 	}
+	addClassForShortTimeToParent("s4-btn-section-skip", "active-add");
 	getCurrentSection().lops += 1;
 	getCurrentSection().skippedSection = true;
 	createNewSection();
@@ -1824,6 +1853,7 @@ let sectionSkip = function () {
 };
 
 let undoSectionSkip = function () {
+	addClassForShortTimeToParent("s4-btn-section-skip", "active-del");
 	data["currentRun"]["sections"].pop();
 	getCurrentSection().skippedSection = false;
 	getCurrentSection().lops -= 1;
