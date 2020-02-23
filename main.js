@@ -1928,6 +1928,7 @@ let moveLastLogToUndoneLogs = function () {
 	data["currentRun"]["logs"].pop();
 	
 	updateUndoButton();
+	saveDataToLocalStorage();
 };
 
 let undoLastLog = function () {
