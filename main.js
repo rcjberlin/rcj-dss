@@ -107,6 +107,7 @@ window.onload = function() {
 	addEventListenersForScoringElementButtons();
 	
 	showInitialScreen();
+	showVersionInS8();
 };
 
 let isTimeRunning = function () {
@@ -2001,7 +2002,17 @@ let initializeInputs = function () {
 	}
 	
 	saveDataToLocalStorage();
-}
+};
+
+let showVersionInS8 = async function () {
+	let c = await caches.keys();
+	let cacheName = c[0];
+	document.getElementById("s8-version").innerText = cacheName.split("_",2)[1];
+};
+
+/*let btnReload = function () {
+	window.location.reload(true);
+};*/
 
 // sounds - credit goes to https://stackoverflow.com/a/41077092
 audioCtx = new(window.AudioContext || window.webkitAudioContext)();
