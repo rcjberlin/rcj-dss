@@ -108,6 +108,8 @@ window.onload = function() {
 	addEventListenersForInputs();
 	addEventListenersForScoringElementButtons();
 	
+	readCredentialsFromURLIfSupplied();
+	
 	showInitialScreen();
 	showVersionInS8();
 };
@@ -2051,6 +2053,21 @@ let initializeInputs = function () {
 	}
 	
 	saveDataToLocalStorage();
+};
+
+let readCredentialsFromURLIfSupplied = function () {
+	let cred = url.searchParams.get("cred");
+	if (cred) {
+		cred = atob(cred);
+		let ix = cred.indexOf(":");
+		let name = cred.substring(0, ix);
+		let password = cred.substring(ix+1);
+
+		changeLocalData("referee-name", name);
+		changeLocalData("referee-auth", password);
+		document.getElementById("referee-name").value = data["referee"]["name"];
+		document.getElementById("referee-password").value = data["referee"]["auth"];
+	}
 };
 
 let showVersionInS8 = async function () {
