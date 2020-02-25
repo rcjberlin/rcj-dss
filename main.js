@@ -5,6 +5,8 @@ const CHECK_LOGIN_PATH = "/api/v1/login_required";
 
 const DEFAULT_EVENT = "2020-berlin";
 
+const TILE_ID_OFFSET = 1; // = id of start tile
+
 const LS_CURRENT_SCREEN = "rcj-currentScreen";
 const LS_DATA           = "rcj-data";
 const LS_RUN_HISTORY    = "rcj-runHistory";
@@ -443,6 +445,8 @@ let addEventListenersForInputs = function () {
 	
 	document.getElementById("team-showed-up").addEventListener("change", onChangeInputTeamShowedUp);
 	
+	document.getElementById("s5-tiles-per-section").addEventListener("change", onChangeInputS5TileInput);
+	document.getElementById("s5-tile-ids").addEventListener("change", onChangeInputS5TileInput);
 	document.getElementById("victims-dead-before").addEventListener("change", onChangeInputVictims);
 	document.getElementById("victims-alive").addEventListener("change", onChangeInputVictims);
 	document.getElementById("victims-dead-after").addEventListener("change", onChangeInputVictims);
@@ -750,7 +754,7 @@ let getNewSection = function (sectionId) {
 		speedbumps: 0,
 		ramps: 0,
 		intersections: 0,
-		tiles: 0,
+		tiles: 1,
 	};
 };
 
@@ -1077,7 +1081,7 @@ let templateS5Section = `
 			<label for="tiles-section-{sectionId}" class="table-layout-cell-left">Section {sectionId}<br><span class="disabled">({tries})</span></label>
 		</div>
 		<div class="table-layout-column-right">
-			<input type="number" id="tiles-section-{sectionId}" class="table-layout-cell-right" value="{tiles}" min="0" />
+			<input type="number" id="tiles-section-{sectionId}" class="table-layout-cell-right" value="{tiles}" min="1" />
 		</div>
 		<p class="clear" />
 	</div>
@@ -1085,7 +1089,15 @@ let templateS5Section = `
 
 let initScreen5 = function () {
 	// tiles for each section
-	let sections = "", sectionIds = [], tries = null, section = null;
+	let isEnteringTilesPerSection = false;
+	if (document.getElementById("s5-tiles-per-section").checked === false &&
+			document.getElementById("s5-tile-ids").checked === false) {
+		document.getElementById("s5-tiles-ids").checked = true;
+	} else if (document.getElementById("s5-tiles-per-section").checked === true) {
+		isEnteringTilesPerSection = true;
+	}
+
+	let sections = "", sectionIds = [], tries = null, section = null, tileSum = TILE_ID_OFFSET;
 	for (let i=0; i<data["currentRun"]["sections"].length; i++) {
 		section = data["currentRun"]["sections"][i];
 		if (section["isAfterLastCheckpoint"]) {
@@ -1104,10 +1116,11 @@ let initScreen5 = function () {
 		} else {
 			tries = "aborted";
 		}
+		tileSum += section["tiles"];
 		sections += templateS5Section
 					.replace(/\{sectionId\}/g, section["sectionId"])
 					.replace(/\{tries\}/g, tries)
-					.replace(/\{tiles\}/g, section["tiles"]);
+					.replace(/\{tiles\}/g, (isEnteringTilesPerSection ? section["tiles"] : tileSum));
 		sectionIds.push(section["sectionId"]);
 	}
 	document.getElementById("s5-tiles").innerHTML = sections;
@@ -1142,15 +1155,41 @@ let initScreen5 = function () {
 };
 
 let onChangeInputTiles = function () {
+	let isEnteringTilesPerSection = true;
+	if (document.getElementById("s5-tile-ids").checked === true) {
+		isEnteringTilesPerSection = false;
+	}
+	document.getElementById("s5-box-warning").style.display = "none";
+	document.getElementById("s5-text-warning").innerText = "";
+	let txtWarning = "";
+
 	let section;
 	for (let i=0; i<data["currentRun"]["sections"].length; i++) {
 		section = data["currentRun"]["sections"][i];
 		if (section["isAfterLastCheckpoint"]) {
 			continue;
 		}
-		section.tiles = Math.max(0, +document.getElementById("tiles-section-"+section["sectionId"]).value);
+		if (isEnteringTilesPerSection) {
+			let tiles = +document.getElementById("tiles-section-"+section["sectionId"]).value;
+			section.tiles = Math.max(0, tiles);
+			if (tiles < 1) {
+				txtWarning += " Number of tiles in section " + section["sectionId"] + " too low.";
+			}
+		} else {
+			let tiles = +document.getElementById("tiles-section-"+section["sectionId"]).value
+						- (i === 0 ? TILE_ID_OFFSET : +document.getElementById("tiles-section-"+data["currentRun"]["sections"][i-1]["sectionId"]).value);
+			section.tiles = Math.max(0, tiles);
+			if (tiles < 1) {
+				txtWarning += " Tile Id in section " + section["sectionId"] + " must be larger than in previous section.";
+			}
+		}
 	}
 	saveDataToLocalStorage();
+
+	if (txtWarning !== "") {
+		document.getElementById("s5-text-warning").innerText = "Warning:" + txtWarning;
+		document.getElementById("s5-box-warning").style.display = "";
+	}
 };
 
 let onChangeInputVictims = function () {
@@ -1163,6 +1202,10 @@ let onChangeInputVictims = function () {
 let onChangeInputLeftEvacuationZone = function () {
 	data["currentRun"]["leftEvacuationZone"] = document.getElementById("left-evacuation-zone").checked;
 	saveDataToLocalStorage();
+};
+
+let onChangeInputS5TileInput = function () {
+	initScreen5();
 };
 
 let initScreen6 = function () {

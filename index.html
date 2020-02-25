@@ -395,7 +395,29 @@
 				<form>
 					<h1>RCJ Rescue Line - Digital Scoring Sheet</h1>
 					<h2>Tiles per Section</h2>
-					<div id="s5-tiles">
+
+					<div>
+						<div class="table-layout-column-left">
+							<p class="table-layout-cell-left"></p>
+						</div>
+						<div class="table-layout-column-right">
+							<label><input type="radio" name="s5-tile-input" id="s5-tiles-per-section">Tiles per Section (Diff)</label>
+							<label><input type="radio" name="s5-tile-input" id="s5-tile-ids">Tile Ids</label>
+						</div>
+						<p class="clear" />
+					</div>
+
+					<div id="s5-tiles" class="table-layout-vertical-space-above">
+					</div>
+
+					<div id="s5-box-warning">
+						<div class="table-layout-column-left">
+							<p class="table-layout-cell-left"></p>
+						</div>
+						<div class="table-layout-column-right">
+							<span id="s5-text-warning"></span>
+						</div>
+						<p class="clear" />
 					</div>
 					
 					<h2>Evacuation Zone</h2>
