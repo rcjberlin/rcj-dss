@@ -9,7 +9,7 @@ The implementation is according to rules of 2019. An implementation for 2020-rul
 Note: During development it is being tested with Firefox and at greater intervals even with Chrome.
 If you face issues with other browsers (e.g. Safari), feedback is highly appreciated (of course also if problems occur with Firefox/Chrome).
 
-*tbd*
+**You will find the guide [here](./docs/guide.md).**
 
 ## Documentation
 
@@ -36,7 +36,7 @@ This project must meet certain demands so that it can be used during competition
 * storing all data locally and send everything to an evaluation system where all runs are brought together
 * UI consisting of 8 different parts:
   1. Referee login; specify competition (Line / Line Entry), field, round
-  2. Select teamname (from list of all teams or exceptional by text input); select kind of evacuation point (low/high) in Rescue Line
+  2. Select teamname (from list of all teams); select kind of evacuation point (low/high) in Rescue Line
   3. Measure time for calibration and setting checkpoints; team showed up
   4. Main UI, enter all information during scoring run: start/pause time; section completed, Lack of Progess, skipped section; award points for gaps, obstacles, speed bumps, ramps and intersections; see current status (time, section, try, number of scoring elements, ...); reached last checkpoint; undo steps
   5. Enter number of tiles per section; enter number of rescued victims; left evacuation zone successfully
@@ -63,7 +63,7 @@ Example object for a run:
 run = {
     referee: {
         name: "NL",
-        auth: "wbSwFU6tY1c"
+        auth: "wbSwFU6tY1c-uczbe"
     },
     competition: "line",
     arena: "A",
@@ -71,7 +71,7 @@ run = {
     teamname: "pi++",
     evacuationPoint: "high",
     time: {
-        timeOffset: 21.49,
+        timeOffset: 57.82108,
         timeStartedTimestamp: 1555975800,
         timestampRunStart: 1554854400,
         timestampRunEnd: null
@@ -152,10 +152,12 @@ Additional notes:
   * adding sections or deleting sections is not planned
   * old values will be overwritten directly, nevertheless they are stored in an additional object (&rarr; best performance when accessing number of scoring elements)
   * even the teamname can be changed (not yet sure whether text-input or select-input)
-  * it is still being considered whether the time can also be changed
+* the URL query parameter `cred` can be used to inject credentials for referees
+  * the value must be Base64-encoded `username:password` (e.g. `Ym9iYnk6ZnNt`)
+  * this can be used to give referees their credentials in form of links or QR-codes
 
 ### Evaluation
-* runs are submitted to a central system to evaluate all runs and create standings (check out https://github.com/mb/rcj-server)
+* runs are submitted to a central system to evaluate all runs and create standings (check out https://github.com/rcjberlin/rcj-server)
 * the run-object is modified slightly before submitting so that it can be evaluated easily
 * all runs are saved in a local variable so that runs can be re-submitted if something failed
 
@@ -164,13 +166,13 @@ Example object for a submitted run / run to submit (most parts are similiar to r
 runSubmit = {
     referee: {
         name: "NL",
-        auth: "wbSwFU6tY1c"
+        auth: "wbSwFU6tY1c-uczbe"
     },
     competition: "2020-berlin-line",
     arena: "A",
     round: "2",
     teamname: "pi++",
-    time_duration: 57.82108,
+    time_duration: 57,
     time_start: 1554854400,
     time_end: 1558665000,
     scoring: {
@@ -198,6 +200,18 @@ runSubmit = {
 }
 ```
 
+The `referee`-object is not used for authentication.
+But the request headers are set to authorize.
+Check https://github.com/rcjberlin/rcj-server for more information.
+
 ### Issues
 If you want to test it locally you may need to make sure that CORS requests are working.
 When using Firefox you can set *privacy.file_unique_origin* in about:config to false (see https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp for more details).
+
+### Next Steps
+* replace array with undone logs with tree-structure to offer redo
+* styling, css, nicer appearance
+* refactoring: better structure, maybe split into multiple files, more code-reuse?
+* runHistory: modal with information about each run, possibility to change certain fields and re-submit just this run
+* multi-language?
+* interfaces for multiple backends, create runSubmit object just before submitting and store a general run object in runHistory
