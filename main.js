@@ -1094,7 +1094,7 @@ let initScreen5 = function () {
 	let isEnteringTilesPerSection = false;
 	if (document.getElementById("s5-tiles-per-section").checked === false &&
 			document.getElementById("s5-tile-ids").checked === false) {
-		document.getElementById("s5-tiles-ids").checked = true;
+		document.getElementById("s5-tile-ids").checked = true;
 	} else if (document.getElementById("s5-tiles-per-section").checked === true) {
 		isEnteringTilesPerSection = true;
 	}
