@@ -4,7 +4,7 @@ The page consists of 8 different screens which you will walk-through sequentiall
 
 <table>
 <tr><td>Screenshot</td><td>Description</td></tr>
-<tr><td>S1</td><td>
+<tr><td><img src="./s1.png" alt="S1" /></td><td>
 In the upper half you can enter your credentials.
 They are needed for submitting runs to a server.
 Hint 1: The credentials can also be supplied in the URL (e.g. by scanning a QR-Code) so you don't need to enter them neccessarily.
@@ -16,7 +16,7 @@ You will do this setup once or at least not so often.
 
 At the bottom you see a big navigation button to go to the next screen (S2) and the button "View Data" which leads to S8 (more details later).
 </td></tr>
-<tr><td>S2</td><td>
+<tr><td><img src="./s2.png" alt="S2" /></td><td>
 This is the screen where you normally will start for each run.
 You can see the information entered in setup above so that you can check this everytime before a run starts and go back if you notice that you need to change something.
 
@@ -26,14 +26,14 @@ The selected competition influences also whether you are able to select the evac
 
 After selecting the team and asking them for the evacuation point you can continue to the next screen (S3).
 </td></tr>
-<tr><td>S3</td><td>
+<tr><td><img src="./s3.png" alt="S3" /><br><br><img src="./s3-time-modal.png" alt="S3 (Time Modal)" /></td><td>
 You don't need this screen neccessarily but it is helpful when the team wants to calibrate their robot or the team is setting their checkpoints.
 If the team is not there you can uncheck that the team showed up (which is checked by default).
 
 You can set or reset the time in a time modal.
 It is recommended to change the time only if it's not running.
 </td></tr>
-<tr><td>S4</td><td>
+<tr><td><img src="./s4.png" alt="S4" /><br><br><img src="./s4-alc.png" alt="S4 (After Last Checkpoint)" /></td><td>
 This is the main screen which you will use during a scoring run.
 It contains everything you need.
 
@@ -65,7 +65,7 @@ But it is **not** possible to add or remove sections in review.
 
 After stopping the time when the scoring run ends you can continue to S5.
 </td></tr>
-<tr><td>S5</td><td>
+<tr><td><img src="./s5.png" alt="S5" /></td><td>
 Here you can enter the number of tiles per section in the top half.
 You can choose between entering the tiles per section or entering the tile ids of checkpoints.
 Tiles ids are default since we will have a map with tile ids for each arena in Berlin competition.
@@ -74,7 +74,7 @@ This makes it easier to calculate the number of tiles between checkpoints but it
 The bottom part lets you enter the number of rescued victims if the team made it beyond the last checkpoint.
 For Line you must distinguish between living and dead victims and even when they were rescued.
 </td></tr>
-<tr><td>S6</td><td>
+<tr><td><img src="./s6.png" alt="S6" /></td><td>
 S6 lets you review the scoring sheet together with the team captain.
 
 In the top there is a table with nearly all information of the run including the number of tiles, needed tries and scoring elements for each section.
@@ -97,7 +97,7 @@ If there is anything you want to change which is not possible in the review scre
 We will then fix this manually.
 When your credentials are wrong you can change them afterwards and resubmit the run in S8.
 </td></tr>
-<tr><td>S7</td><td>
+<tr><td><img src="./s7-failed-network.png" alt="S7 (Failed Network)" /></td><td>
 This screen shows you the result of submit together with the run id by which you will find it in the run history (S8).
 Possible errors which can occur are bugs in our code, a missing internet connection, you submitted a run which already exists, ...
 The displayed message could possibly help you and tell you why the error happened.
@@ -106,7 +106,7 @@ The displayed message could possibly help you and tell you why the error happene
 When everything worked as expected you can directly create a new run (this button leads you to S2).
 Otherwise you can also check the run history (S8).
 </td></tr>
-<tr><td>S8</td><td>
+<tr><td><img src="./s8.png" alt="S8" /></td><td>
 This last screen is mainly about viewing data like the history of all runs you tried to submit, but it also contains some stuff which fitted nowhere else.
 
 You will see some stuff for testing and debugging there.
