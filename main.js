@@ -1570,6 +1570,11 @@ let initS8RunHistoryList = function () {
 							.replace("{path}", path)
 							.replace("{alt}", alt);
 		el.innerHTML += runId;
+		el.innerHTML += " (";
+		el.innerHTML += runHistory[runId]["scoring"]["score"];
+		el.innerHTML += ", ";
+		el.innerHTML += runHistory[runId]["time_duration"];
+		el.innerHTML += ")";
 		el.innerHTML += "<br>";
 	}
 
