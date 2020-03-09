@@ -756,7 +756,7 @@ let getNewSection = function (sectionId) {
 		speedbumps: 0,
 		ramps: 0,
 		intersections: 0,
-		tiles: 1,
+		tiles: null,
 	};
 };
 
@@ -791,8 +791,16 @@ let updateUIElementsS4 = function () {
 
 let updateUISectionAndTry = function () {
 	let currentSection = getCurrentSection();
-	document.getElementById("s4-section").innerHTML = currentSection.sectionId;
-	document.getElementById("s4-try").innerHTML = currentSection.lops + 1;
+	document.getElementById("s4-section").innerText = currentSection.sectionId;
+	if (currentSection.isAfterLastCheckpoint) {
+		// show LoPs after last checkpoint
+		document.getElementById("s4-try").innerText = currentSection.lops;
+		document.getElementById("s4-txt-try").innerText = "LoPs";
+	} else {
+		// show current try in "normal" section
+		document.getElementById("s4-try").innerText = currentSection.lops + 1;
+		document.getElementById("s4-txt-try").innerText = "Try";
+	}
 };
 
 let getCurrentSection = function () {
@@ -1129,6 +1137,7 @@ let initScreen5 = function () {
 	for (let i=0; i<sectionIds.length; i++) {
 		document.getElementById("tiles-section-"+sectionIds[i]).addEventListener("change", onChangeInputTiles);
 	}
+	onChangeInputTiles(); // invoke to update warnings
 	
 	// victims
 	document.getElementById("victims-dead-before").value = data["currentRun"]["victims"]["deadVictimsBeforeAllLivingVictims"];
@@ -1304,13 +1313,17 @@ let updateSumInReviewTable = function () {
 };
 
 let updateReviewAfterLastCheckpoint = function () {
+	document.getElementById("review-after-last-checkpoint-lops").value = data["currentRun"]["sections"][data["currentRun"]["sections"].length-1].lops;
 	if (data["currentRun"]["sections"][data["currentRun"]["sections"].length-1].isAfterLastCheckpoint
 		&& data["currentRun"]["competition"] !== COMPETITION_ENTRY) {
-		document.getElementById("review-after-last-checkpoint-lops").value = data["currentRun"]["sections"][data["currentRun"]["sections"].length-1].lops;
 		document.getElementById("review-after-last-checkpoint-lops").disabled = false;
 	} else {
-		document.getElementById("review-after-last-checkpoint-lops").value = 0;
 		document.getElementById("review-after-last-checkpoint-lops").disabled = true;
+	}
+	if (data["currentRun"]["competition"] === COMPETITION_ENTRY) {
+		document.getElementById("review-alc-lops-note").innerText = "doesn't affect scoring";
+	} else {
+		document.getElementById("review-alc-lops-note").innerText = "";
 	}
 	document.getElementById("review-dead-victims-before").innerHTML = data["currentRun"]["victims"]["deadVictimsBeforeAllLivingVictims"];
 	document.getElementById("review-living-victims").innerHTML      = data["currentRun"]["victims"]["livingVictims"];
