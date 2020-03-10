@@ -97,7 +97,7 @@ If there is anything you want to change which is not possible in the review scre
 We will then fix this manually.
 When your credentials are wrong you can change them afterwards and resubmit the run in S8.
 </td></tr>
-<tr><td><img src="./s7-failed-network.png" alt="S7 (Failed Network)" /></td><td>
+<tr><td><img src="./s7-success.png" alt="S7 (Success)" /><br><br><img src="./s7-failed-network.png" alt="S7 (Failed Network)" /></td><td>
 This screen shows you the result of submit together with the run id by which you will find it in the run history (S8).
 Possible errors which can occur are bugs in our code, a missing internet connection, you submitted a run which already exists, ...
 The displayed message could possibly help you and tell you why the error happened.
