@@ -1586,7 +1586,7 @@ let initS8RunHistoryList = function () {
 		el.innerHTML += " (";
 		el.innerHTML += runHistory[runId]["scoring"]["score"];
 		el.innerHTML += ", ";
-		el.innerHTML += runHistory[runId]["time_duration"];
+		el.innerHTML += getSecondsAsTimeString(runHistory[runId]["time_duration"]);
 		el.innerHTML += ")";
 		el.innerHTML += "<br>";
 	}
