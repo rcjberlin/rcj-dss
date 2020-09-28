@@ -9,6 +9,7 @@
         :key="route.path"
         :to="route.path"
         @click="hideDrawer"
+        :tabindex="drawer ? 0 : -1"
         >{{ route.name }}</router-link
       >
     </div>
@@ -48,12 +49,19 @@ export default class NavigationBar extends Vue {
   hideDrawer() {
     this.drawer = false;
   }
+  hideDrawerOnEscape(event: KeyboardEvent) {
+    if (event.keyCode === 27) {
+      this.hideDrawer();
+    }
+  }
 
   mounted() {
     window.addEventListener("click", this.onClick);
+    window.addEventListener("keydown", this.hideDrawerOnEscape);
   }
   beforeUnmount() {
     window.removeEventListener("click", this.onClick);
+    window.removeEventListener("keydown", this.hideDrawerOnEscape);
   }
 
   onClick(event: Event) {
