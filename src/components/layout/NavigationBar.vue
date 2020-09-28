@@ -3,7 +3,7 @@
     <swipe-gestures @left="hideDrawer" @right="showDrawer" />
     <div class="modal" :class="{ active: drawer }"></div>
     <div class="drawer" :class="{ active: drawer }">
-      <img src="../../assets/icon235x235cropped.png" />
+      <img src="../../assets/icons/icon-235x235-cropped.png" />
       <router-link
         v-for="route in routes"
         :key="route.path"
@@ -13,7 +13,7 @@
       >
     </div>
     <div class="app-bar">
-      <button @click="toggleDrawer">
+      <button @click="toggleDrawer" class="no-button-styling">
         <svg viewBox="0 0 72 72"> <!-- nav icon / hamburger menu -->
           <rect x="8" y="17" width="56" height="6" />
           <rect x="8" y="33" width="56" height="6" />
@@ -115,7 +115,9 @@ export default class NavigationBar extends Vue {
   color: #888;
   transition: 0.3s;
 }
-.drawer a:hover {
+.drawer a:hover,
+.drawer a:focus,
+.drawer a.active {
   color: #ccc;
 }
 .drawer img {
@@ -140,6 +142,7 @@ export default class NavigationBar extends Vue {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 2em;
 }
 .app-bar button svg {
   height: 1.25em;
