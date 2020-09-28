@@ -13,7 +13,13 @@
       >
     </div>
     <div class="app-bar">
-      <button @click="toggleDrawer">☰</button>
+      <button @click="toggleDrawer">
+        <svg viewBox="0 0 72 72"> <!-- nav icon / hamburger menu -->
+          <rect x="8" y="17" width="56" height="6" />
+          <rect x="8" y="33" width="56" height="6" />
+          <rect x="8" y="49" width="56" height="6" />
+        </svg>
+      </button>
       <div class="title-wrapper">
         <div class="title">RCJ Digital Scoring Sheet</div>
       </div>
@@ -129,9 +135,14 @@ export default class NavigationBar extends Vue {
   border: none;
   cursor: pointer;
   text-decoration: none;
-  display: inline-block;
-  padding: 0 12px 2.75px;
   font-size: 1.5em;
+  padding: 0 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.app-bar button svg {
+  height: 1.25em;
 }
 .app-bar .title-wrapper {
   margin-left: 8px;
