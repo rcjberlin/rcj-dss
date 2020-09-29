@@ -1,7 +1,6 @@
 <template>
   <div>
     <div>Run Team</div>
-    <router-link to="/run/setup">Back to Setup</router-link>
   </div>
 </template>
 
@@ -15,7 +14,9 @@ import { IComponentsNavigationBarConfig } from "../types";
 export default class Run2Team extends Vue {
   getNavigationBarConfig(): IComponentsNavigationBarConfig {
     return {
-      hideNavigationBar: true,
+      disableDrawerSwipeGestures: true,
+      backButtonInsteadOfDrawer: true,
+      backButtonRoute: "/run/setup",
     };
   }
 }

@@ -17,12 +17,15 @@
       >
     </div>
     <div class="app-bar" v-show="!config.hideNavigationBar">
-      <button @click="toggleDrawer" class="no-button-styling">
+      <button @click="config.backButtonInsteadOfDrawer ? back(config.backButtonRoute) : toggleDrawer()" class="no-button-styling">
         <svg viewBox="0 0 72 72">
           <!-- nav icon / hamburger menu -->
-          <rect x="8" y="17" width="56" height="6" />
-          <rect x="8" y="33" width="56" height="6" />
-          <rect x="8" y="49" width="56" height="6" />
+          <line v-show="!config.backButtonInsteadOfDrawer" x1="8" y1="20" x2="64" y2="20" />
+          <line x1="8" y1="36" x2="64" y2="36" />
+          <line v-show="!config.backButtonInsteadOfDrawer" x1="8" y1="52" x2="64" y2="52" />
+          <line v-show="config.backButtonInsteadOfDrawer" x1="6.5" y1="37.5" x2="36" y2="8" />
+          <line v-show="config.backButtonInsteadOfDrawer" x1="6.5" y1="34.5" x2="36" y2="64" />
+
         </svg>
       </button>
       <div class="title-wrapper">
@@ -60,6 +63,14 @@ export default class NavigationBar extends Vue {
   hideDrawerOnEscape(event: KeyboardEvent) {
     if (event.keyCode === 27) {
       this.hideDrawer();
+    }
+  }
+
+  back (route: string) {
+    if (route) {
+      this.$router.push(route);
+    } else {
+      this.$router.go(-1);
     }
   }
 
@@ -164,6 +175,11 @@ export default class NavigationBar extends Vue {
 }
 .app-bar button svg {
   height: 1.25em;
+}
+.app-bar button svg line {
+  stroke: #000;
+  stroke-width: 6;
+  fill: none;
 }
 .app-bar .title-wrapper {
   margin-left: 8px;
