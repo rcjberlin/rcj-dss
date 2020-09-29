@@ -1,8 +1,8 @@
 <template>
   <div>
     <swipe-gestures
-      @left="config.enableDrawerSwipeGestures ? hideDrawer() : undefined"
-      @right="config.enableDrawerSwipeGestures ? showDrawer() : undefined"
+      @left="config.disableDrawerSwipeGestures ? undefined : hideDrawer()"
+      @right="config.disableDrawerSwipeGestures ? undefined : showDrawer()"
     />
     <div class="modal" :class="{ active: drawer }"></div>
     <div class="drawer" :class="{ active: drawer }">
@@ -16,7 +16,7 @@
         >{{ route.name }}</router-link
       >
     </div>
-    <div class="app-bar" v-show="config.showNavigationBar">
+    <div class="app-bar" v-show="!config.hideNavigationBar">
       <button @click="toggleDrawer" class="no-button-styling">
         <svg viewBox="0 0 72 72">
           <!-- nav icon / hamburger menu -->

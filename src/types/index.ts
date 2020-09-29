@@ -1,4 +1,4 @@
 export interface IComponentsNavigationBarConfig {
-  showNavigationBar: boolean;
-  enableDrawerSwipeGestures: boolean;
+  hideNavigationBar?: boolean;
+  disableDrawerSwipeGestures?: boolean;
 }

@@ -15,8 +15,7 @@ import { IComponentsNavigationBarConfig } from "../types";
 export default class Run2Team extends Vue {
   getNavigationBarConfig(): IComponentsNavigationBarConfig {
     return {
-      showNavigationBar: false,
-      enableDrawerSwipeGestures: true,
+      hideNavigationBar: true,
     };
   }
 }

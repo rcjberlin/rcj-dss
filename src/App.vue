@@ -13,10 +13,6 @@ import { routes } from "./router";
 import { IComponentsNavigationBarConfig } from "./types";
 
 const METHOD_NAME_COMPONENTS_NAV_BAR_CONFIG = "getNavigationBarConfig";
-const DEFAULT_COMPONENTS_NAV_BAR_CONFIG: IComponentsNavigationBarConfig = {
-  showNavigationBar: true,
-  enableDrawerSwipeGestures: true,
-};
 
 @Options({
   components: {
@@ -24,7 +20,7 @@ const DEFAULT_COMPONENTS_NAV_BAR_CONFIG: IComponentsNavigationBarConfig = {
   },
 })
 export default class App extends Vue {
-  navigationBarConfig: IComponentsNavigationBarConfig = DEFAULT_COMPONENTS_NAV_BAR_CONFIG;
+  navigationBarConfig: IComponentsNavigationBarConfig = {};
 
   mounted() {
     this.updateNavigationBarOnRouteChange();
@@ -69,7 +65,7 @@ export default class App extends Vue {
             return;
           }
         }
-        this.navigationBarConfig = DEFAULT_COMPONENTS_NAV_BAR_CONFIG;
+        this.navigationBarConfig = {};
       }
     );
   }
