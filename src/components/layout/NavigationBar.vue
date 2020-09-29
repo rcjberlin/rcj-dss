@@ -1,6 +1,9 @@
 <template>
   <div>
-    <swipe-gestures @left="hideDrawer" @right="showDrawer" />
+    <swipe-gestures
+      @left="config.enableDrawerSwipeGestures ? hideDrawer() : undefined"
+      @right="config.enableDrawerSwipeGestures ? showDrawer() : undefined"
+    />
     <div class="modal" :class="{ active: drawer }"></div>
     <div class="drawer" :class="{ active: drawer }">
       <img src="../../assets/icons/icon-235x235-cropped.png" />
@@ -13,7 +16,7 @@
         >{{ route.name }}</router-link
       >
     </div>
-    <div class="app-bar">
+    <div class="app-bar" v-show="config.showNavigationBar">
       <button @click="toggleDrawer" class="no-button-styling">
         <svg viewBox="0 0 72 72">
           <!-- nav icon / hamburger menu -->
@@ -32,10 +35,14 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import { routes } from "../../router";
+import { IComponentsNavigationBarConfig } from "../../types";
 import SwipeGestures from "./SwipeGestures.vue";
 
 @Options({
   components: { SwipeGestures },
+  props: {
+    config: { type: Object as () => IComponentsNavigationBarConfig },
+  },
 })
 export default class NavigationBar extends Vue {
   routes = routes;
