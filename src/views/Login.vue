@@ -1,8 +1,10 @@
 <template>
   <div>
-    <input type="text" placeholder="Username" />
-    <input type="password" placeholder="Password" />
-    <button>Login</button>
+    <form @submit.prevent>
+      <input type="text" placeholder="Username" />
+      <input type="password" placeholder="Password" />
+      <button>Login</button>
+    </form>
   </div>
 </template>
 

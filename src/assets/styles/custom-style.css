@@ -2,7 +2,7 @@ button, input {
   font-size: 1.25em;
   border: 2px solid var(--theme-color);
   border-radius: 4px;
-  margin: 8px;
+  margin: 4px;
   padding: 4px 8px;
 }
 
@@ -32,7 +32,7 @@ button:not(.no-button-styling):active {
 }
 
 input {
-  width: calc(100% - 34px); /* substract margin, border and padding */
+  width: calc(100% - 28px); /* substract margin, border and padding */
   background-color: inherit;
   border-color: #c9c9c9;
 }

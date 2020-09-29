@@ -15,7 +15,8 @@
     </div>
     <div class="app-bar">
       <button @click="toggleDrawer" class="no-button-styling">
-        <svg viewBox="0 0 72 72"> <!-- nav icon / hamburger menu -->
+        <svg viewBox="0 0 72 72">
+          <!-- nav icon / hamburger menu -->
           <rect x="8" y="17" width="56" height="6" />
           <rect x="8" y="33" width="56" height="6" />
           <rect x="8" y="49" width="56" height="6" />
@@ -151,6 +152,8 @@ export default class NavigationBar extends Vue {
   justify-content: center;
   align-items: center;
   width: 2em;
+  padding-left: 0;
+  margin-left: 0;
 }
 .app-bar button svg {
   height: 1.25em;

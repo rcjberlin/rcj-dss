@@ -21,7 +21,7 @@ export default class App extends Vue {}
 @import "./assets/styles/custom-style.css";
 
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 body {
@@ -48,7 +48,7 @@ body {
 
 .app-content {
   flex-grow: 1;
-  padding: 16px;
+  padding: 8px;
 }
 
 .noselect {
