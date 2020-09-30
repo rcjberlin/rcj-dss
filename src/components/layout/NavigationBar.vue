@@ -165,12 +165,11 @@ export default class NavigationBar extends Vue {
   cursor: pointer;
   text-decoration: none;
   font-size: 1.5em;
-  padding: 0 8px;
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 2em;
-  padding-left: 0;
   margin-left: 0;
 }
 .app-bar button svg {
