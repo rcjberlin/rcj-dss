@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal" :class="{ active: drawer }"></div>
-    <div class="drawer" :class="{ active: drawer }">
+    <div class="drawer" :class="{ active: drawer, fromLeft: fromLeft }">
       <img src="../../assets/icons/icon-235x235-cropped.png" />
       <router-link v-for="route in routes" :key="route.path" :to="route.path" :tabindex="drawer ? 0 : -1">{{ route.name }}</router-link>
     </div>
@@ -16,6 +16,7 @@ import { routes } from "../../router";
 @Options({
   props: {
     drawer: Boolean,
+    fromLeft: Boolean,
   },
   emits: ["hide"],
 })
@@ -84,19 +85,24 @@ export default class NavigationBar extends Vue {
   position: fixed;
   z-index: 2;
   top: 0;
-  left: 0;
   background-color: #111;
   overflow-x: hidden;
   transition: 0.4s;
 }
 .drawer.active {
-  /*width: var(--drawer-width);*/
-  left: 0;
   box-shadow: 0px 0px 20px 4px rgba(0, 0, 0, 0.6);
 }
-.drawer:not(.active) {
-  /*width: 0;*/
+.drawer.fromLeft.active {
+  left: 0;
+}
+.drawer.fromLeft:not(.active) {
   left: calc(-1 * var(--drawer-width));
+}
+.drawer:not(.fromLeft).active {
+  right: 0;
+}
+.drawer:not(.fromLeft):not(.active) {
+  right: calc(-1 * var(--drawer-width));
 }
 
 .drawer a {

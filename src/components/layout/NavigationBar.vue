@@ -1,11 +1,11 @@
 <template>
   <div>
     <swipe-gestures
-      @left="config.disableDrawerSwipeGestures ? undefined : hideDrawer()"
-      @right="config.disableDrawerSwipeGestures ? undefined : showDrawer()"
+      @left="config.disableDrawerSwipeGestures ? undefined : swipedLeft()"
+      @right="config.disableDrawerSwipeGestures ? undefined : swipedRight()"
     />
-    <navigation-drawer :drawer="drawer" @hide="hideDrawer" />
-    <div class="app-bar" v-show="!config.hideNavigationBar">
+    <navigation-drawer :drawer="drawer" :fromLeft="drawerOnLeftSide" @hide="hideDrawer" />
+    <div class="app-bar" v-show="!config.hideNavigationBar" :class="{ reverseElements: !drawerOnLeftSide }">
       <button @click="config.backButtonInsteadOfDrawer ? back(config.backButtonRoute) : toggleDrawer()" class="no-button-styling">
         <svg viewBox="0 0 72 72">
           <!-- nav icon / hamburger menu -->
@@ -37,6 +37,7 @@ import NavigationDrawer from "./NavigationDrawer.vue";
 })
 export default class NavigationBar extends Vue {
   drawer = false;
+  drawerOnLeftSide = true;
 
   toggleDrawer() {
     this.drawer = !this.drawer;
@@ -55,6 +56,13 @@ export default class NavigationBar extends Vue {
       this.$router.go(-1);
     }
   }
+
+  swipedLeft() {
+    this.drawerOnLeftSide ? this.hideDrawer() : this.showDrawer();
+  }
+  swipedRight() {
+    this.drawerOnLeftSide ? this.showDrawer() : this.hideDrawer();
+  }
 }
 </script>
 
@@ -64,6 +72,9 @@ export default class NavigationBar extends Vue {
   display: flex;
   padding: 8px;
   color: #000;
+}
+.app-bar.reverseElements {
+  flex-direction: row-reverse;
 }
 .app-bar button {
   background: none;
@@ -77,6 +88,7 @@ export default class NavigationBar extends Vue {
   align-items: center;
   width: 2em;
   margin-left: 0;
+  margin-right: 0;
 }
 .app-bar button svg {
   height: 1.25em;
@@ -87,7 +99,8 @@ export default class NavigationBar extends Vue {
   fill: none;
 }
 .app-bar .title-wrapper {
-  margin-left: 8px;
+  flex-grow: 1;
+  margin: 0 8px;
   font-size: 1.5em;
   display: flex;
   align-items: center;
