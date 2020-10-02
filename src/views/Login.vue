@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Login</h1>
     <form @submit.prevent>
       <input type="text" placeholder="Username" />
       <input type="password" placeholder="Password" />

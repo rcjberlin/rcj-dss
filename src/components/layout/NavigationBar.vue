@@ -28,6 +28,7 @@ import { Options, Vue } from "vue-class-component";
 import { IComponentsNavigationBarConfig } from "../../types";
 import SwipeGestures from "./SwipeGestures.vue";
 import NavigationDrawer from "./NavigationDrawer.vue";
+import { eventBus } from "../../event";
 
 @Options({
   components: { SwipeGestures, NavigationDrawer },
@@ -62,6 +63,13 @@ export default class NavigationBar extends Vue {
   }
   swipedRight() {
     this.drawerOnLeftSide ? this.showDrawer() : this.hideDrawer();
+  }
+
+  mounted() {
+    // TODO: use vuex
+    eventBus.on("settings-drawer-right", (rightSide) => {
+      this.drawerOnLeftSide = !rightSide;
+    });
   }
 }
 </script>

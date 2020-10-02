@@ -9,7 +9,11 @@ select {
 }
 
 label {
-  font-size: 1.25em;
+  font-size: 1em;
+  display: block;
+  width: calc(100% - 8px);
+  margin: 0 4px;
+  text-align: left;
 }
 
 button:not(.no-button-styling) {
@@ -54,7 +58,7 @@ input[type="checkbox"] {
 }
 
 select {
-  width: calc(100% - 28px); /* substract margin, border and padding */
+  width: calc(100% - 8px); /* substract margin */
   background-color: inherit;
   border-color: #c9c9c9;
 }

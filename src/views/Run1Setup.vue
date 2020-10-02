@@ -2,24 +2,9 @@
   <div>
     <div>Run Setup</div>
     <form @submit.prevent>
-      Competition
-      <select>
-        <option>Rescue Line</option>
-        <option>Rescue Line Entry</option>
-      </select>
-
-      Arena
-      <select>
-        <option>Arena A</option>
-        <option>Arena B</option>
-      </select>
-
-      Round
-      <select>
-        <option>Round 1</option>
-        <option>Round 2</option>
-        <option>Round 3</option>
-      </select>
+      <custom-select label="Competition" :options="['Rescue Line', 'Rescue Line Entry']" />
+      <custom-select label="Arena" :options="['Arena A', 'Arena B']" />
+      <custom-select label="Round" :options="['Round 1', 'Round 2', 'Round 3']" />
     </form>
     <router-link to="/run/team">Select Team</router-link>
   </div>
@@ -27,9 +12,10 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import CustomSelect from "../components/inputs/CustomSelect.vue";
 
 @Options({
-  components: {},
+  components: { CustomSelect },
 })
 export default class Run1Setup extends Vue {}
 </script>

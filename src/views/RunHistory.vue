@@ -1,5 +1,7 @@
 <template>
-  <div>RunHistory</div>
+  <div>
+    <h1>Run History</h1>
+  </div>
 </template>
 
 <script lang="ts">
