@@ -20,11 +20,12 @@ import { routes } from "../../router";
   },
   emits: ["hide"],
 })
-export default class NavigationBar extends Vue {
+export default class NavigationDrawer extends Vue {
   routes = routes;
   watchers: WatchStopHandle[] = [];
 
   mounted() {
+    // hide drawer on click outside of drawer, escape key or when route changes
     window.addEventListener("click", this.onClick);
     window.addEventListener("keydown", this.hideDrawerOnEscape);
     this.watchers.push(
