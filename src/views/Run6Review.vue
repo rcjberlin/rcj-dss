@@ -8,6 +8,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import { IComponentsNavigationBarConfig } from "../types";
+import { eventBus } from "../event";
 
 @Options({
   components: {},
@@ -22,7 +23,11 @@ export default class Run6Review extends Vue {
   }
 
   submit() {
-    this.$router.push("/run/submitresult");
+    eventBus.emit("loader-start", "Submitting Run (~ 1.2 KB)");
+    setTimeout(() => {
+      this.$router.push("/run/submitresult");
+      eventBus.emit("loader-finish");
+     }, 2500);
   }
 }
 </script>
