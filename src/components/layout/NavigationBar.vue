@@ -5,7 +5,11 @@
       @right="config.disableDrawerSwipeGestures ? undefined : swipedRight()"
     />
     <navigation-drawer :drawer="drawer" :fromLeft="drawerOnLeftSide" @hide="hideDrawer" />
-    <div class="app-bar" v-show="!config.hideNavigationBar" :class="{ reverseElements: !drawerOnLeftSide }">
+    <div
+      class="app-bar"
+      v-show="!config.hideNavigationBar"
+      :class="{ reverseElements: !drawerOnLeftSide && !config.backButtonInsteadOfDrawer }"
+    >
       <button @click="config.backButtonInsteadOfDrawer ? back(config.backButtonRoute) : toggleDrawer()" class="no-button-styling">
         <svg viewBox="0 0 72 72">
           <!-- nav icon / hamburger menu -->
