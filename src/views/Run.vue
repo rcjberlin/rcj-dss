@@ -3,23 +3,22 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 
-@Options({
-  components: {},
-})
-export default class Run extends Vue {
+export default defineComponent({
+  name: "Run",
+  methods: {
+    redirectToChildRouteIfNoneSet() {
+      if (this.$route.path === "/run") {
+        this.$router.replace("/run/setup");
+      }
+    }
+  },
   mounted() {
     this.redirectToChildRouteIfNoneSet();
-  }
+  },
   updated() {
     this.redirectToChildRouteIfNoneSet();
   }
-
-  redirectToChildRouteIfNoneSet() {
-    if (this.$route.path === "/run") {
-      this.$router.replace("/run/setup");
-    }
-  }
-}
+});
 </script>

@@ -16,19 +16,19 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import { IComponentsNavigationBarConfig } from "../types";
 
-@Options({
-  components: {},
-})
-export default class Run3PreRun extends Vue {
-  getNavigationBarConfig(): IComponentsNavigationBarConfig {
-    return {
-      disableDrawerSwipeGestures: true,
-      backButtonInsteadOfDrawer: true,
-      backButtonRoute: "/run/team",
-    };
-  }
-}
+export default defineComponent({
+  name: "Run3PreRun",
+  methods: {
+    getNavigationBarConfig(): IComponentsNavigationBarConfig {
+      return {
+        disableDrawerSwipeGestures: true,
+        backButtonInsteadOfDrawer: true,
+        backButtonRoute: "/run/team",
+      };
+    },
+  },
+});
 </script>

@@ -6,19 +6,19 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import { IComponentsNavigationBarConfig } from "../types";
 
-@Options({
-  components: {},
-})
-export default class Run5PostRun extends Vue {
-  getNavigationBarConfig(): IComponentsNavigationBarConfig {
-    return {
-      disableDrawerSwipeGestures: true,
-      backButtonInsteadOfDrawer: true,
-      backButtonRoute: "/run/run",
-    };
-  }
-}
+export default defineComponent({
+  name: "Run5PostRun",
+  methods: {
+    getNavigationBarConfig(): IComponentsNavigationBarConfig {
+      return {
+        disableDrawerSwipeGestures: true,
+        backButtonInsteadOfDrawer: true,
+        backButtonRoute: "/run/run",
+      };
+    },
+  },
+});
 </script>

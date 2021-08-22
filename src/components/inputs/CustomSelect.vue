@@ -8,12 +8,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent } from "vue";
 import CustomLabel from "./CustomLabel.vue";
 
 import { v4 as uuidv4 } from "uuid";
 
 export default defineComponent({
+  name: "CustomSelect",
   props: {
     label: String,
     options: { type: Object as () => Array<string | { text: String; value: String }> },

@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import { RouteLocationNormalizedLoaded, RouteRecordRaw } from "vue-router";
 import NavigationBar from "@/components/layout/NavigationBar.vue";
 import Loader from "@/components/layout/Loader.vue";
@@ -16,47 +16,50 @@ import { IComponentsNavigationBarConfig } from "./types";
 
 const METHOD_NAME_COMPONENTS_NAV_BAR_CONFIG = "getNavigationBarConfig";
 
-@Options({
+export default defineComponent({
+  name: "App",
   components: {
     NavigationBar,
     Loader,
   },
-})
-export default class App extends Vue {
-  navigationBarConfig: IComponentsNavigationBarConfig = {};
-
+  data() {
+    return {
+      navigationBarConfig: {} as IComponentsNavigationBarConfig,
+    };
+  },
   mounted() {
     this.updateNavigationBarOnRouteChange();
-  }
-
-  updateNavigationBarOnRouteChange() {
-    this.$watch(
-      () => this.$route,
-      (to: RouteLocationNormalizedLoaded) => {
-        function findRoute(path: string, routes: Array<RouteRecordRaw>, basePath = ""): RouteRecordRaw | void {
-          for (const route of routes) {
-            if (basePath + route.path === path) return route;
-            if (path.startsWith(basePath + route.path) && route.children) {
-              // DFS: search for matching route in children
-              const match = findRoute(path, route.children, `${basePath}${route.path}/`);
-              if (match) return match;
+  },
+  methods: {
+    updateNavigationBarOnRouteChange() {
+      this.$watch(
+        () => this.$route,
+        (to: RouteLocationNormalizedLoaded) => {
+          function findRoute(path: string, routes: Array<RouteRecordRaw>, basePath = ""): RouteRecordRaw | void {
+            for (const route of routes) {
+              if (basePath + route.path === path) return route;
+              if (path.startsWith(basePath + route.path) && route.children) {
+                // DFS: search for matching route in children
+                const match = findRoute(path, route.children, `${basePath}${route.path}/`);
+                if (match) return match;
+              }
             }
           }
-        }
-        const currentRoute = findRoute(to.path, routes);
-        if (currentRoute) {
-          const { component } = currentRoute;
-          if (component && component.prototype && typeof component.prototype[METHOD_NAME_COMPONENTS_NAV_BAR_CONFIG] === "function") {
-            const config = component.prototype[METHOD_NAME_COMPONENTS_NAV_BAR_CONFIG]() as IComponentsNavigationBarConfig;
-            this.navigationBarConfig = config;
-            return;
+          const currentRoute = findRoute(to.path, routes);
+          if (currentRoute) {
+            const { component } = currentRoute;
+            if (component && component.prototype && typeof component.prototype[METHOD_NAME_COMPONENTS_NAV_BAR_CONFIG] === "function") {
+              const config = component.prototype[METHOD_NAME_COMPONENTS_NAV_BAR_CONFIG]() as IComponentsNavigationBarConfig;
+              this.navigationBarConfig = config;
+              return;
+            }
           }
+          this.navigationBarConfig = {};
         }
-        this.navigationBarConfig = {};
-      }
-    );
-  }
-}
+      );
+    },
+  },
+});
 </script>
 
 <style>

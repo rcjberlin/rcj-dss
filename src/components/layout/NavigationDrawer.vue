@@ -9,21 +9,22 @@
 </template>
 
 <script lang="ts">
-import { WatchStopHandle } from "vue";
-import { Options, Vue } from "vue-class-component";
+import { defineComponent, WatchStopHandle } from "vue";
 import { routes } from "../../router";
 
-@Options({
+export default defineComponent({
+  name: "NavigationDrawer",
   props: {
     drawer: Boolean,
     fromLeft: Boolean,
   },
   emits: ["hide"],
-})
-export default class NavigationDrawer extends Vue {
-  routes = routes;
-  watchers: WatchStopHandle[] = [];
-
+  data() {
+    return {
+      routes: routes,
+      watchers: [] as WatchStopHandle[],
+    };
+  },
   mounted() {
     // hide drawer on click outside of drawer, escape key or when route changes
     window.addEventListener("click", this.onClick);
@@ -36,29 +37,28 @@ export default class NavigationDrawer extends Vue {
         }
       )
     );
-  }
-
+  },
   beforeUnmount() {
     window.removeEventListener("click", this.onClick);
     window.removeEventListener("keydown", this.hideDrawerOnEscape);
     for (const removeWatcher of this.watchers) {
       removeWatcher();
     }
-  }
-
-  onClick(event: Event) {
-    const target = event.target as HTMLElement;
-    if (target.classList.contains("modal")) {
-      this.$emit("hide");
-    }
-  }
-
-  hideDrawerOnEscape(event: KeyboardEvent) {
-    if (event.keyCode === 27) {
-      this.$emit("hide");
-    }
-  }
-}
+  },
+  methods: {
+    onClick(event: Event) {
+      const target = event.target as HTMLElement;
+      if (target.classList.contains("modal")) {
+        this.$emit("hide");
+      }
+    },
+    hideDrawerOnEscape(event: KeyboardEvent) {
+      if (event.keyCode === 27) {
+        this.$emit("hide");
+      }
+    },
+  },
+});
 </script>
 
 <style scoped>

@@ -20,16 +20,19 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import { eventBus } from "../../event";
 
-@Options({})
-export default class Loader extends Vue {
-  showLoadingAnimation = false;
-  text = "";
-
+export default defineComponent({
+  name: "Loader",
+  data() {
+    return {
+      showLoadingAnimation: false,
+      text: "",
+    };
+  },
   mounted() {
-    eventBus.on("loader-start", (text) => {
+    eventBus.on("loader-start", (text: string) => {
       this.text = text;
       this.showLoadingAnimation = true;
     });
@@ -37,8 +40,8 @@ export default class Loader extends Vue {
       this.showLoadingAnimation = false;
       this.text = "";
     });
-  }
-}
+  },
+});
 </script>
 
 <style scoped>

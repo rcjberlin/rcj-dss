@@ -11,11 +11,13 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import CustomSelect from "../components/inputs/CustomSelect.vue";
 
-@Options({
-  components: { CustomSelect },
-})
-export default class Run1Setup extends Vue {}
+export default defineComponent({
+  name: "Run1Setup",
+  components: {
+    CustomSelect,
+  },
+});
 </script>

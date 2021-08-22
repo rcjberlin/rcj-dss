@@ -28,54 +28,57 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import { IComponentsNavigationBarConfig } from "../../types";
 import SwipeGestures from "./SwipeGestures.vue";
 import NavigationDrawer from "./NavigationDrawer.vue";
 import { eventBus } from "../../event";
 
-@Options({
+export default defineComponent({
+  name: "NavigationBar",
   components: { SwipeGestures, NavigationDrawer },
   props: {
     config: { type: Object as () => IComponentsNavigationBarConfig },
   },
-})
-export default class NavigationBar extends Vue {
-  drawer = false;
-  drawerOnLeftSide = true;
+  data() {
+    return {
+      drawer: false,
+      drawerOnLeftSide: true,
+    };
+  },
+  methods: {
+    toggleDrawer() {
+      this.drawer = !this.drawer;
+    },
+    showDrawer() {
+      this.drawer = true;
+    },
+    hideDrawer() {
+      this.drawer = false;
+    },
 
-  toggleDrawer() {
-    this.drawer = !this.drawer;
-  }
-  showDrawer() {
-    this.drawer = true;
-  }
-  hideDrawer() {
-    this.drawer = false;
-  }
+    back(route: string) {
+      if (route) {
+        this.$router.push(route);
+      } else {
+        this.$router.go(-1);
+      }
+    },
 
-  back(route: string) {
-    if (route) {
-      this.$router.push(route);
-    } else {
-      this.$router.go(-1);
-    }
-  }
-
-  swipedLeft() {
-    this.drawerOnLeftSide ? this.hideDrawer() : this.showDrawer();
-  }
-  swipedRight() {
-    this.drawerOnLeftSide ? this.showDrawer() : this.hideDrawer();
-  }
-
+    swipedLeft() {
+      this.drawerOnLeftSide ? this.hideDrawer() : this.showDrawer();
+    },
+    swipedRight() {
+      this.drawerOnLeftSide ? this.showDrawer() : this.hideDrawer();
+    },
+  },
   mounted() {
     // TODO: use vuex
     eventBus.on("settings-drawer-right", (rightSide) => {
       this.drawerOnLeftSide = !rightSide;
     });
-  }
-}
+  },
+});
 </script>
 
 <style scoped>

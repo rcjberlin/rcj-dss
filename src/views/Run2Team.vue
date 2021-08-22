@@ -14,41 +14,27 @@
       </select>
 
       Evacuation Point
-      <label
-        ><input
-          type="radio"
-          name="evacuation-point"
-          id="evacuation-point-low"
-        />
-        low</label
-      >&emsp;
-      <label
-        ><input
-          type="radio"
-          name="evacuation-point"
-          id="evacuation-point-high"
-        />
-        high</label
-      >
+      <label><input type="radio" name="evacuation-point" id="evacuation-point-low" /> low</label>&emsp;
+      <label><input type="radio" name="evacuation-point" id="evacuation-point-high" /> high</label>
     </form>
     <router-link to="/run/prerun">Next</router-link>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import { IComponentsNavigationBarConfig } from "../types";
 
-@Options({
-  components: {},
-})
-export default class Run2Team extends Vue {
-  getNavigationBarConfig(): IComponentsNavigationBarConfig {
-    return {
-      disableDrawerSwipeGestures: true,
-      backButtonInsteadOfDrawer: true,
-      backButtonRoute: "/run/setup",
-    };
-  }
-}
+export default defineComponent({
+  name: "Run2Team",
+  methods: {
+    getNavigationBarConfig(): IComponentsNavigationBarConfig {
+      return {
+        disableDrawerSwipeGestures: true,
+        backButtonInsteadOfDrawer: true,
+        backButtonRoute: "/run/setup",
+      };
+    },
+  },
+});
 </script>

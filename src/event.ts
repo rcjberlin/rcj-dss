@@ -1,2 +1,7 @@
 import mitt from "mitt";
-export const eventBus = mitt();
+
+type Events = {
+  "loader-start": string;
+  [event: string]: any;
+};
+export const eventBus = mitt<Events>();

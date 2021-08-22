@@ -9,18 +9,18 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
 import { IComponentsNavigationBarConfig } from "../types";
 
-@Options({
-  components: {},
-})
-export default class Run4Run extends Vue {
-  getNavigationBarConfig(): IComponentsNavigationBarConfig {
-    return {
-      hideNavigationBar: true,
-      disableDrawerSwipeGestures: true,
-    };
-  }
-}
+export default defineComponent({
+  name: "Run4Run",
+  methods: {
+    getNavigationBarConfig(): IComponentsNavigationBarConfig {
+      return {
+        hideNavigationBar: true,
+        disableDrawerSwipeGestures: true,
+      };
+    },
+  },
+});
 </script>
