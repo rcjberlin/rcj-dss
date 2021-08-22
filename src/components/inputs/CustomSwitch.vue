@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-switch">
+  <div class="custom-switch input-section">
     <custom-label :text="label" :forId="id" style="cursor: pointer" :bold="false" />
     <div>
       <label class="switch">
@@ -41,8 +41,6 @@ export default defineComponent({
 
 <style scoped>
 .custom-switch {
-  margin: 8px 0;
-
   display: flex;
 }
 

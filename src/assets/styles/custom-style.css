@@ -8,6 +8,10 @@ select {
   padding: 4px 8px;
 }
 
+.input-section {
+  margin: 8px 0;
+}
+
 label {
   font-size: 1em;
   display: block;

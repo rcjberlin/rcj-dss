@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-text-input">
+  <div class="input-section">
     <custom-label :text="label" :forId="id" />
     <input type="text" :id="id" />
   </div>
@@ -26,9 +26,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.custom-text-input {
-  margin: 8px 0;
-}
-</style>

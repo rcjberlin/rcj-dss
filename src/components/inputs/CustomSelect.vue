@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-select">
+  <div class="input-section">
     <custom-label :text="label" :forId="id" />
     <select :id="id">
       <option v-for="option in opt" :key="option.value" :value="option.value">{{ option.text }}</option>
@@ -34,9 +34,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.custom-select {
-  margin: 8px 0;
-}
-</style>
