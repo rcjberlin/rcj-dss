@@ -3,7 +3,7 @@
     <div class="modal" :class="{ active: drawer }"></div>
     <div class="drawer" :class="{ active: drawer, fromLeft: fromLeft }">
       <img src="../../assets/icons/icon-235x235-cropped.png" />
-      <router-link v-for="route in routes" :key="route.path" :to="route.path" :tabindex="drawer ? 0 : -1">{{ route.name }}</router-link>
+      <router-link v-for="route in routes" :key="route.path" :to="route.path" :tabindex="drawer ? 0 : -1">{{ $t("nav.routeNames." + route.path) }}</router-link>
     </div>
   </div>
 </template>

@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div>Submit Result</div>
+    <div>{{ tc("submitResult") }}</div>
 
-    <router-link to="/run/team">New Run</router-link>&ensp;
-    <router-link to="/runhistory">Run History</router-link>
+    <router-link to="/run/team">{{ tc("newRun") }}</router-link
+    >&ensp;
+    <router-link to="/runhistory">{{ tc("runHistory") }}</router-link>
   </div>
 </template>
 
@@ -14,6 +15,11 @@ import { IComponentsNavigationBarConfig } from "../types";
 
 export default defineComponent({
   name: "Run7SubmitResult",
+  methods: {
+    tc(key: string): string {
+      return this.$t("run.submitResult." + key);
+    },
+  },
   mounted() {
     this.$watch(
       () => this.$route,

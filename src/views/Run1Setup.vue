@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div>Run Setup</div>
+    <div>{{ tc("runSetup") }}</div>
     <form @submit.prevent>
-      <custom-select label="Competition" :options="['Rescue Line', 'Rescue Line Entry']" />
-      <custom-select label="Arena" :options="['Arena A', 'Arena B']" />
-      <custom-select label="Round" :options="['Round 1', 'Round 2', 'Round 3']" />
+      <custom-select :label="tc('competition')" :options="['Rescue Line', 'Rescue Line Entry']" />
+      <custom-select :label="tc('arena')" :options="['Arena A', 'Arena B']" />
+      <custom-select :label="tc('round')" :options="['Round 1', 'Round 2', 'Round 3']" />
     </form>
-    <router-link to="/run/team">Select Team</router-link>
+    <router-link to="/run/team">{{ tc("selectTeam") }}</router-link>
   </div>
 </template>
 
@@ -18,6 +18,11 @@ export default defineComponent({
   name: "Run1Setup",
   components: {
     CustomSelect,
+  },
+  methods: {
+    tc(key: string): string {
+      return this.$t("run.setup." + key);
+    },
   },
 });
 </script>

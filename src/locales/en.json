@@ -1,4 +1,71 @@
 {
     "languageName": "English",
-    "message": "Hello, World!"
+    "general": {
+        "evacuationPoint": "Evacuation Point",
+        "epLow": "low",
+        "epHigh": "high",
+        "buttonSetTime": "Set Time"
+    },
+    "nav": {
+        "appTitle": "RCJ Digital Scoring Sheet",
+        "routeNames": {
+            "/": "Home",
+            "/login": "Login",
+            "/run": "New Run",
+            "/settings": "Settings",
+            "/runhistory": "Run History"
+        }
+    },
+    "home": {
+        "message": "Hello, World!"
+    },
+    "login": {
+        "headingLogin": "Login",
+        "username": "Username",
+        "password": "Password",
+        "buttonLogin": "Login"
+    },
+    "run": {
+        "setup": {
+            "runSetup": "Run Setup",
+            "competition": "Competition",
+            "arena": "Arena",
+            "round": "Round",
+            "selectTeam": "Select Team"
+        },
+        "team": {
+            "runTeam": "Run Team",
+            "team": "Team"
+        },
+        "preRun": {
+            "runPreRun": "Run Pre-run",
+            "teamShowedUp": "Team showed up"
+        },
+        "run": {},
+        "postRun": {},
+        "review": {
+            "review": "Review",
+            "submit": "Submit",
+            "submittingRun": "Submitting Run"
+        },
+        "submitResult": {
+            "submitResult": "Submit Result",
+            "newRun": "New Run",
+            "runHistory": "Run History"
+        }
+    },
+    "runHistory": {
+        "runHistory": "Run History"
+    },
+    "settings": {
+        "settings": "Settings",
+        "app": "App",
+        "language": "Language",
+        "drawer": "Drawer",
+        "drawerOnRightText": "Drawer on the right (default: left)",
+        "runSubmission": "Run Submission",
+        "event": "Event",
+        "submitHost": "Submit Host",
+        "submitPath": "Submit Path"
+    }
 }

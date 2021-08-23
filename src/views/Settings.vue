@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Settings</h1>
-    <h2>App</h2>
+    <h1>{{ tc("settings") }}</h1>
+    <h2>{{ tc("app") }}</h2>
     <div class="input-section">
-      <custom-label text="Language 🌍" forId="locale-selector" />
+      <custom-label :text="tc('language') + ' 🌍'" forId="locale-selector" />
       <select v-model="$i18n.locale" id="locale-selector">
         <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
           {{ getLocaleOptionName(locale) }}
@@ -11,13 +11,13 @@
       </select>
     </div>
     <div class="input-section">
-      <custom-label text="Drawer" />
-      <custom-switch label="Drawer on the right (default: left)" @switch-input="onInputDrawerPosition" />
+      <custom-label :text="tc('drawer')" />
+      <custom-switch :label="tc('drawerOnRightText')" @switch-input="onInputDrawerPosition" />
     </div>
-    <h2>Run Submission</h2>
-    <custom-text-input label="Event" />
-    <custom-text-input label="Submit Host" />
-    <custom-text-input label="Submit Path" />
+    <h2>{{ tc("runSubmission") }}</h2>
+    <custom-text-input :label="tc('event')" />
+    <custom-text-input :label="tc('submitHost')" />
+    <custom-text-input :label="tc('submitPath')" />
   </div>
 </template>
 
@@ -44,6 +44,9 @@ export default defineComponent({
     CustomLabel,
   },
   methods: {
+    tc(key: string): string {
+      return this.$t("settings." + key);
+    },
     onInputDrawerPosition(rightSide: Boolean) {
       // TODO: use vuex
       eventBus.emit("settings-drawer-right", rightSide);

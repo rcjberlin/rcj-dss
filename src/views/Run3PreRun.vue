@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div>Run Pre-run</div>
+    <div>{{ tc("runPreRun") }}</div>
     Team Evacuation Point (Referee Competition Arena Round)
     <br />
     <form @submit.prevent>
-      <label><input type="checkbox" /> Team showed up</label>
+      <label><input type="checkbox" /> {{ tc("teamShowedUp") }}</label>
       <br />
 
       Time 1:23
       <img src="../assets/icons/pause.svg" />
-      <button>Set Time</button>
+      <button>{{ tg("buttonSetTime") }}</button>
     </form>
     <router-link to="/run/run">Next</router-link>
   </div>
@@ -22,6 +22,12 @@ import { IComponentsNavigationBarConfig } from "../types";
 export default defineComponent({
   name: "Run3PreRun",
   methods: {
+    tc(key: string): string {
+      return this.$t("run.preRun." + key);
+    },
+    tg(key: string): string {
+      return this.$t("general." + key);
+    },
     getNavigationBarConfig(): IComponentsNavigationBarConfig {
       return {
         disableDrawerSwipeGestures: true,

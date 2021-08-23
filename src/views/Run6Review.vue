@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>Review</div>
-    <button @click="submit">Submit</button>
+    <div>{{ tc("review") }}</div>
+    <button @click="submit">{{ tc("submit") }}</button>
   </div>
 </template>
 
@@ -13,6 +13,9 @@ import { eventBus } from "../event";
 export default defineComponent({
   name: "Run6Review",
   methods: {
+    tc(key: string): string {
+      return this.$t("run.review." + key);
+    },
     getNavigationBarConfig(): IComponentsNavigationBarConfig {
       return {
         disableDrawerSwipeGestures: true,
@@ -21,7 +24,7 @@ export default defineComponent({
       };
     },
     submit() {
-      eventBus.emit("loader-start", "Submitting Run (~ 1.2 KB)");
+      eventBus.emit("loader-start", `${this.tc("submittingRun")} (~ 1.2 KB)`);
       setTimeout(() => {
         this.$router.push("/run/submitresult");
         eventBus.emit("loader-finish");

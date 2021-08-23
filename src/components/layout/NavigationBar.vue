@@ -21,7 +21,7 @@
         </svg>
       </button>
       <div class="title-wrapper">
-        <div class="title">RCJ Digital Scoring Sheet</div>
+        <div class="title">{{ $t("nav.appTitle") }}</div>
       </div>
     </div>
   </div>

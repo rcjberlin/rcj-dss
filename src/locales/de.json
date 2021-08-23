@@ -1,4 +1,71 @@
 {
     "languageName": "Deutsch",
-    "message": "Hallo, Welt!"
+    "general": {
+        "evacuationPoint": "Evakuierungspunkt",
+        "epLow": "flach",
+        "epHigh": "hoch",
+        "buttonSetTime": "Zeit Anpassen"
+    },
+    "nav": {
+        "appTitle": "RCJ Digital Scoring Sheet",
+        "routeNames": {
+            "/": "Home",
+            "/login": "Login",
+            "/run": "Neuer Lauf",
+            "/settings": "Einstellungen",
+            "/runhistory": "Lauf-Historie"
+        }
+    },
+    "home": {
+        "message": "Hallo, Welt!"
+    },
+    "login": {
+        "headingLogin": "Login",
+        "username": "Nutzername",
+        "password": "Passwort",
+        "buttonLogin": "Login"
+    },
+    "run": {
+        "setup": {
+            "runSetup": "Lauf - Allgemeines Setup",
+            "competition": "Wettbewerb",
+            "arena": "Arena",
+            "round": "Runde",
+            "selectTeam": "Team Auswählen"
+        },
+        "team": {
+            "runTeam": "Lauf - Team",
+            "team": "Team"
+        },
+        "preRun": {
+            "runPreRun": "Lauf - Setup",
+            "teamShowedUp": "Team erschienen"
+        },
+        "run": {},
+        "postRun": {},
+        "review": {
+            "review": "Review",
+            "submit": "Hochladen",
+            "submittingRun": "Hochladen des Laufs"
+        },
+        "submitResult": {
+            "submitResult": "Ergebnis des Hochladens",
+            "newRun": "Neuer Lauf",
+            "runHistory": "Lauf-Historie"
+        }
+    },
+    "runHistory": {
+        "runHistory": "Lauf-Historie"
+    },
+    "settings": {
+        "settings": "Einstellungen",
+        "app": "App",
+        "language": "Sprache",
+        "drawer": "Drawer",
+        "drawerOnRightText": "Drawer auf der rechten Seite (standardmäßig: links)",
+        "runSubmission": "Hochladen von Läufen",
+        "event": "Event",
+        "submitHost": "Host",
+        "submitPath": "Pfad"
+    }
 }

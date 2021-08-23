@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Run History</h1>
+    <h1>{{ this.$t("runHistory.runHistory") }}</h1>
   </div>
 </template>
 
