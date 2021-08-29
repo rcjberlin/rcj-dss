@@ -2,8 +2,10 @@
   <div>
     <div class="modal" :class="{ active: drawer }"></div>
     <div class="drawer" :class="{ active: drawer, fromLeft: fromLeft }">
-      <img src="../../assets/icons/icon-235x235-cropped.png" />
-      <router-link v-for="route in routes" :key="route.path" :to="route.path" :tabindex="drawer ? 0 : -1">{{ $t("nav.routeNames." + route.path) }}</router-link>
+      <navigation-drawer-app-icon />
+      <router-link v-for="route in routes" :key="route.path" :to="route.path" :tabindex="drawer ? 0 : -1">{{
+        $t("nav.routeNames." + route.path)
+      }}</router-link>
     </div>
   </div>
 </template>
@@ -11,12 +13,16 @@
 <script lang="ts">
 import { defineComponent, WatchStopHandle } from "vue";
 import { routes } from "../../router";
+import NavigationDrawerAppIcon from "./NavigationDrawerAppIcon.vue";
 
 export default defineComponent({
   name: "NavigationDrawer",
   props: {
     drawer: Boolean,
     fromLeft: Boolean,
+  },
+  components: {
+    NavigationDrawerAppIcon,
   },
   emits: ["hide"],
   data() {
@@ -120,10 +126,5 @@ export default defineComponent({
 .drawer a:focus,
 .drawer a.active {
   color: #ccc;
-}
-.drawer img {
-  width: calc(var(--drawer-width) - 2 * var(--padding));
-  height: calc(var(--drawer-width) - 2 * var(--padding));
-  margin: var(--padding) var(--padding) calc(var(--padding) / 2);
 }
 </style>
