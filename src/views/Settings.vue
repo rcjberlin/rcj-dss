@@ -15,9 +15,26 @@
       <custom-switch :label="tc('drawerOnRightText')" @switch-input="onInputDrawerPosition" :initialValue="switchDrawerOnRight" />
     </div>
     <h2>{{ tc("runSubmission") }}</h2>
-    <custom-text-input :label="tc('event')" />
-    <custom-text-input :label="tc('submitHost')" />
-    <custom-text-input :label="tc('submitPath')" />
+    <form @submit.prevent>
+      <custom-text-input
+        :label="tc('event')"
+        :initialValue="$store.state.settings.submitEvent"
+        :onchange="setSettingFunction('submitEvent')"
+      />
+      <custom-text-input
+        :label="tc('submitHost')"
+        :initialValue="$store.state.settings.submitHost"
+        :onchange="setSettingFunction('submitHost')"
+      />
+      <custom-text-input
+        :label="tc('submitPath')"
+        :initialValue="$store.state.settings.submitPath"
+        :onchange="setSettingFunction('submitPath')"
+      />
+    </form>
+    <div class="v-center">
+      <button v-on:click="$store.commit('restoreAPIDefaults')">{{ tc("submitRestoreDefaults") }}</button>
+    </div>
   </div>
 </template>
 
@@ -59,6 +76,9 @@ export default defineComponent({
         return `${i18nMessages[locale].languageName} (${locale})`;
       }
       return locale;
+    },
+    setSettingFunction(name: string): Function {
+      return (value: string) => this.$store.commit("setSetting", { name, value });
     },
   },
   mounted() {

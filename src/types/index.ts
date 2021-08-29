@@ -8,6 +8,12 @@ export interface IComponentsNavigationBarConfig {
 export interface IStateSettings {
   language: string;
   drawerSide: "left" | "right";
+  submitEvent: string;
+  submitHost: string;
+  submitPath: string;
+  username: string;
+  password: string;
+  loginStatus: boolean | null;
 }
 
 export interface IState {

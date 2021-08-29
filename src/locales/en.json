@@ -66,6 +66,7 @@
         "runSubmission": "Run Submission",
         "event": "Event",
         "submitHost": "Submit Host",
-        "submitPath": "Submit Path"
+        "submitPath": "Submit Path",
+        "submitRestoreDefaults": "Reset Submission Settings"
     }
 }
