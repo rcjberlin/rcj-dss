@@ -20,6 +20,10 @@ export default defineComponent({
   name: "CustomSwitch",
   props: {
     label: String,
+    initialValue: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     CustomLabel,
@@ -27,7 +31,7 @@ export default defineComponent({
   emits: ["switch-input"],
   data() {
     return {
-      value: false,
+      value: this.initialValue,
       id: uuidv4(),
     };
   },

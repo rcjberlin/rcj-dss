@@ -12,7 +12,7 @@
     </div>
     <div class="input-section">
       <custom-label :text="tc('drawer')" />
-      <custom-switch :label="tc('drawerOnRightText')" @switch-input="onInputDrawerPosition" />
+      <custom-switch :label="tc('drawerOnRightText')" @switch-input="onInputDrawerPosition" :initialValue="switchDrawerOnRight" />
     </div>
     <h2>{{ tc("runSubmission") }}</h2>
     <custom-text-input :label="tc('event')" />
@@ -26,7 +26,6 @@ import { defineComponent } from "vue";
 import CustomTextInput from "../components/inputs/CustomTextInput.vue";
 import CustomSwitch from "../components/inputs/CustomSwitch.vue";
 import CustomLabel from "../components/inputs/CustomLabel.vue";
-import { eventBus } from "../event";
 
 import i18nMessagesRaw from "../locales/_index";
 interface Ii18nMessages {
@@ -43,13 +42,17 @@ export default defineComponent({
     CustomSwitch,
     CustomLabel,
   },
+  computed: {
+    switchDrawerOnRight() {
+      return this.$store.state.settings.drawerSide === "right";
+    },
+  },
   methods: {
     tc(key: string): string {
       return this.$t("settings." + key);
     },
     onInputDrawerPosition(rightSide: Boolean) {
-      // TODO: use vuex
-      eventBus.emit("settings-drawer-right", rightSide);
+      this.$store.commit("setDrawerSide", rightSide ? "right" : "left");
     },
     getLocaleOptionName(locale: string): string {
       if (locale in i18nMessages && "languageName" in i18nMessages[locale]) {
@@ -57,7 +60,14 @@ export default defineComponent({
       }
       return locale;
     },
-    // TODO: persist locale
+  },
+  mounted() {
+    this.$watch(
+      () => this.$i18n.locale,
+      () => {
+        this.$store.commit("setLanguage", this.$i18n.locale);
+      }
+    );
   },
 });
 </script>

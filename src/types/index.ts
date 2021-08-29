@@ -4,3 +4,13 @@ export interface IComponentsNavigationBarConfig {
   backButtonInsteadOfDrawer?: boolean;
   backButtonRoute?: string;
 }
+
+export interface IStateSettings {
+  language: string;
+  drawerSide: "left" | "right";
+}
+
+export interface IState {
+  settings: IStateSettings;
+  [moduleName: string]: any;
+}

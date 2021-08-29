@@ -32,7 +32,6 @@ import { defineComponent } from "vue";
 import { IComponentsNavigationBarConfig } from "../../types";
 import SwipeGestures from "./SwipeGestures.vue";
 import NavigationDrawer from "./NavigationDrawer.vue";
-import { eventBus } from "../../event";
 
 export default defineComponent({
   name: "NavigationBar",
@@ -43,8 +42,12 @@ export default defineComponent({
   data() {
     return {
       drawer: false,
-      drawerOnLeftSide: true,
     };
+  },
+  computed: {
+    drawerOnLeftSide(): Boolean {
+      return this.$store.state.settings.drawerSide === "left";
+    },
   },
   methods: {
     toggleDrawer() {
@@ -71,12 +74,6 @@ export default defineComponent({
     swipedRight() {
       this.drawerOnLeftSide ? this.showDrawer() : this.hideDrawer();
     },
-  },
-  mounted() {
-    // TODO: use vuex
-    eventBus.on("settings-drawer-right", (rightSide) => {
-      this.drawerOnLeftSide = !rightSide;
-    });
   },
 });
 </script>
