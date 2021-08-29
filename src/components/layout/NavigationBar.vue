@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="navigation-bar">
     <swipe-gestures
       @left="config.disableDrawerSwipeGestures ? undefined : swipedLeft()"
       @right="config.disableDrawerSwipeGestures ? undefined : swipedRight()"
@@ -82,6 +82,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.navigation-bar {
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+}
 .app-bar {
   background-color: var(--theme-color);
   display: flex;

@@ -94,6 +94,7 @@ body {
 .app-content {
   flex-grow: 1;
   padding: 8px;
+  margin-top: 3.2em; /* requried due to position:fixed navbar */
 }
 
 .noselect {
