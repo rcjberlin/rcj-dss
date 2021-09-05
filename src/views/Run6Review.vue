@@ -24,7 +24,7 @@ export default defineComponent({
       };
     },
     submit() {
-      const runSubmit: any = {
+      const runSubmit = {
         only_testing: true,
         referee: { name: this.$store.state.settings.username, auth: this.$store.state.settings.password },
         competition: this.$store.state.settings.submitEvent + "-line",

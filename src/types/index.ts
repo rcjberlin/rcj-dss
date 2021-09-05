@@ -1,3 +1,7 @@
+export interface IRecursiveObject<T> {
+  [key: string]: T | IRecursiveObject<T>;
+}
+
 export interface IComponentsNavigationBarConfig {
   hideNavigationBar?: boolean;
   disableDrawerSwipeGestures?: boolean;
@@ -18,5 +22,5 @@ export interface IStateSettings {
 
 export interface IState {
   settings: IStateSettings;
-  [moduleName: string]: any;
+  [moduleName: string]: any; // eslint-disable-line
 }

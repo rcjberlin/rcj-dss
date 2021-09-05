@@ -45,7 +45,7 @@ export default defineComponent({
     };
   },
   computed: {
-    drawerOnLeftSide(): Boolean {
+    drawerOnLeftSide(): boolean {
       return this.$store.state.settings.drawerSide === "left";
     },
   },

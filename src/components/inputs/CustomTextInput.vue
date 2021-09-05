@@ -23,7 +23,9 @@ export default defineComponent({
     initialValue: String,
     onchange: {
       type: Function,
-      default: () => {},
+      default: () => {
+        return;
+      },
     },
     focusInput: Boolean,
   },

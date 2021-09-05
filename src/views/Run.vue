@@ -12,13 +12,13 @@ export default defineComponent({
       if (this.$route.path === "/run") {
         this.$router.replace("/run/setup");
       }
-    }
+    },
   },
   mounted() {
     this.redirectToChildRouteIfNoneSet();
   },
   updated() {
     this.redirectToChildRouteIfNoneSet();
-  }
+  },
 });
 </script>

@@ -1,8 +1,8 @@
 // node.js script to fetch most recent data from rcj-server
-const http = require("http");
-const https = require("https");
-const fs = require("fs");
-const path = require("path");
+const http = require("http"); // eslint-disable-line
+const https = require("https"); // eslint-disable-line
+const fs = require("fs"); // eslint-disable-line
+const path = require("path"); // eslint-disable-line
 
 const serverUrl = "http://localhost:5000/schedule/json/";
 console.log("Fetching schedule data from", serverUrl);

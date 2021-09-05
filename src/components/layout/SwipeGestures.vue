@@ -4,7 +4,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { routes } from "../../router";
 
 /**
  * Does not support multi-touch!

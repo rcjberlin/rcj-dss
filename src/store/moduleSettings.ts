@@ -20,18 +20,18 @@ export default {
     };
   },
   getters: {
-    language(state: IStateSettings) {
+    language(state: IStateSettings): string {
       return state.language;
     },
   },
   mutations: {
-    setLanguage(state: IStateSettings, language: string) {
+    setLanguage(state: IStateSettings, language: string): void {
       state.language = language;
     },
-    setDrawerSide(state: IStateSettings, side: "left" | "right") {
+    setDrawerSide(state: IStateSettings, side: "left" | "right"): void {
       state.drawerSide = side;
     },
-    restoreAPIDefaults(state: IStateSettings) {
+    restoreAPIDefaults(state: IStateSettings): void {
       state.submitEvent = API_DEFAULTS.event;
       state.submitHost = API_DEFAULTS.host;
       state.submitPath = API_DEFAULTS.path;
@@ -39,10 +39,10 @@ export default {
     setSetting(
       state: IStateSettings,
       payload: { name: "submitEvent" | "submitHost" | "submitPath" | "username" | "password"; value: string }
-    ) {
+    ): void {
       state[payload.name] = payload.value;
     },
-    setLoginStatus(state: IStateSettings, loginStatus: boolean | null) {
+    setLoginStatus(state: IStateSettings, loginStatus: boolean | null): void {
       state.loginStatus = loginStatus;
     },
   },

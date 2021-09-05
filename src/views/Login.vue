@@ -21,13 +21,13 @@
       </div>
     </form>
 
-  <div class="login-status">
-    <div v-if="$store.state.settings.loginStatus === true">
-      <img src="../assets/icons/successful.svg" />
-    </div>
-    <div v-else-if="$store.state.settings.loginStatus === false">
-      <img src="../assets/icons/failed.svg" />
-    </div>
+    <div class="login-status">
+      <div v-if="$store.state.settings.loginStatus === true">
+        <img src="../assets/icons/successful.svg" />
+      </div>
+      <div v-else-if="$store.state.settings.loginStatus === false">
+        <img src="../assets/icons/failed.svg" />
+      </div>
     </div>
   </div>
 </template>
@@ -52,7 +52,7 @@ export default defineComponent({
     tc(key: string): string {
       return this.$t("login." + key);
     },
-    setSettingFunction(name: string): Function {
+    setSettingFunction(name: string): (value: string) => void {
       return (value: string) => {
         this.$store.commit("setSetting", { name, value });
         this.$store.commit("setLoginStatus", null);

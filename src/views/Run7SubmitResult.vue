@@ -11,7 +11,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { RouteLocationNormalizedLoaded } from "vue-router";
-import { IComponentsNavigationBarConfig } from "../types";
 
 export default defineComponent({
   name: "Run7SubmitResult",

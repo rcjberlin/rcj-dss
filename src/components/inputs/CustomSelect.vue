@@ -17,7 +17,7 @@ export default defineComponent({
   name: "CustomSelect",
   props: {
     label: String,
-    options: { type: Object as () => Array<string | { text: String; value: String }> },
+    options: { type: Object as () => Array<string | { text: string; value: string }> },
   },
   components: {
     CustomLabel,
@@ -28,7 +28,7 @@ export default defineComponent({
     };
   },
   computed: {
-    opt(): Array<{ text: String; value: String }> {
+    opt(): Array<{ text: string; value: string }> {
       return this.options ? this.options.map((option) => (typeof option === "string" ? { text: option, value: option } : option)) : [];
     },
   },

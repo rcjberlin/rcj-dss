@@ -26,7 +26,7 @@ for (const [moduleName, module] of Object.entries(modules)) {
 const store = createStore({
   modules,
   mutations: {
-    init(state: IState, stateFromLocalStorage: { [moduleName: string]: any }) {
+    init(state: IState, stateFromLocalStorage: { [moduleName: string]: any }) { // eslint-disable-line
       // fill state from local storage: parse through all modules and their keys
       // if corresponding value in local storage exists and matches the type -> copy
       for (const [moduleName, module] of Object.entries(state)) {

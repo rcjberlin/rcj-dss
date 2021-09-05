@@ -45,10 +45,9 @@ import CustomSwitch from "../components/inputs/CustomSwitch.vue";
 import CustomLabel from "../components/inputs/CustomLabel.vue";
 
 import i18nMessagesRaw from "../locales/_index";
+import { IRecursiveObject } from "../types";
 interface Ii18nMessages {
-  [language: string]: {
-    [key: string]: string | any;
-  };
+  [language: string]: IRecursiveObject<string>;
 }
 const i18nMessages: Ii18nMessages = i18nMessagesRaw;
 
@@ -68,7 +67,7 @@ export default defineComponent({
     tc(key: string): string {
       return this.$t("settings." + key);
     },
-    onInputDrawerPosition(rightSide: Boolean) {
+    onInputDrawerPosition(rightSide: boolean) {
       this.$store.commit("setDrawerSide", rightSide ? "right" : "left");
     },
     getLocaleOptionName(locale: string): string {
@@ -77,7 +76,7 @@ export default defineComponent({
       }
       return locale;
     },
-    setSettingFunction(name: string): Function {
+    setSettingFunction(name: string): (value: string) => void {
       return (value: string) => this.$store.commit("setSetting", { name, value });
     },
   },
