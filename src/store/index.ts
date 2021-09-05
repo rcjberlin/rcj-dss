@@ -2,11 +2,13 @@ import { createStore } from "vuex";
 import { IState } from "@/types";
 import { getJsonFromLocalStorage, writeJsonToLocalStorage } from "./localStorageHelper";
 import moduleSettings from "./moduleSettings";
+import moduleScheduleData from "./moduleScheduleData";
 
 const LS_KEY_STORE = "vuexstore-";
 
 const modules = {
   settings: moduleSettings,
+  schedule: moduleScheduleData,
 };
 
 // create a map of mutation names (e.g. "setLanguage" to module names (e.g. "settings")
@@ -61,5 +63,8 @@ store.subscribe((mutation, state) => {
     writeJsonToLocalStorage(LS_KEY_STORE + moduleName, state[moduleName]);
   }
 });
+
+// custom init functions
+store.commit("initSchedule");
 
 export default store;

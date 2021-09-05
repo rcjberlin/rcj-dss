@@ -20,7 +20,44 @@ export interface IStateSettings {
   loginStatus: boolean | null;
 }
 
+export interface IStateScheduleData {
+  timestamp: number;
+  arenas: Array<IScheduleArena>;
+  competitions: string[];
+  events: string[];
+  runs: Array<IScheduleRun>;
+  teams: Array<IScheduleTeam>;
+  rounds: number;
+}
+
+export interface IScheduleArena {
+  arenaId: string;
+  name: string;
+  maps: Array<{
+    from: string;
+    to: string;
+    mapId: string;
+  }>;
+}
+
+export interface IScheduleTeam {
+  teamId: string;
+  name: string;
+  competition: string;
+}
+
+export interface IScheduleRun {
+  competition: string;
+  teamId: string;
+  time: string;
+  arenaId: string;
+  round: number;
+  event: string;
+  runId: number;
+}
+
 export interface IState {
   settings: IStateSettings;
+  schedule: IStateScheduleData;
   [moduleName: string]: any; // eslint-disable-line
 }

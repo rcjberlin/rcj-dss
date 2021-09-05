@@ -1,40 +1,57 @@
 <template>
   <div>
     <h1>{{ tc("settings") }}</h1>
-    <h2>{{ tc("app") }}</h2>
-    <div class="input-section">
-      <custom-label :text="tc('language') + ' 🌍'" forId="locale-selector" />
-      <select v-model="$i18n.locale" id="locale-selector">
-        <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
-          {{ getLocaleOptionName(locale) }}
-        </option>
-      </select>
-    </div>
-    <div class="input-section">
-      <custom-label :text="tc('drawer')" />
-      <custom-switch :label="tc('drawerOnRightText')" @switch-input="onInputDrawerPosition" :initialValue="switchDrawerOnRight" />
-    </div>
-    <h2>{{ tc("runSubmission") }}</h2>
-    <form @submit.prevent>
-      <custom-text-input
-        :label="tc('event')"
-        :initialValue="$store.state.settings.submitEvent"
-        :onchange="setSettingFunction('submitEvent')"
-      />
-      <custom-text-input
-        :label="tc('submitHost')"
-        :initialValue="$store.state.settings.submitHost"
-        :onchange="setSettingFunction('submitHost')"
-      />
-      <custom-text-input
-        :label="tc('submitPath')"
-        :initialValue="$store.state.settings.submitPath"
-        :onchange="setSettingFunction('submitPath')"
-      />
-    </form>
-    <div class="v-center">
-      <button v-on:click="$store.commit('restoreAPIDefaults')">{{ tc("submitRestoreDefaults") }}</button>
-    </div>
+
+    <card :title="tc('app')">
+      <div class="input-section">
+        <custom-label :text="tc('language') + ' 🌍'" forId="locale-selector" />
+        <select v-model="$i18n.locale" id="locale-selector">
+          <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
+            {{ getLocaleOptionName(locale) }}
+          </option>
+        </select>
+      </div>
+      <div class="input-section">
+        <custom-label :text="tc('drawer')" />
+        <custom-switch :label="tc('drawerOnRightText')" @switch-input="onInputDrawerPosition" :initialValue="switchDrawerOnRight" />
+      </div>
+    </card>
+
+    <card :title="tc('scheduleData')">
+      <key-value-row :name="tc('scheduleLastUpdated')" :value="scheduleLastUpdateTime" />
+      <key-value-row :name="tc('scheduleArenas')" :value="displayArrayValues($store.state.schedule.arenas.map((arena) => arena.name))" />
+      <key-value-row :name="tc('scheduleRounds')" :value="String($store.state.schedule.rounds)" />
+      <key-value-row :name="tc('scheduleCompetitions')" :value="displayArrayValues($store.state.schedule.competitions)" />
+      <key-value-row :name="tc('scheduleTeams')" :value="scheduleTeamsPerCompetition" />
+      <key-value-row :name="tc('scheduleRuns')" :value="String($store.state.schedule.runs.length)" />
+      <div class="v-center">
+        <!-- TODO: fetch data from server -->
+        <button>{{ tc("checkForScheduleUpdates") }}</button>
+      </div>
+    </card>
+
+    <card :title="tc('runSubmission')">
+      <form @submit.prevent>
+        <custom-text-input
+          :label="tc('event')"
+          :initialValue="$store.state.settings.submitEvent"
+          :onchange="setSettingFunction('submitEvent')"
+        />
+        <custom-text-input
+          :label="tc('submitHost')"
+          :initialValue="$store.state.settings.submitHost"
+          :onchange="setSettingFunction('submitHost')"
+        />
+        <custom-text-input
+          :label="tc('submitPath')"
+          :initialValue="$store.state.settings.submitPath"
+          :onchange="setSettingFunction('submitPath')"
+        />
+      </form>
+      <div class="v-center">
+        <button v-on:click="$store.commit('restoreAPIDefaults')">{{ tc("submitRestoreDefaults") }}</button>
+      </div>
+    </card>
   </div>
 </template>
 
@@ -43,6 +60,10 @@ import { defineComponent } from "vue";
 import CustomTextInput from "../components/inputs/CustomTextInput.vue";
 import CustomSwitch from "../components/inputs/CustomSwitch.vue";
 import CustomLabel from "../components/inputs/CustomLabel.vue";
+import KeyValueRow from "../components/layout/KeyValueRow.vue";
+import Card from "../components/layout/Card.vue";
+
+import { competitionIdToReadableName, convertDateToString } from "../helpers/formatting";
 
 import i18nMessagesRaw from "../locales/_index";
 import { IRecursiveObject } from "../types";
@@ -57,10 +78,30 @@ export default defineComponent({
     CustomTextInput,
     CustomSwitch,
     CustomLabel,
+    KeyValueRow,
+    Card,
   },
   computed: {
     switchDrawerOnRight() {
       return this.$store.state.settings.drawerSide === "right";
+    },
+    scheduleLastUpdateTime() {
+      return convertDateToString(new Date(this.$store.state.schedule.timestamp));
+    },
+    scheduleTeamsPerCompetition() {
+      const teamsPerCompetition: { [competition: string]: number } = {};
+      for (const team of this.$store.state.schedule.teams) {
+        if (team.competition in teamsPerCompetition) {
+          teamsPerCompetition[team.competition] += 1;
+        } else {
+          teamsPerCompetition[team.competition] = 1;
+        }
+      }
+      return Object.entries(teamsPerCompetition).reduce((text, competitionWithTeamCount) => {
+        return (
+          text + (text === "" ? "" : ", ") + `${competitionWithTeamCount[1]} (${competitionIdToReadableName(competitionWithTeamCount[0])})`
+        );
+      }, "");
     },
   },
   methods: {
@@ -78,6 +119,11 @@ export default defineComponent({
     },
     setSettingFunction(name: string): (value: string) => void {
       return (value: string) => this.$store.commit("setSetting", { name, value });
+    },
+    displayArrayValues(array: string[]): string {
+      return array.reduce((values, value) => {
+        return values + (values === "" ? "" : ", ") + value;
+      }, "");
     },
   },
   mounted() {

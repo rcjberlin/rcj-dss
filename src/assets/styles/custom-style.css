@@ -49,6 +49,7 @@ button:not(.no-button-styling):active {
 input {
   width: calc(100% - 28px); /* substract margin, border and padding */
   background-color: inherit;
+  color: inherit;
   border-color: #c9c9c9;
 }
 input:focus {
@@ -66,6 +67,7 @@ input[type="checkbox"] {
 select {
   width: calc(100% - 8px); /* substract margin */
   background-color: inherit;
+  color: inherit;
   border-color: #c9c9c9;
 }
 select:focus {

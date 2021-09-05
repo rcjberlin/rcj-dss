@@ -4,14 +4,7 @@
     Referee Competition Arena Round
     <br />
     <form @submit.prevent>
-      {{ tc("team") }}
-      <select>
-        <option>RL1</option>
-        <option>RL2</option>
-        <option>RL3</option>
-        <option>RL4</option>
-        <option>RL5</option>
-      </select>
+      <custom-select :label="tc('team')" :options="teamOptions" />
 
       {{ tg("evacuationPoint") }}
       <label><input type="radio" name="evacuation-point" id="evacuation-point-low" /> {{ tg("epLow") }}</label
@@ -24,10 +17,21 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { IComponentsNavigationBarConfig } from "../types";
+import { IComponentsNavigationBarConfig, IScheduleTeam } from "../types";
+import CustomSelect from "../components/inputs/CustomSelect.vue";
 
 export default defineComponent({
   name: "Run2Team",
+  components: { CustomSelect },
+  computed: {
+    teamOptions(): Array<{ text: string; value: string }> {
+      // TODO: filter based on selected competition
+      return this.$store.state.schedule.teams.map((team: IScheduleTeam) => ({
+        text: team.name,
+        value: team.teamId,
+      }));
+    },
+  },
   methods: {
     tc(key: string): string {
       return this.$t("run.team." + key);
