@@ -63,6 +63,12 @@
         "language": "Language",
         "drawer": "Drawer",
         "drawerOnRightText": "Drawer on the right (default: left)",
+        "theme": "Theme",
+        "themes": {
+            "system": "System",
+            "light": "Light",
+            "dark": "Dark"
+        },
         "scheduleData": "Schedule Data",
         "scheduleLastUpdated": "Last Updated:",
         "scheduleArenas": "Arenas:",

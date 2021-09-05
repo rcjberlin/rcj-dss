@@ -12,6 +12,7 @@ export interface IComponentsNavigationBarConfig {
 export interface IStateSettings {
   language: string;
   drawerSide: "left" | "right";
+  theme: string;
   submitEvent: string;
   submitHost: string;
   submitPath: string;

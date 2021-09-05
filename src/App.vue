@@ -1,6 +1,7 @@
 <template>
   <div class="app-main noselect">
     <Loader />
+    <ColorTheme />
     <NavigationBar :config="navigationBarConfig" />
     <router-view class="app-content" />
   </div>
@@ -11,6 +12,7 @@ import { defineComponent } from "vue";
 import { RouteLocationNormalizedLoaded, RouteRecordRaw } from "vue-router";
 import NavigationBar from "@/components/layout/NavigationBar.vue";
 import Loader from "@/components/layout/Loader.vue";
+import ColorTheme from "@/components/layout/ColorTheme.vue";
 import { routes } from "./router";
 import { IComponentsNavigationBarConfig } from "./types";
 
@@ -21,6 +23,7 @@ export default defineComponent({
   components: {
     NavigationBar,
     Loader,
+    ColorTheme,
   },
   data() {
     return {
@@ -70,24 +73,11 @@ export default defineComponent({
 }
 
 body {
-  --theme-color: #fd5e53;
-  --background-color: #f5f5f6;
-  --background-color2: #fff;
-  --text-color: #000;
-
   background-color: var(--background-color);
   color: var(--text-color);
   font-size: 16px;
   margin: 0;
   height: 100vh;
-}
-
-@media (prefers-color-scheme: dark) {
-  /*body {
-    --background-color: #111;
-    --background-color2: #222;
-    --text-color: #fff;
-  }*/
 }
 
 #app {

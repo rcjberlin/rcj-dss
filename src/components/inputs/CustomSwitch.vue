@@ -74,7 +74,7 @@ export default defineComponent({
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: var(--background-color3);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }

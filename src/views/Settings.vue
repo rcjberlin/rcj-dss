@@ -15,6 +15,12 @@
         <custom-label :text="tc('drawer')" />
         <custom-switch :label="tc('drawerOnRightText')" @switch-input="onInputDrawerPosition" :initialValue="switchDrawerOnRight" />
       </div>
+      <custom-select
+        :label="tc('theme')"
+        :options="colorThemeOptions"
+        :initialValue="$store.state.settings.theme"
+        :onchange="setSettingFunction('theme')"
+      />
     </card>
 
     <card :title="tc('scheduleData')">
@@ -60,10 +66,12 @@ import { defineComponent } from "vue";
 import CustomTextInput from "../components/inputs/CustomTextInput.vue";
 import CustomSwitch from "../components/inputs/CustomSwitch.vue";
 import CustomLabel from "../components/inputs/CustomLabel.vue";
+import CustomSelect from "../components/inputs/CustomSelect.vue";
 import KeyValueRow from "../components/layout/KeyValueRow.vue";
 import Card from "../components/layout/Card.vue";
 
 import { competitionIdToReadableName, convertDateToString } from "../helpers/formatting";
+import { colorThemes } from "../components/layout/colorThemes";
 
 import i18nMessagesRaw from "../locales/_index";
 import { IRecursiveObject } from "../types";
@@ -80,10 +88,14 @@ export default defineComponent({
     CustomLabel,
     KeyValueRow,
     Card,
+    CustomSelect,
   },
   computed: {
     switchDrawerOnRight() {
       return this.$store.state.settings.drawerSide === "right";
+    },
+    colorThemeOptions(): Array<{ text: string; value: string }> {
+      return colorThemes.map((theme) => ({ text: this.tc("themes." + theme), value: theme }));
     },
     scheduleLastUpdateTime() {
       return convertDateToString(new Date(this.$store.state.schedule.timestamp));

@@ -11,6 +11,7 @@ export default {
     return {
       language: "en",
       drawerSide: "left",
+      theme: "light",
       submitEvent: API_DEFAULTS.event,
       submitHost: API_DEFAULTS.host,
       submitPath: API_DEFAULTS.path,
@@ -38,7 +39,7 @@ export default {
     },
     setSetting(
       state: IStateSettings,
-      payload: { name: "submitEvent" | "submitHost" | "submitPath" | "username" | "password"; value: string }
+      payload: { name: "theme" | "submitEvent" | "submitHost" | "submitPath" | "username" | "password"; value: string }
     ): void {
       state[payload.name] = payload.value;
     },

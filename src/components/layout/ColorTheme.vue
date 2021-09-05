@@ -1,0 +1,61 @@
+<template>
+  <div></div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "ColorTheme",
+  computed: {
+    selectedTheme() {
+      return this.$store.state.settings.theme;
+    },
+  },
+  methods: {
+    setTheme() {
+      document.body.setAttribute("data-theme", this.selectedTheme);
+    },
+  },
+  watch: {
+    selectedTheme() {
+      this.setTheme();
+    },
+  },
+  mounted() {
+    this.setTheme();
+  },
+});
+</script>
+
+<style>
+body,
+body[data-theme="light"] {
+  --theme-color: #fd5e53;
+  --background-color: #f5f5f6;
+  --background-color2: #fff;
+  --background-color3: #ccc;
+  --text-color: #000;
+  --input-border-color: #c9c9c9;
+}
+
+body[data-theme="dark"],
+.color-theme-dark {
+  --background-color: #111;
+  --background-color2: #222;
+  --background-color3: #666;
+  --text-color: #fff;
+  --input-border-color: #c9c9c9;
+}
+
+@media (prefers-color-scheme: dark) {
+  body[data-theme="system"] {
+    /* TODO: use CSS pre-processor? */
+    --background-color: #111;
+    --background-color2: #222;
+    --background-color3: #666;
+    --text-color: #fff;
+    --input-border-color: #c9c9c9;
+  }
+}
+</style>
