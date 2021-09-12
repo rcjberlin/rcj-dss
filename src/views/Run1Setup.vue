@@ -2,7 +2,7 @@
   <div>
     <div>{{ tc("runSetup") }}</div>
     <form @submit.prevent>
-      <custom-select :label="tc('competition')" :options="competitionOptions" />
+      <custom-select :label="tc('competition')" :options="competitionOptions" :onchange="(c) => (selectedCompetition = c)" />
       <custom-select :label="tc('arena')" :options="arenaOptions" />
       <custom-select :label="tc('round')" :options="roundOptions" />
     </form>
@@ -14,12 +14,16 @@
 import { defineComponent } from "vue";
 import CustomSelect from "../components/inputs/CustomSelect.vue";
 import { competitionIdToReadableName } from "../helpers/formatting";
-import { IScheduleArena } from "../types";
 
 export default defineComponent({
   name: "Run1Setup",
   components: {
     CustomSelect,
+  },
+  data() {
+    return {
+      selectedCompetition: "",
+    };
   },
   computed: {
     competitionOptions(): Array<{ text: string; value: string }> {
@@ -29,11 +33,16 @@ export default defineComponent({
       }));
     },
     arenaOptions(): Array<{ text: string; value: string }> {
-      // TODO: filter based on selected competition
-      return this.$store.state.schedule.arenas.map((arena: IScheduleArena) => ({
-        text: arena.name,
-        value: arena.arenaId,
-      }));
+      const options = [];
+      for (const arena of this.$store.state.schedule.arenas) {
+        if ((this.$store.state.schedule.arenasByCompetition[this.selectedCompetition || ""] || []).includes(arena.arenaId)) {
+          options.push({
+            text: arena.name,
+            value: arena.arenaId,
+          });
+        }
+      }
+      return options;
     },
     roundOptions(): Array<{ text: string; value: string }> {
       return Array(this.$store.state.schedule.rounds)
