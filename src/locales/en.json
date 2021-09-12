@@ -1,6 +1,10 @@
 {
     "languageName": "English",
     "general": {
+        "referee": "Referee",
+        "competition": "Competition",
+        "arena": "Arena",
+        "round": "Round",
         "evacuationPoint": "Evacuation Point",
         "epLow": "low",
         "epHigh": "high",
@@ -28,13 +32,11 @@
     "run": {
         "setup": {
             "runSetup": "Run Setup",
-            "competition": "Competition",
-            "arena": "Arena",
-            "round": "Round",
             "selectTeam": "Select Team"
         },
         "team": {
-            "runTeam": "Run Team",
+            "runTeam": "Select Team",
+            "setup": "Setup",
             "team": "Team"
         },
         "preRun": {

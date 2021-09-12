@@ -3,19 +3,19 @@
     <h1>{{ tc("runSetup") }}</h1>
     <form @submit.prevent>
       <custom-select
-        :label="tc('competition')"
+        :label="tg('competition')"
         :options="competitionOptions"
         :initialValue="$store.state.currentRun.competition"
         :onchange="(v) => $store.commit('setCompetition', v)"
       />
       <custom-select
-        :label="tc('arena')"
+        :label="tg('arena')"
         :options="arenaOptions"
         :initialValue="$store.state.currentRun.arenaId"
         :onchange="(v) => $store.commit('setArena', v)"
       />
       <custom-select
-        :label="tc('round')"
+        :label="tg('round')"
         :options="roundOptions"
         :initialValue="String($store.state.currentRun.round)"
         :onchange="(v) => $store.commit('setRound', Number(v))"
@@ -62,7 +62,7 @@ export default defineComponent({
       return Array(this.$store.state.schedule.rounds)
         .fill(1)
         .map((_v, index) => ({
-          text: `${this.tc("round")} ${index + 1}`,
+          text: `${this.tg("round")} ${index + 1}`,
           value: String(index + 1),
         }));
     },
@@ -70,6 +70,9 @@ export default defineComponent({
   methods: {
     tc(key: string): string {
       return this.$t("run.setup." + key);
+    },
+    tg(key: string): string {
+      return this.$t("general." + key);
     },
     continueToSelectTeam(): void {
       if (this.$store.state.currentRun.competition && this.$store.state.currentRun.arenaId && this.$store.state.currentRun.round) {

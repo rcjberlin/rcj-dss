@@ -10,7 +10,7 @@ export default defineComponent({
   methods: {
     redirectToChildRouteIfNoneSet() {
       if (this.$route.path === "/run") {
-        this.$router.replace("/run/setup");
+        this.$router.replace("/run/team");
       }
     },
   },

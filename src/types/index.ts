@@ -66,7 +66,7 @@ export interface IStateRun {
   teamId?: string;
   arenaId?: string;
   round?: number;
-  scoring?: any; // TODO
+  // TODO: scoring, ...
 }
 
 export interface IState {

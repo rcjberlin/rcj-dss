@@ -8,7 +8,6 @@ export default {
       teamId: "",
       arenaId: "",
       round: 0,
-      scoring: undefined,
     };
   },
   mutations: {

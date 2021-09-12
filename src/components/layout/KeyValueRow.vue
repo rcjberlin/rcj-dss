@@ -1,7 +1,10 @@
 <template>
   <div class="key-value-container input-section">
     <div class="key-value-item">{{ name }}</div>
-    <div class="key-value-item">{{ value }}</div>
+    <div class="key-value-item">
+      {{ value }}
+      <slot name="value"></slot>
+    </div>
   </div>
 </template>
 

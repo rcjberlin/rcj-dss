@@ -17,3 +17,8 @@ export function competitionIdToReadableName(competitionId: string): string {
   const mapping: { [id: string]: string } = { line: "Rescue Line", "line-entry": "Rescue Line Entry" };
   return mapping[competitionId] || competitionId;
 }
+
+export function parseServerScheduleTimestamp(timestamp: string): Date {
+  // if the ISO 8601 timestamp ends with a two-digit timezone offset, 00 is appended so that JS can parse it
+  return new Date(timestamp + (timestamp.match(/(\+|-)\d\d$/) ? "00" : ""));
+}

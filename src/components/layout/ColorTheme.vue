@@ -36,15 +36,16 @@ body[data-theme="light"] {
   --background-color2: #fff;
   --background-color3: #ccc;
   --text-color: #000;
+  --text-color2: #444;
   --input-border-color: #c9c9c9;
 }
 
-body[data-theme="dark"],
-.color-theme-dark {
+body[data-theme="dark"] {
   --background-color: #111;
   --background-color2: #222;
   --background-color3: #666;
   --text-color: #fff;
+  --text-color2: #999;
   --input-border-color: #c9c9c9;
 }
 

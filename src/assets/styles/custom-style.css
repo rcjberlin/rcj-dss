@@ -80,3 +80,10 @@ select:focus {
   display: flex;
   justify-content: center;
 }
+
+.inline-svg-icon {
+  position: relative;
+  height: 1.2em;
+  margin-bottom: -1em;
+  top: -0.8em;
+}
