@@ -31,8 +31,7 @@
       <key-value-row :name="tc('scheduleTeams')" :value="scheduleTeamsPerCompetition" />
       <key-value-row :name="tc('scheduleRuns')" :value="String($store.state.schedule.runs.length)" />
       <div class="v-center">
-        <!-- TODO: fetch data from server -->
-        <button>{{ tc("checkForScheduleUpdates") }}</button>
+        <button v-on:click="updateScheduleData">{{ tc("checkForScheduleUpdates") }}</button>
       </div>
     </card>
 
@@ -72,6 +71,8 @@ import Card from "../components/layout/Card.vue";
 
 import { competitionIdToReadableName, convertDateToString } from "../helpers/formatting";
 import { colorThemes } from "../components/layout/colorThemes";
+
+import * as getScheduleHelper from "../schedule/get-schedule-helper";
 
 import i18nMessagesRaw from "../locales/_index";
 import { IRecursiveObject } from "../types";
@@ -136,6 +137,45 @@ export default defineComponent({
       return array.reduce((values, value) => {
         return values + (values === "" ? "" : ", ") + value;
       }, "");
+    },
+    async updateScheduleData(): Promise<void> {
+      const baseUrl = `${this.$store.state.settings.submitHost}/schedule/json/`;
+      const data: string[] = [];
+      const filenames = getScheduleHelper.jsonFiles;
+      try {
+        for (const file of filenames) {
+          const response = await fetch(baseUrl + file);
+          data.push(await response.text());
+        }
+        const computedData = getScheduleHelper.getComputedData(data, filenames);
+        const variableNameFilenameMapping = {
+          arenas: "arenas.json",
+          competitions: "competitions.json",
+          events: "events.json",
+          runs: "scheduled-runs.json",
+          teams: "teams.json",
+        };
+        // eslint-disable-next-line
+        const payloadForUpdate: any = {
+          ...computedData,
+          timestamp: Date.now(),
+        };
+        for (const variableName in variableNameFilenameMapping) {
+          payloadForUpdate[variableName] = JSON.parse(
+            data[
+              filenames.findIndex(
+                (name) =>
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  name === variableNameFilenameMapping[variableName]
+              )
+            ]
+          );
+        }
+        this.$store.commit("updateSchedule", payloadForUpdate);
+      } catch (err) {
+        console.log("error", err.message);
+      }
     },
   },
   mounted() {

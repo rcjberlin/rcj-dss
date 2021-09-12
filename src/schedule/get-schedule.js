@@ -3,10 +3,11 @@ const http = require("http"); // eslint-disable-line
 const https = require("https"); // eslint-disable-line
 const fs = require("fs"); // eslint-disable-line
 const path = require("path"); // eslint-disable-line
+const helper = require("./get-schedule-helper"); // eslint-disable-line
 
 const serverUrl = "http://localhost:5000/schedule/json/";
 console.log("Fetching schedule data from", serverUrl);
-const jsonFiles = ["teams.json", "events.json", "competitions.json", "arenas.json", "scheduled-runs.json"];
+const jsonFiles = helper.jsonFiles;
 
 const httpModule = serverUrl.startsWith("https://") ? https : http;
 
@@ -39,22 +40,7 @@ async function fetchAndSaveJsonFiles() {
     "_computed.json",
     JSON.stringify(
       {
-        ...JSON.parse(data[jsonFiles.findIndex((name) => name === "scheduled-runs.json")]).reduce((data, run) => {
-          return {
-            // get number of rounds from scheduled runs
-            rounds: Math.max(data.rounds || 0, run.round),
-            // find which arenas are used for which competition
-            arenasByCompetition: {
-              ...data.arenasByCompetition,
-              [run.competition]:
-                data.arenasByCompetition && run.competition in data.arenasByCompetition
-                  ? data.arenasByCompetition[run.competition].includes(run.arenaId)
-                    ? data.arenasByCompetition[run.competition]
-                    : data.arenasByCompetition[run.competition].concat([run.arenaId])
-                  : [run.arenaId],
-            },
-          };
-        }),
+        ...helper.getComputedData(data, jsonFiles),
       },
       null,
       2

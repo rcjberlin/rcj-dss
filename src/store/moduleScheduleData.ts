@@ -36,6 +36,13 @@ export default {
         state.timestamp = timestamp.time;
       }
     },
+    updateSchedule(state: IStateScheduleData, payload: IStateScheduleData): void {
+      for (const prop in payload) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        state[prop] = payload[prop];
+      }
+    },
   },
   actions: {},
   modules: {},
