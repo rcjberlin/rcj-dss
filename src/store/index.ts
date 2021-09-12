@@ -3,12 +3,14 @@ import { IState } from "@/types";
 import { getJsonFromLocalStorage, writeJsonToLocalStorage } from "./localStorageHelper";
 import moduleSettings from "./moduleSettings";
 import moduleScheduleData from "./moduleScheduleData";
+import moduleCurrentRun from "./moduleCurrentRun";
 
 const LS_KEY_STORE = "vuexstore-";
 
 const modules = {
   settings: moduleSettings,
   schedule: moduleScheduleData,
+  currentRun: moduleCurrentRun,
 };
 
 // create a map of mutation names (e.g. "setLanguage" to module names (e.g. "settings")
@@ -28,15 +30,15 @@ for (const [moduleName, module] of Object.entries(modules)) {
 const store = createStore({
   modules,
   mutations: {
-    init(state: IState, stateFromLocalStorage: { [moduleName: string]: any }) { // eslint-disable-line
+    init(state: IState, stateFromLocalStorage: { [moduleName: string]: any }) {
+      // eslint-disable-line
       // fill state from local storage: parse through all modules and their keys
       // if corresponding value in local storage exists and matches the type -> copy
       for (const [moduleName, module] of Object.entries(state)) {
         for (const key in module) {
           if (
             moduleName in stateFromLocalStorage &&
-            key in stateFromLocalStorage[moduleName] &&
-            typeof module[key] === typeof stateFromLocalStorage[moduleName][key]
+            key in stateFromLocalStorage[moduleName]
           ) {
             module[key] = stateFromLocalStorage[moduleName][key];
           }

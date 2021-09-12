@@ -60,8 +60,18 @@ export interface IScheduleRun {
   runId: number;
 }
 
+export interface IStateRun {
+  runIdSchedule?: number;
+  competition?: string;
+  teamId?: string;
+  arenaId?: string;
+  round?: number;
+  scoring?: any; // TODO
+}
+
 export interface IState {
   settings: IStateSettings;
   schedule: IStateScheduleData;
+  currentRun: IStateRun;
   [moduleName: string]: any; // eslint-disable-line
 }

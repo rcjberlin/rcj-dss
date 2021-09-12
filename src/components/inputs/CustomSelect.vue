@@ -45,6 +45,12 @@ export default defineComponent({
     value() {
       this.onchange(this.value);
     },
+    opt() {
+      if (!this.opt.find((o) => o.value === this.value)) {
+        // selected value is no longer in options
+        this.value = "";
+      }
+    },
     initialValue() {
       this.value = this.initialValue || "";
     },
