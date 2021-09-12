@@ -18,6 +18,7 @@ export default {
       runs: [],
       teams: [],
       rounds: 0,
+      arenasByCompetition: {},
     };
   },
   mutations: {
@@ -31,6 +32,7 @@ export default {
         state.runs = runs;
         state.teams = teams;
         state.rounds = computed.rounds;
+        state.arenasByCompetition = computed.arenasByCompetition;
         state.timestamp = timestamp.time;
       }
     },

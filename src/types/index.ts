@@ -29,6 +29,9 @@ export interface IStateScheduleData {
   runs: Array<IScheduleRun>;
   teams: Array<IScheduleTeam>;
   rounds: number;
+  arenasByCompetition: {
+    [competition: string]: string[];
+  };
 }
 
 export interface IScheduleArena {
