@@ -37,7 +37,8 @@
         "team": {
             "runTeam": "Select Team",
             "setup": "Setup",
-            "team": "Team"
+            "team": "Team",
+            "continueToPreRun": "Continue"
         },
         "preRun": {
             "runPreRun": "Run Pre-run",

@@ -66,7 +66,11 @@ export interface IStateRun {
   teamId?: string;
   arenaId?: string;
   round?: number;
-  // TODO: scoring, ...
+  scoring: {
+    teamStarted: boolean;
+    evacuationPoint: "low" | "high" | undefined;
+    // TODO
+  };
 }
 
 export interface IState {

@@ -8,6 +8,10 @@ export default {
       teamId: "",
       arenaId: "",
       round: 0,
+      scoring: {
+        teamStarted: false,
+        evacuationPoint: undefined,
+      },
     };
   },
   mutations: {
@@ -19,6 +23,12 @@ export default {
     },
     setRound(state: IStateRun, round: number): void {
       state.round = round;
+    },
+    setTeam(state: IStateRun, teamId: string): void {
+      state.teamId = teamId;
+    },
+    setEvacuationPoint(state: IStateRun, evacuationPoint: "low" | "high" | undefined): void {
+      state.scoring.evacuationPoint = evacuationPoint;
     },
   },
   actions: {},
