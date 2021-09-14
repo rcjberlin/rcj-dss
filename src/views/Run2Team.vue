@@ -49,23 +49,33 @@ export default defineComponent({
   components: { CustomSelect, KeyValueRow, Card, EditIcon, CheckmarkIcon, WarningIcon },
   computed: {
     teamOptions(): Array<{ text: string; value: string }> {
-      const options = [];
+      interface RunToIncluded extends IScheduleRun {
+        parsedTime: number;
+        teamname: string;
+      }
+      const runsToBeIncluded: RunToIncluded[] = [];
       for (const run of this.$store.state.schedule.runs as IScheduleRun[]) {
         if (
           run.competition === this.$store.state.currentRun.competition &&
           run.arenaId === this.$store.state.currentRun.arenaId &&
           run.round === this.$store.state.currentRun.round
         ) {
-          options.push({
-            text:
-              convertDateToString(parseServerScheduleTimestamp(run.time), "hh:mm") +
-              " " +
-              ((this.$store.state.schedule.teams as IScheduleTeam[]).find((team) => team.teamId === run.teamId) || { name: "" }).name, // TODO: prepare teamId-teamname mapping once?
-            value: run.teamId, // TODO: use runId?
+          runsToBeIncluded.push({
+            ...run,
+            parsedTime: parseServerScheduleTimestamp(run.time).getTime(),
+            teamname: ((this.$store.state.schedule.teams as IScheduleTeam[]).find((team) => team.teamId === run.teamId) || { name: "" })
+              .name,
           });
         }
       }
-      return options;
+      // order runs by time
+      runsToBeIncluded.sort((runA, runB) => {
+        return runA.parsedTime - runB.parsedTime;
+      });
+      return runsToBeIncluded.map((run) => ({
+        text: convertDateToString(new Date(run.parsedTime), "hh:mm") + " " + run.teamname,
+        value: run.teamId, // TODO: use runId?
+      }));
     },
     competitionName(): string {
       return competitionIdToReadableName(this.$store.state.currentRun.competition || "");
