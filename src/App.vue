@@ -50,9 +50,10 @@ export default defineComponent({
           }
           const currentRoute = findRoute(to.path, routes);
           if (currentRoute) {
-            const { component } = currentRoute;
-            if (component && component.prototype && typeof component.prototype[METHOD_NAME_COMPONENTS_NAV_BAR_CONFIG] === "function") {
-              const config = component.prototype[METHOD_NAME_COMPONENTS_NAV_BAR_CONFIG]() as IComponentsNavigationBarConfig;
+            // eslint-disable-next-line
+            const component = currentRoute.component as any;
+            if (component && component.methods && typeof component.methods[METHOD_NAME_COMPONENTS_NAV_BAR_CONFIG] === "function") {
+              const config = component.methods[METHOD_NAME_COMPONENTS_NAV_BAR_CONFIG]() as IComponentsNavigationBarConfig;
               this.navigationBarConfig = config;
               return;
             }
