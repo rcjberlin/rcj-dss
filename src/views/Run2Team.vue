@@ -124,9 +124,8 @@ export default defineComponent({
     },
     getNavigationBarConfig(): IComponentsNavigationBarConfig {
       return {
-        disableDrawerSwipeGestures: true,
-        backButtonInsteadOfDrawer: true,
-        backButtonRoute: "/run/setup",
+        disableDrawerSwipeGestures: false,
+        backButtonInsteadOfDrawer: false,
       };
     },
     backToSetup(): void {
