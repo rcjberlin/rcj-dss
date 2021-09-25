@@ -25,7 +25,7 @@
         <time-toggle-button :style="{ width: '16vw', 'max-width': '200px', 'max-height': '30vh' }" />
       </div>
       <div>
-        <button class="set-time">{{ tg("buttonSetTime") }}</button>
+        <set-time-button />
       </div>
     </div>
 
@@ -43,10 +43,11 @@ import Card from "../components/layout/Card.vue";
 import EditIcon from "../components/icons/EditIcon.vue";
 import RunTime from "../components/time/RunTime.vue";
 import TimeToggleButton from "../components/time/TimeToggleButton.vue";
+import SetTimeButton from "../components/time/SetTimeButton.vue";
 
 export default defineComponent({
   name: "Run3PreRun",
-  components: { KeyValueRow, Card, EditIcon, RunTime, TimeToggleButton },
+  components: { KeyValueRow, Card, EditIcon, RunTime, TimeToggleButton, SetTimeButton },
   data() {
     return {
       vTeamShowedUp: false,
@@ -120,20 +121,5 @@ export default defineComponent({
 .box-time .time {
   font-size: 2em;
   margin-top: 0.125em;
-}
-
-/* set font size of "set time" button depending on width */
-.box-time .set-time {
-  font-size: 0.75em;
-}
-@media only screen and (min-width: 360px) {
-  .box-time .set-time {
-    font-size: 1em;
-  }
-}
-@media only screen and (min-width: 500px) {
-  .box-time .set-time {
-    font-size: 1.25em;
-  }
 }
 </style>

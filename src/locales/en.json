@@ -10,7 +10,8 @@
         "epHigh": "high",
         "team": "Team",
         "run": "Run",
-        "buttonSetTime": "Set Time"
+        "buttonSetTime": "Set Time",
+        "cancel": "Cancel"
     },
     "nav": {
         "appTitle": "RCJ Digital Scoring Sheet",

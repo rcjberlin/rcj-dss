@@ -11,6 +11,7 @@ import Run6Review from "../views/Run6Review.vue";
 import Run7SubmitResult from "../views/Run7SubmitResult.vue";
 import Settings from "../views/Settings.vue";
 import RunHistory from "../views/RunHistory.vue";
+import { beforeEachHandler } from "./navigationGuard";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -80,6 +81,10 @@ export const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  beforeEachHandler(to, from, next);
 });
 
 export default router;

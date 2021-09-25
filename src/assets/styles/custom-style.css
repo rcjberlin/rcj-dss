@@ -46,6 +46,21 @@ button:not(.no-button-styling):active {
   transition: 0.2s;
 }
 
+button.fg-btn {
+  background-color: rgba(0, 0, 0, 0);
+  color: var(--theme-color);
+  box-shadow: none;
+  border: none;
+}
+button.fg-btn:hover, button.fg-btn:focus {
+  box-shadow: none;
+  background-color: rgba(var(--theme-color-rgb), 0.1);
+}
+button.fg-btn:active {
+  box-shadow: none;
+  background-color: rgba(var(--theme-color-rgb), 0.3);
+}
+
 input {
   width: calc(100% - 28px); /* subtract margin, border and padding */
   background-color: inherit;
