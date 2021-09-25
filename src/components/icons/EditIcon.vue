@@ -1,5 +1,5 @@
 <template>
-  <svg viewBox="0 0 100 100" class="inline-svg-icon">
+  <svg viewBox="0 0 100 100" class="inline-svg-icon pointer-cursor">
     <g transform="rotate(45 50 50)">
       <rect x="37.5" y="-5" width="25" height="17.5" fill="var(--text-color2)" />
       <rect x="37.5" y="20" width="25" height="62.5" fill="var(--text-color2)" />

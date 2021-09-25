@@ -1,5 +1,5 @@
 <template>
-  <svg viewBox="0 0 100 100" class="inline-svg-icon">
+  <svg viewBox="0 0 100 100" class="inline-svg-icon pointer-cursor">
     <polygon points="0,90 50,10 100,90" fill="#dd5" />
     <polyline points="47,35 50,64 52,35 47,35" stroke="#000" fill="#000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
     <circle cx="50" cy="80" r="6" fill="#000" />

@@ -87,3 +87,7 @@ select:focus {
   margin-bottom: -1em;
   top: -0.8em;
 }
+
+.pointer-cursor {
+  cursor: pointer;
+}
