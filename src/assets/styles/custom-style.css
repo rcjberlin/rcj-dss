@@ -79,7 +79,7 @@ select:focus {
 .v-center {
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .inline-svg-icon {
