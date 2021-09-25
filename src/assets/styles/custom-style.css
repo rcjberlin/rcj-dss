@@ -47,7 +47,7 @@ button:not(.no-button-styling):active {
 }
 
 input {
-  width: calc(100% - 28px); /* substract margin, border and padding */
+  width: calc(100% - 28px); /* subtract margin, border and padding */
   background-color: inherit;
   color: inherit;
   border-color: var(--input-border-color);
@@ -65,7 +65,7 @@ input[type="checkbox"] {
 }
 
 select {
-  width: calc(100% - 8px); /* substract margin */
+  width: calc(100% - 8px); /* subtract margin */
   background-color: inherit;
   color: inherit;
   border-color: var(--input-border-color);
