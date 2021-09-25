@@ -138,9 +138,6 @@ export default defineComponent({
       this.$store.commit("setTeam", teamId);
       // TODO: ask whether scoring data should be resetted or not
     },
-    selectEvacuationPoint(ep: "low" | "high"): void {
-      console.log("select ep", ep);
-    },
     continueToPreRun(): void {
       if (
         this.$store.state.currentRun.competition &&

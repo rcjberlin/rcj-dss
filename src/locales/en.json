@@ -8,6 +8,8 @@
         "evacuationPoint": "Evacuation Point",
         "epLow": "low",
         "epHigh": "high",
+        "team": "Team",
+        "run": "Run",
         "buttonSetTime": "Set Time"
     },
     "nav": {
@@ -31,7 +33,7 @@
     },
     "run": {
         "setup": {
-            "runSetup": "Run Setup",
+            "runSetup": "Setup",
             "selectTeam": "Select Team"
         },
         "team": {
@@ -41,8 +43,10 @@
             "continueToPreRun": "Continue"
         },
         "preRun": {
-            "runPreRun": "Run Pre-run",
-            "teamShowedUp": "Team showed up"
+            "runPreRun": "Run Setup",
+            "teamSetup": "Team",
+            "teamShowedUp": "Team showed up",
+            "continueToRun": "Continue"
         },
         "run": {},
         "postRun": {},
