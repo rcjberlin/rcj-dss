@@ -84,6 +84,17 @@ export default defineComponent({
     },
   },
   mounted() {
+    if (
+      !(
+        this.$store.state.currentRun.competition &&
+        this.$store.state.currentRun.arenaId &&
+        this.$store.state.currentRun.round &&
+        this.$store.state.currentRun.teamId &&
+        this.$store.state.currentRun.scoring.evacuationPoint
+      )
+    ) {
+      this.$router.push("/run/team");
+    }
     this.vTeamShowedUp = this.$store.state.currentRun.scoring.teamStarted;
   },
   watch: {
