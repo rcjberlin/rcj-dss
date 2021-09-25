@@ -19,10 +19,10 @@
 
     <div class="box-time">
       <div>
-        <span class="time">1:23</span>
+        <run-time class="time" />
       </div>
       <div>
-        <img src="../assets/icons/pause.svg" style="width: 16vw; max-width: 200px; max-height: 30vh" />
+        <time-toggle-button :style="{ width: '16vw', 'max-width': '200px', 'max-height': '30vh' }" />
       </div>
       <div>
         <button class="set-time">{{ tg("buttonSetTime") }}</button>
@@ -41,10 +41,12 @@ import { IComponentsNavigationBarConfig } from "../types";
 import KeyValueRow from "../components/layout/KeyValueRow.vue";
 import Card from "../components/layout/Card.vue";
 import EditIcon from "../components/icons/EditIcon.vue";
+import RunTime from "../components/time/RunTime.vue";
+import TimeToggleButton from "../components/time/TimeToggleButton.vue";
 
 export default defineComponent({
   name: "Run3PreRun",
-  components: { KeyValueRow, Card, EditIcon },
+  components: { KeyValueRow, Card, EditIcon, RunTime, TimeToggleButton },
   data() {
     return {
       vTeamShowedUp: false,

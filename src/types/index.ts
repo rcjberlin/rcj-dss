@@ -71,6 +71,25 @@ export interface IStateRun {
     evacuationPoint: "low" | "high" | undefined;
     // TODO
   };
+  time: {
+    /**
+     * offset in seconds
+     */
+    timeOffset: number;
+    /**
+     * unix timestamp in seconds, can have milliseconds;
+     * null means that time is not running
+     */
+    timeStartedTimestamp: number | null;
+    /**
+     * unix timestamp in seconds when run started
+     */
+    timestampRunStart: number | null;
+    /**
+     * unix timetstamp in seconds when run ended
+     */
+    timestampRunEnd: number | null;
+  };
 }
 
 export interface IState {

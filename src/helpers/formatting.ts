@@ -22,3 +22,11 @@ export function parseServerScheduleTimestamp(timestamp: string): Date {
   // if the ISO 8601 timestamp ends with a two-digit timezone offset, 00 is appended so that JS can parse it
   return new Date(timestamp + (timestamp.match(/(\+|-)\d\d$/) ? "00" : ""));
 }
+
+export function getSecondsAsTimeString(timeInSeconds: number): string {
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = Math.floor(timeInSeconds % 60);
+  const minutesStr = minutes < 10 ? minutes : minutes > 15 ? "X" : minutes.toString(16);
+  const secondsStr = (seconds < 10 ? "0" : "") + seconds;
+  return minutesStr + ":" + secondsStr;
+}
