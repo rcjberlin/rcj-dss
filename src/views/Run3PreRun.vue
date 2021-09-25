@@ -15,7 +15,7 @@
       <!-- TODO: show further values? arena, competition, round, time, ...? -->
     </card>
 
-    <label class="v-center"><input type="checkbox" /> {{ tc("teamShowedUp") }}</label>
+    <label class="v-center"><input type="checkbox" v-model="vTeamShowedUp" /> {{ tc("teamShowedUp") }}</label>
 
     <div class="box-time">
       <div>
@@ -45,6 +45,11 @@ import EditIcon from "../components/icons/EditIcon.vue";
 export default defineComponent({
   name: "Run3PreRun",
   components: { KeyValueRow, Card, EditIcon },
+  data() {
+    return {
+      vTeamShowedUp: false,
+    };
+  },
   computed: {
     selectedEvacuationPoint(): string {
       return this.$store.state.currentRun.scoring.evacuationPoint === "low"
@@ -74,6 +79,14 @@ export default defineComponent({
     continueToRun(): void {
       // TODO: show warning if "team showed up" is not checked?
       this.$router.push("/run/run");
+    },
+  },
+  mounted() {
+    this.vTeamShowedUp = this.$store.state.currentRun.scoring.teamStarted;
+  },
+  watch: {
+    vTeamShowedUp(showedUp: boolean) {
+      this.$store.commit("setTeamStarted", showedUp);
     },
   },
 });

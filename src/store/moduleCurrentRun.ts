@@ -30,6 +30,9 @@ export default {
     setEvacuationPoint(state: IStateRun, evacuationPoint: "low" | "high" | undefined): void {
       state.scoring.evacuationPoint = evacuationPoint;
     },
+    setTeamStarted(state: IStateRun, teamStarted: boolean): void {
+      state.scoring.teamStarted = teamStarted;
+    }
   },
   actions: {},
   modules: {},
