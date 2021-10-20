@@ -1,7 +1,7 @@
 <template>
   <div style="text-align: center; margin-bottom: 2vw">
     <div class="time-input-box">
-      <div id="btn-minutes-plus" class="pointer-cursor" @click="minutesPlus">+</div>
+      <div class="pointer-cursor" @click="minutesPlus">+</div>
       <div>
         <input
           type="text"
@@ -12,10 +12,10 @@
           @change="updateMinutesAndSeconds"
         />
       </div>
-      <div id="btn-minutes-minus" class="pointer-cursor" @click="minutesMinus">-</div>
+      <div class="pointer-cursor" @click="minutesMinus">-</div>
     </div>
     <div class="time-input-box">
-      <div id="btn-seconds-plus" class="pointer-cursor" @click="secondsPlus">+</div>
+      <div class="pointer-cursor" @click="secondsPlus">+</div>
       <div>
         <input
           type="text"
@@ -26,7 +26,7 @@
           @change="updateMinutesAndSeconds"
         />
       </div>
-      <div id="btn-seconds-minus" class="pointer-cursor" @click="secondsMinus">-</div>
+      <div class="pointer-cursor" @click="secondsMinus">-</div>
     </div>
   </div>
 </template>
@@ -132,10 +132,12 @@ export default defineComponent({
 <style scoped>
 .time-input-box {
   display: inline-block;
-  color: #fff;
+  color: var(--text-color);
   background: var(--theme-color);
   font-size: 1.5em;
   margin: 4px;
+  border-radius: 8px;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 input.number-input-no-spinner {
   width: 2em;
@@ -144,7 +146,6 @@ input.number-input-no-spinner {
   background: inherit;
   color: inherit;
   font-size: inherit;
-  font-weight: bold;
 }
 .number-input-no-spinner,
 .number-input-no-spinner::-webkit-outer-spin-button,
