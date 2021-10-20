@@ -16,7 +16,7 @@ export default {
       arenaId: "",
       round: 0,
       scoring: {
-        teamStarted: false,
+        teamStarted: true,
         evacuationPoint: undefined,
       },
       time: {
