@@ -2,6 +2,11 @@ import { eventBus } from "@/event";
 import { getSecondsAsTimeString } from "@/helpers/formatting";
 import { IStateRun } from "@/types";
 
+function getRunTime(timeStartedTimestamp: number | null, timeOffset: number): number {
+  const timePassedSinceStarted = timeStartedTimestamp === null ? 0 : Date.now() / 1000 - timeStartedTimestamp;
+  return timeOffset + timePassedSinceStarted;
+}
+
 export default {
   state(): IStateRun {
     return {
@@ -27,8 +32,7 @@ export default {
       return state.time.timeStartedTimestamp !== null;
     },
     runTime(state: IStateRun): number {
-      const timePassedSinceStarted = state.time.timeStartedTimestamp === null ? 0 : Date.now() / 1000 - state.time.timeStartedTimestamp;
-      return state.time.timeOffset + timePassedSinceStarted;
+      return getRunTime(state.time.timeStartedTimestamp, state.time.timeOffset);
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
     runTimeAsString(_state: IStateRun, getters: any): string {
@@ -75,6 +79,11 @@ export default {
         state.time.timestampRunEnd = Math.floor(Date.now() / 1000);
         eventBus.emit("paused-time");
       }
+    },
+    setTime(state: IStateRun, newTimeInSeconds: number): void {
+      console.log("setting time vuex");
+      state.time.timeOffset += newTimeInSeconds - getRunTime(state.time.timeStartedTimestamp, state.time.timeOffset);
+      eventBus.emit("updated-time");
     },
   },
   actions: {},

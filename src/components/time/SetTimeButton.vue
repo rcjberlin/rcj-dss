@@ -2,9 +2,13 @@
   <div>
     <button id="btn-set-time" v-on:click="openSetTimeModal">{{ tg("buttonSetTime") }}</button>
     <modal :title="tg('buttonSetTime')" :showModal="showSetTimeModal" @hide="closeSetTimeModal" :options="{ hideOnClickOutside: false }">
-      Hello, World!
+      Original Time: <run-time />
+
+      <time-picker :isShown="showSetTimeModal" @setTimeInSeconds="(time) => (timeSetInModal = time)" />
+
       <div style="display: flex; justify-content: flex-end">
-        <button class="fg-btn" v-on:click="closeSetTimeModal">{{ tg("cancel") }}</button>
+        <button class="fg-btn" @click="closeSetTimeModal">{{ tg("cancel") }}</button>
+        <button class="fg-btn" @click="saveTime">{{ tg("save") }}</button>
       </div>
     </modal>
   </div>
@@ -13,13 +17,16 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Modal from "../layout/Modal.vue";
+import RunTime from "./RunTime.vue";
+import TimePicker from "./TimePicker.vue";
 
 export default defineComponent({
   name: "SetTimeButton",
-  components: { Modal },
+  components: { Modal, RunTime, TimePicker },
   data() {
     return {
       showSetTimeModal: false,
+      timeSetInModal: 0,
     };
   },
   methods: {
@@ -31,6 +38,10 @@ export default defineComponent({
     },
     closeSetTimeModal(): void {
       this.showSetTimeModal = false;
+    },
+    saveTime(): void {
+      this.$store.commit("setTime", this.timeSetInModal);
+      this.closeSetTimeModal();
     },
   },
 });

@@ -25,6 +25,7 @@ export default defineComponent({
     if (this.$store.getters.isTimeRunning) this.startAutoUpdatingTime();
     eventBus.on("started-time", this.startAutoUpdatingTime);
     eventBus.on("paused-time", this.stopAutoUpdatingTime);
+    eventBus.on("updated-time", this.updateTime);
     this.updateTime();
   },
   methods: {

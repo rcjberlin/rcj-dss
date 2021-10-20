@@ -91,8 +91,8 @@ export default defineComponent({
 
 .modal {
   --modal-width: min(80vw, 600px);
-  --modal-max-height: 60%;
-  --modal-top-offset-from-center: -6%;
+  --modal-max-height: 90%;
+  --modal-top-offset-from-center: 0%;
   --modal-padding: 8px;
 
   width: var(--modal-width);

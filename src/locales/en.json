@@ -11,7 +11,8 @@
         "team": "Team",
         "run": "Run",
         "buttonSetTime": "Set Time",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "save": "Save"
     },
     "nav": {
         "appTitle": "RCJ Digital Scoring Sheet",
