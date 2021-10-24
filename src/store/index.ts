@@ -4,6 +4,7 @@ import { getJsonFromLocalStorage, writeJsonToLocalStorage } from "./localStorage
 import moduleSettings from "./moduleSettings";
 import moduleScheduleData from "./moduleScheduleData";
 import moduleCurrentRun from "./moduleCurrentRun";
+import moduleRunHistory from "./moduleRunHistory";
 
 const LS_KEY_STORE = "vuexstore-";
 
@@ -11,6 +12,7 @@ const modules = {
   settings: moduleSettings,
   schedule: moduleScheduleData,
   currentRun: moduleCurrentRun,
+  runHistory: moduleRunHistory,
 };
 
 // create a map of mutation names (e.g. "setLanguage" to module names (e.g. "settings")

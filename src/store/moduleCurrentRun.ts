@@ -81,9 +81,23 @@ export default {
       }
     },
     setTime(state: IStateRun, newTimeInSeconds: number): void {
-      console.log("setting time vuex");
       state.time.timeOffset += newTimeInSeconds - getRunTime(state.time.timeStartedTimestamp, state.time.timeOffset);
       eventBus.emit("updated-time");
+    },
+    resetCurrentRun(state: IStateRun): void {
+      // keep competition, arena, and round, but clear all other values
+      state.runIdSchedule = 0;
+      state.teamId = "";
+      state.scoring = {
+        teamStarted: true,
+        evacuationPoint: undefined,
+      };
+      state.time = {
+        timeOffset: 0,
+        timeStartedTimestamp: null,
+        timestampRunStart: null,
+        timestampRunEnd: null,
+      };
     },
   },
   actions: {},

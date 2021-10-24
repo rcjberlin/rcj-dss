@@ -92,9 +92,26 @@ export interface IStateRun {
   };
 }
 
+export interface IStateRunHistoryEntry {
+  runHistoryId: string;
+  // TODO: resubmits?
+  run: IStateRun;
+  score: number;
+  time: number;
+  timestamp: number;
+  url: string;
+  status: "successful" | "failed";
+  error?: string;
+}
+
+export interface IStateRunHistory {
+  entries: IStateRunHistoryEntry[];
+}
+
 export interface IState {
   settings: IStateSettings;
   schedule: IStateScheduleData;
   currentRun: IStateRun;
+  runHistory: IStateRunHistory;
   [moduleName: string]: any; // eslint-disable-line
 }
