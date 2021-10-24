@@ -37,21 +37,40 @@ export function submitRun(
   promise: Promise<void>;
 } {
   // validate run data
-  if (!data.schedule.competitions.includes(data.run.competition || "")) {
-    throw new Error("Invalid value for competition");
-  }
   const team = data.schedule.teams.find((team) => team.teamId === data.run.teamId);
-  if (!team) {
-    throw new Error("No teamname found for this team ID");
-  }
-  if (data.run.round === undefined) {
-    throw new Error("Round must not be undefined");
-  }
-  if (data.run.arenaId === undefined) {
-    throw new Error("ArenaId must not be undefined");
-  }
-  if (data.run.time.timestampRunStart === null || data.run.time.timestampRunEnd === null) {
-    throw new Error("Timestamps for run start and end must not be null");
+  try {
+    if (!data.schedule.competitions.includes(data.run.competition || "")) {
+      throw new Error("Invalid value for competition");
+    }
+    if (!team) {
+      throw new Error("No teamname found for this team ID");
+    }
+    if (data.run.round === undefined) {
+      throw new Error("Round must not be undefined");
+    }
+    if (data.run.arenaId === undefined) {
+      throw new Error("ArenaId must not be undefined");
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    const runHistoryEntry: IStateRunHistoryEntry = {
+      runHistoryId: uuidv4(),
+      run: clone(data.run),
+      score: 0,
+      time: 0,
+      url: "",
+      timestamp: Math.floor(Date.now() / 1000),
+      status: "failed",
+      error: `Internal Error: Didn't even send run (${err.message})`,
+    };
+    storeCommitFunction("addEntryToRunHistory", runHistoryEntry);
+    storeCommitFunction("resetCurrentRun");
+    return {
+      details: { requestLength: 0 },
+      promise: new Promise((resolve) => {
+        resolve();
+      }),
+    };
   }
 
   // prepare submit object
@@ -65,8 +84,8 @@ export function submitRun(
     round: data.run.round,
     arena: data.run.arenaId,
     time_duration: time,
-    time_start: data.run.time.timestampRunStart,
-    time_end: data.run.time.timestampRunEnd,
+    time_start: data.run.time.timestampRunStart || 0,
+    time_end: data.run.time.timestampRunEnd || 0,
     scoring: {
       teamStarted: data.run.scoring.teamStarted,
       evacuationPoint: data.run.scoring.evacuationPoint || "",
@@ -97,7 +116,7 @@ export function submitRun(
         console.log("successfully submitted run", text);
         const runHistoryEntry: IStateRunHistoryEntry = {
           runHistoryId: uuidv4(),
-          run: data.run,
+          run: clone(data.run),
           score,
           time,
           url,
@@ -115,7 +134,7 @@ export function submitRun(
       console.log({ msg: "failed to submit run", response: error.toString() });
       const runHistoryEntry: IStateRunHistoryEntry = {
         runHistoryId: uuidv4(),
-        run: data.run,
+        run: clone(data.run),
         score,
         time,
         url,
@@ -138,4 +157,9 @@ export function submitRun(
 
 function calculateScore(scoring: IStateRun["scoring"]) {
   return scoring.teamStarted ? 5 : 0;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function clone(obj: any) {
+  return JSON.parse(JSON.stringify(obj));
 }
