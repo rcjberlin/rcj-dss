@@ -59,7 +59,7 @@ export function submitRun(
       score: 0,
       time: 0,
       url: "",
-      timestamp: Math.floor(Date.now() / 1000),
+      unixTimestamp: Math.floor(Date.now() / 1000),
       status: "failed",
       error: `Internal Error: Didn't even send run (${err.message})`,
     };
@@ -120,7 +120,7 @@ export function submitRun(
           score,
           time,
           url,
-          timestamp: Math.floor(Date.now() / 1000),
+          unixTimestamp: Math.floor(Date.now() / 1000),
           status: "successful",
         };
         storeCommitFunction("addEntryToRunHistory", runHistoryEntry);
@@ -138,7 +138,7 @@ export function submitRun(
         score,
         time,
         url,
-        timestamp: Math.floor(Date.now() / 1000),
+        unixTimestamp: Math.floor(Date.now() / 1000),
         status: "failed",
         error: error.toString(),
       };

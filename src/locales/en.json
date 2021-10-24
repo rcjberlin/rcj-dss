@@ -12,7 +12,9 @@
         "run": "Run",
         "buttonSetTime": "Set Time",
         "cancel": "Cancel",
-        "save": "Save"
+        "save": "Save",
+        "score": "Score",
+        "time": "Time"
     },
     "nav": {
         "appTitle": "RCJ Digital Scoring Sheet",
@@ -64,7 +66,11 @@
         }
     },
     "runHistory": {
-        "runHistory": "Run History"
+        "runHistory": "Run History",
+        "noRunsYet": "There are no runs yet",
+        "submissionTimestamp": "Submission Timestamp",
+        "submissionUrl": "Submission URL",
+        "errorDetails": "Error Details"
     },
     "settings": {
         "settings": "Settings",

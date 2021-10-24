@@ -98,7 +98,7 @@ export interface IStateRunHistoryEntry {
   run: IStateRun;
   score: number;
   time: number;
-  timestamp: number;
+  unixTimestamp: number;
   url: string;
   status: "successful" | "failed";
   error?: string;
