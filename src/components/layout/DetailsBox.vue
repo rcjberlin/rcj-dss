@@ -8,7 +8,7 @@
       <svg viewBox="0 0 10 10">
         <polyline
           :points="showDetails ? '2,5 5,2 8,5' : '2,3 5,6 8,3'"
-          stroke="#000"
+          stroke="var(--text-color)"
           fill="none"
           stroke-width="1"
           stroke-linecap="round"
@@ -58,6 +58,7 @@ export default defineComponent({
 .details-box .header .title-with-optional-icon {
   display: flex;
   align-items: center;
+  color: var(--text-color);
 }
 .details-box .header .title-with-optional-icon .icon {
   margin-right: 8px;
