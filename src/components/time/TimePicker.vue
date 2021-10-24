@@ -10,6 +10,8 @@
           v-model="minutesStr"
           @input="validateInputMinutes"
           @change="updateMinutesAndSeconds"
+          @keydown.up="minutesPlus"
+          @keydown.down="minutesMinus"
         />
       </div>
       <div class="pointer-cursor" @click="minutesMinus">-</div>
@@ -24,6 +26,8 @@
           v-model="secondsStr"
           @input="validateInputSeconds"
           @change="updateMinutesAndSeconds"
+          @keydown.up="secondsPlus"
+          @keydown.down="secondsMinus"
         />
       </div>
       <div class="pointer-cursor" @click="secondsMinus">-</div>
