@@ -159,6 +159,31 @@ function calculateScore(scoring: IStateRun["scoring"]) {
   return scoring.teamStarted ? 5 : 0;
 }
 
+export function sendRunStartedEvent(data: { settings: IStateSettings; run: IStateRun }): void {
+  try {
+    const url = `${data.settings.submitHost}/api/v1/run_started`;
+    fetch(url, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Basic " + btoa(data.settings.username + ":" + data.settings.password),
+      },
+      body: JSON.stringify({
+        run: {
+          competition: data.settings.submitEvent + "-" + data.run.competition,
+          arenaId: data.run.arenaId,
+          round: data.run.round,
+          teamId: data.run.teamId,
+        },
+      }),
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.log({ msg: "failed to send run_started event", response: error.toString() });
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function clone(obj: any) {
   return JSON.parse(JSON.stringify(obj));
