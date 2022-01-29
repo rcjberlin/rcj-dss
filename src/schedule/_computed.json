@@ -1,13 +1,11 @@
 {
-  "rounds": 3,
+  "rounds": 1,
   "arenasByCompetition": {
     "line-entry": [
-      "B",
-      "A"
+      "B"
     ],
     "line": [
-      "C",
-      "D"
+      "A"
     ]
   }
 }
