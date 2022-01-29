@@ -55,6 +55,7 @@
       </form>
       <div class="v-center">
         <button v-on:click="$store.commit('restoreAPIDefaults')">{{ tc("submitRestoreDefaults") }}</button>
+        <button>{{ tc("submitSaveSettings") }}</button>
       </div>
     </card>
   </div>
@@ -173,7 +174,8 @@ export default defineComponent({
           );
         }
         this.$store.commit("updateSchedule", payloadForUpdate);
-      } catch (err) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
         console.log("error", err.message);
       }
     },

@@ -40,12 +40,22 @@ export default defineComponent({
       return this.options ? this.options.map((option) => (typeof option === "string" ? { text: option, value: option } : option)) : [];
     },
   },
+  mounted() {
+    if (this.opt.length === 1) {
+      this.value = this.opt[0].value;
+      return;
+    }
+  },
   watch: {
     // TODO: better use v-model?
     value() {
       this.onchange(this.value);
     },
     opt() {
+      if (this.opt.length === 1) {
+        this.value = this.opt[0].value;
+        return;
+      }
       if (!this.opt.find((o) => o.value === this.value)) {
         // selected value is no longer in options
         this.value = "";

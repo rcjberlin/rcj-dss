@@ -12,3 +12,9 @@ export default defineComponent({
   name: "CheckmarkIcon",
 });
 </script>
+
+<style scoped>
+svg.shadow {
+  filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.42));
+}
+</style>

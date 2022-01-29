@@ -48,7 +48,7 @@
         },
         "preRun": {
             "runPreRun": "Run Setup",
-            "teamSetup": "Team",
+            "teamSetup": "Team & Setup",
             "teamShowedUp": "Team showed up",
             "continueToRun": "Continue"
         },
@@ -96,6 +96,7 @@
         "event": "Event",
         "submitHost": "Submit Host",
         "submitPath": "Submit Path",
-        "submitRestoreDefaults": "Reset Submission Settings"
+        "submitRestoreDefaults": "Reset",
+        "submitSaveSettings": "Save"
     }
 }

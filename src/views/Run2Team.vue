@@ -27,32 +27,6 @@
         :initialValue="$store.state.currentRun.teamId"
         :onchange="(t) => setTeam(t)"
       />
-
-      <custom-label :text="tg('evacuationPoint')" />
-      <div id="evacuation-point-selection">
-        <label
-          ><input
-            type="radio"
-            name="evacuation-point"
-            id="evacuation-point-low"
-            v-model="vEvacuationPoint"
-            value="low"
-            :disabled="$store.state.currentRun.competition === 'line-entry'"
-          />
-          {{ tg("epLow") }}</label
-        >&emsp;
-        <label
-          ><input
-            type="radio"
-            name="evacuation-point"
-            id="evacuation-point-high"
-            v-model="vEvacuationPoint"
-            value="high"
-            :disabled="$store.state.currentRun.competition === 'line-entry'"
-          />
-          {{ tg("epHigh") }}</label
-        >
-      </div>
     </form>
     <div class="v-center">
       <button v-on:click="continueToPreRun">{{ tc("continueToPreRun") }}</button>
@@ -64,7 +38,6 @@
 import { defineComponent } from "vue";
 import { IComponentsNavigationBarConfig, IScheduleRun, IScheduleTeam } from "../types";
 import CustomSelect from "../components/inputs/CustomSelect.vue";
-import CustomLabel from "../components/inputs/CustomLabel.vue";
 import KeyValueRow from "../components/layout/KeyValueRow.vue";
 import Card from "../components/layout/Card.vue";
 import EditIcon from "../components/icons/EditIcon.vue";
@@ -75,11 +48,9 @@ import { competitionIdToReadableName, convertDateToString, parseServerScheduleTi
 
 export default defineComponent({
   name: "Run2Team",
-  components: { CustomSelect, CustomLabel, KeyValueRow, Card, EditIcon, CheckmarkIcon, WarningIcon },
+  components: { CustomSelect, KeyValueRow, Card, EditIcon, CheckmarkIcon, WarningIcon },
   data() {
-    return {
-      vEvacuationPoint: "",
-    };
+    return {};
   },
   computed: {
     teamOptions(): Array<{ text: string; value: string }> {
@@ -143,8 +114,7 @@ export default defineComponent({
         this.$store.state.currentRun.competition &&
         this.$store.state.currentRun.arenaId &&
         this.$store.state.currentRun.round &&
-        this.$store.state.currentRun.teamId &&
-        this.$store.state.currentRun.scoring.evacuationPoint
+        this.$store.state.currentRun.teamId
       ) {
         this.$router.push("/run/prerun");
       }
@@ -154,24 +124,6 @@ export default defineComponent({
     if (!(this.$store.state.currentRun.competition && this.$store.state.currentRun.arenaId && this.$store.state.currentRun.round)) {
       this.$router.push("/run/setup");
     }
-    if (this.$store.state.currentRun.competition === "line-entry") {
-      this.$store.commit("setEvacuationPoint", "low");
-    }
-    this.vEvacuationPoint = this.$store.state.currentRun.scoring.evacuationPoint || "";
-  },
-  watch: {
-    vEvacuationPoint(ep: "low" | "high") {
-      this.$store.commit("setEvacuationPoint", ep);
-    },
   },
 });
 </script>
-
-<style scoped>
-#evacuation-point-selection {
-  text-align: left;
-}
-#evacuation-point-selection label {
-  display: inline;
-}
-</style>

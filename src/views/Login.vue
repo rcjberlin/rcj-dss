@@ -23,10 +23,10 @@
 
     <div class="login-status">
       <div v-if="$store.state.settings.loginStatus === true">
-        <img src="../assets/icons/successful.svg" />
+        <checkmark-icon class="large-icon shadow" />
       </div>
       <div v-else-if="$store.state.settings.loginStatus === false">
-        <img src="../assets/icons/failed.svg" />
+        <warning-icon class="large-icon shadow" />
       </div>
     </div>
   </div>
@@ -35,6 +35,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import CustomTextInput from "../components/inputs/CustomTextInput.vue";
+import CheckmarkIcon from "../components/icons/CheckmarkIcon.vue";
+import WarningIcon from "../components/icons/WarningIcon.vue";
 
 const CHECK_LOGIN_PATH = "/api/v1/login_required";
 
@@ -42,6 +44,8 @@ export default defineComponent({
   name: "Login",
   components: {
     CustomTextInput,
+    CheckmarkIcon,
+    WarningIcon,
   },
   data() {
     return {

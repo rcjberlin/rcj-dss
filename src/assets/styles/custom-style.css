@@ -103,6 +103,12 @@ select:focus {
   margin-bottom: -1em;
   top: -0.8em;
 }
+.large-icon {
+  margin: 1em;
+  height: 30vh;
+  max-width: calc(75vw - 2em);
+  top: 0;
+}
 
 .pointer-cursor {
   cursor: pointer;
