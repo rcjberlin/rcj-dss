@@ -1,7 +1,6 @@
 <template>
   <div>
-    victims, rescue kit, exit bonus (if not yet handled in previous screen)
-    evacuation point?
+    victims, rescue kit, exit bonus (if not yet handled in previous screen) evacuation point?
     <router-link to="/run/review">Review</router-link>
   </div>
 </template>

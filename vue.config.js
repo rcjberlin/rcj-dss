@@ -8,6 +8,9 @@ module.exports = {
       name: "RCJ Rescue Line - Digital Scoring Sheet",
       short_name: "RCJ DSS", // eslint-disable-line
     },
+    workboxOptions: {
+      skipWaiting: true,
+    },
   },
   chainWebpack: (config) => {
     config.plugin("html").tap((args) => {
