@@ -7,6 +7,7 @@ set -e
 
 npm run build
 
+git log --format="VERSION %h %ci" -n 1 > rcj-dss/version.txt
 cd rcj-dss
 
 git init

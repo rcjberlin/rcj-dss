@@ -58,6 +58,10 @@
         <button>{{ tc("submitSaveSettings") }}</button>
       </div>
     </card>
+
+    <card :title="tc('about')">
+      <about-card-content />
+    </card>
   </div>
 </template>
 
@@ -69,6 +73,7 @@ import CustomLabel from "../components/inputs/CustomLabel.vue";
 import CustomSelect from "../components/inputs/CustomSelect.vue";
 import KeyValueRow from "../components/layout/KeyValueRow.vue";
 import Card from "../components/layout/Card.vue";
+import AboutCardContent from "../components/AboutCardContent.vue";
 
 import { competitionIdToReadableName, convertDateToString } from "../helpers/formatting";
 import { colorThemes } from "../components/layout/colorThemes";
@@ -91,6 +96,7 @@ export default defineComponent({
     KeyValueRow,
     Card,
     CustomSelect,
+    AboutCardContent,
   },
   computed: {
     switchDrawerOnRight() {

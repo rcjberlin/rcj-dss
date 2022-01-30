@@ -52,7 +52,8 @@ button.fg-btn {
   box-shadow: none;
   border: none;
 }
-button.fg-btn:hover, button.fg-btn:focus {
+button.fg-btn:hover,
+button.fg-btn:focus {
   box-shadow: none;
   background-color: rgba(var(--theme-color-rgb), 0.1);
 }
@@ -112,4 +113,8 @@ select:focus {
 
 .pointer-cursor {
   cursor: pointer;
+}
+
+a {
+  color: var(--link-color);
 }

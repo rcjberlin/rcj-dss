@@ -38,6 +38,7 @@ body[data-theme="light"] {
   --background-color3: #ccc;
   --text-color: #000;
   --text-color2: #444;
+  --link-color: #00e;
   --input-border-color: #c9c9c9;
   --modal-bg-color: rgba(0, 0, 0, 0.4);
 }
@@ -48,6 +49,7 @@ body[data-theme="dark"] {
   --background-color3: #666;
   --text-color: #fff;
   --text-color2: #999;
+  --link-color: #48f;
   --input-border-color: #c9c9c9;
   --modal-bg-color: rgba(32, 32, 32, 0.8);
 }
@@ -59,6 +61,8 @@ body[data-theme="dark"] {
     --background-color2: #222;
     --background-color3: #666;
     --text-color: #fff;
+    --text-color2: #999;
+    --link-color: #48f;
     --input-border-color: #c9c9c9;
     --modal-bg-color: rgba(32, 32, 32, 0.8);
   }

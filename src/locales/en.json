@@ -97,6 +97,7 @@
         "submitHost": "Submit Host",
         "submitPath": "Submit Path",
         "submitRestoreDefaults": "Reset",
-        "submitSaveSettings": "Save"
+        "submitSaveSettings": "Save",
+        "about": "About"
     }
 }
